@@ -12,8 +12,7 @@ public class DatabaseSingleton {
     private DatabaseSingleton() {
         try {
             if (database != null) {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(database.getUrl(), database.getUsername(), database.getPassword());
+               connection = database.getConnection();
             }
             else
                 throw new IllegalStateException("Cannot getConnection without specify DB platform first!");

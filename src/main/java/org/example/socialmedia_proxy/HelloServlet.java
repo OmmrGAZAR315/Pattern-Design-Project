@@ -15,11 +15,32 @@ public class HelloServlet extends HttpServlet {
     DatabaseSingleton databaseConnection;
 
     public void init() {
-        String url = "jdbc:mysql://127.0.0.1:8088/socialmediaproxydb";
-        String username = "root";
-        String password = "90950";
-        Database db = new MySQL_DB(url, username, password);
-        DatabaseSingleton.setDB(db);
+        String platform = "MySQL"; // or "MS_SQL_SERVER"
+        String host = "";
+        String port = "";
+        String username = "";
+        String password = "";
+        switch (platform) {
+            case "MySQL":
+                 host = "127.0.0.1";
+                 port = "8088";
+                username = "root";
+                password = "90950";
+                break;
+            case "MS_SQL":
+                host = "localhost";
+                port = "8089";
+                break;
+        }
+        String database = "socialmediaproxydb";
+
+        try {
+            Database db = new MySQL_DB(host, port, database, username, password);
+            Database db2 = new MS_SQL_SERVER_DB(host, port, database, username, password);
+            DatabaseSingleton.setDB(db);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         databaseConnection = DatabaseSingleton.getInstance();
     }
 
