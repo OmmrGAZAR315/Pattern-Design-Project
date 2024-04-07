@@ -10,17 +10,10 @@ public class DatabaseSingleton {
     private final Connection connection;
 
     private DatabaseSingleton() {
-        try {
-            if (database != null) {
-               connection = database.getConnection();
-            }
-            else
-                throw new IllegalStateException("Cannot getConnection without specify DB platform first!");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        if (database != null) {
+            connection = database.getConnection();
+        } else
+            throw new IllegalStateException("Cannot getConnection without specify DB platform first!");
     }
 
     public static void setDB(Database db) {
