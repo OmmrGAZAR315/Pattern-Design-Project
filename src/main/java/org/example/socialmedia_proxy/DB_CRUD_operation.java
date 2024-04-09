@@ -1,62 +1,25 @@
 package org.example.socialmedia_proxy;
 
 
-import java.sql.*;
+import jakarta.servlet.ServletException;
+import org.example.socialmedia_proxy.DB.MySQL_DB;
+import org.example.socialmedia_proxy.DB_CRUD.QueryBuilder.UserProfile_DBCRUD_Builder;
+import org.example.socialmedia_proxy.Model.UserProfile;
 
-public class DB_CRUD_operation {
-    DatabaseSingleton databaseConnection;
-    DB_CRUD_operation(String platform) {
-        String host = "";
-        String port = "";
-        String username = "";
-        String password = "";
-        switch (platform) {
-            case "MySQL":
-                host = "127.0.0.1";
-                port = "8088";
-                username = "root";
-                password = "90950";
-                break;
-            case "MS_SQL":
-                host = "localhost";
-                port = "8089";
-                break;
-        }
-        String database = "socialmediaproxydb";
-        try {
-            Database db = new MySQL_DB(host, port, database, username, password);
-//            Database db2 = new MS_SQL_SERVER_DB(host, port, database, username, password);
-            DatabaseSingleton.setDB(db);
-            databaseConnection = DatabaseSingleton.getInstance();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+public abstract class DB_CRUD_operation {
+    public static DatabaseSingleton databaseConnection;
+
+    protected static void get_DB_CRUD_operation(Database db) {
+        DatabaseSingleton.setDB(db);
+        databaseConnection = DatabaseSingleton.getInstance();
     }
 
-    public void create(String name, int age) {
-        String callSql = "{CALL insert_users(?, ?)}";
+    public abstract void create(UserProfile userProfile);
 
-        try (CallableStatement callableStatement = databaseConnection.getConnection().prepareCall(callSql)) {
+    public abstract void read();
 
-            callableStatement.setString(1, name);
-            callableStatement.setInt(2, age);
-            callableStatement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public abstract void update();
 
-
-    public void read(String table, String[] columns, String[] values) {
-        // Create a new record in the database
-    }
-
-    public void update(String table, String[] columns, String[] values) {
-        // Create a new record in the database
-    }
-
-    public void delete(String table, String[] columns, String[] values) {
-        // Create a new record in the database
-    }
+    public abstract void delete();
 
 }

@@ -4,16 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public abstract class Database {
-    private final String url;
-    private final String username;
-    private final String password;
-    private Connection connection;
-
-    public Database(String url, String username, String password) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
-    }
+    private  String url;
+    private  String username;
+    private  String password;
+    private static Connection connection;
 
     public String getUrl() {
         return url;
@@ -31,7 +25,7 @@ public abstract class Database {
         return connection;
     }
 
-    public void setConnection() throws Exception {
-        this.connection = DriverManager.getConnection(url, username, password);
+    protected static void getDriverManager(String url,String username,String password) throws Exception {
+        connection = DriverManager.getConnection(url, username, password);
     }
 }
