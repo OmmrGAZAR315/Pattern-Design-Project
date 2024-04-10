@@ -26,6 +26,9 @@ public abstract class Database {
     }
 
     protected static void getDriverManager(String url,String username,String password) throws Exception {
+//        System.out.println(
+//                "Connecting to database: " + url + " with username: " + username + " and password: " + password
+//        );
         connection = DriverManager.getConnection(url, username, password);
     }
 }

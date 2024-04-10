@@ -5,8 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.socialmedia_proxy.DB.MySQL_DB;
-import org.example.socialmedia_proxy.DB_CRUD.UserProfile_DBCRUD;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
 import org.example.socialmedia_proxy.UserProfileService;
