@@ -1,12 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<jsp:include page="db_connection.jsp" />
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome</title>
+    <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Welcome" %>
+<h1><%= "Hello World!" %>
 </h1>
 <br/>
+<a href="userProfile-servlet">Hello Servlet</a>
 </body>
 </html>

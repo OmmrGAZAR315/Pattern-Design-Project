@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy.DB;
+package org.example.socialmedia_proxy.DB_Platforms;
 
 import jakarta.servlet.ServletException;
 import org.example.socialmedia_proxy.Database;

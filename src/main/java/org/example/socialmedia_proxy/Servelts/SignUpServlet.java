@@ -5,6 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.socialmedia_proxy.DB_CRUD.Builder.Builder;
+import org.example.socialmedia_proxy.DB_CRUD.Builder.Query;
+import org.example.socialmedia_proxy.DB_CRUD.QueryBuilder;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
 import org.example.socialmedia_proxy.UserProfileService;
@@ -20,21 +23,25 @@ public class SignUpServlet extends HttpServlet {
         userProfileService = new UserProfileServiceProxy();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve user ID from request parameter
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        // Retrieve user profile using the proxy service
-        UserProfile userProfile = userProfileService.getUserProfile(userId);
-        // Display user profile
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h2>User Profile</h2>");
-        out.println("Name: " + userProfile.getName() + "<br>");
-        out.println("Email: " + userProfile.getEmail() + "<br>");
-        // Display additional user profile details
-        out.println("</body></html>");
-        out.close();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        UserProfile userProfile = new UserProfile(username, password);
+System.out.println("username: "+userProfile.getUsername());
+System.out.println("password: "+userProfile.getPassword());
+        Builder.query
+                .table("users")
+                .insert()
+                .setInsertColumn("username")
+                .setInsertColumn("password")
+                .setInsertColumn()
+                .setInsertParameter(userProfile.getUsername())
+                .setInsertParameter(userProfile.getPassword())
+                .setInsertParameter()
+                .build();
+        System.out.println("User Profile Created");
+        response.sendRedirect("home.jsp");
     }
 
     public void destroy() {

@@ -1,26 +1,14 @@
 package org.example.socialmedia_proxy.DB_CRUD;
 
+import org.example.socialmedia_proxy.DB_CRUD.Builder.Builder;
+import org.example.socialmedia_proxy.DB_CRUD.Builder.Query;
+import org.example.socialmedia_proxy.QueryType;
+
 import java.sql.*;
 import java.util.*;
 
-public class QueryBuilder {
-    static String query;
-    static boolean isCallParameterSet;
-    static boolean isInsertColumnSet;
-    static boolean isInsertParameterSet;
-    static boolean isWhereSet;
+public class QueryBuilder implements Builder {
     private static QueryBuilder instance;
-    private static String tableName;
-    //    static Map<String, String> values = new HashMap<>();
-//    static Map<String, String> dataTypes = new HashMap<>();
-    static List<Object> parameters = new ArrayList<>();
-
-
-    public QueryBuilder() {
-        isCallParameterSet = false;
-        isWhereSet = false;
-        instance = this;
-    }
 
     public static QueryBuilder getQueryBuilder() {
         if (instance == null)
@@ -28,181 +16,210 @@ public class QueryBuilder {
         return instance;
     }
 
+    public QueryBuilder() {
+        Query.isCallParameterSet = false;
+        Query.isWhereSet = false;
+        instance = this;
+    }
+
     public QueryBuilder table(String tableName) {
-        QueryBuilder.tableName = tableName;
+        Query.tableName = "`" + tableName + "`";
+        Query.resetBooleans();
+        Query.parameters.clear();
         return this;
     }
 
-    public QueryBuilder select(String[] columns) {
-        query = "SELECT '?' FROM ";
-        parameters.add(columns);
-        parameters.add(tableName);
-        return instance;
+    public QueryBuilder select(String... columns) {
+        String selectColumns;
+        if (columns.length == 1) {
+            selectColumns = columns[0];
+        } else {
+            selectColumns = String.join(",", columns);
+        }
+        Query.query = "SELECT " + selectColumns + " FROM " + Query.tableName;
+        Query.queryType = QueryType.READ;
+        return this;
     }
 
     public QueryBuilder insert() {
-        query = "INSERT INTO " + tableName;
-        query += "( ";
-        return instance;
+        Query.query = "INSERT INTO " + Query.tableName;
+        Query.query += "( ";
+        Query.queryType = QueryType.CUD;
+        return this;
     }
 
-    public static QueryBuilder call(String procedureName) {
-        query = "{CALL " + procedureName;
-        return instance;
+    public QueryBuilder call(String procedureName) {
+        Query.query = "{CALL " + procedureName;
+        return this;
+    }
+
+    public QueryBuilder setSelect(Object column) {
+        if (!Query.isInsertColumnSet) {
+            Query.query += column;
+            Query.isInsertColumnSet = true;
+        } else
+            Query.query += ", " + column + " ";
+
+        return this;
     }
 
     public QueryBuilder setInsertColumn(Object column) {
-        if (!isInsertColumnSet) {
-            query += column;
-            isInsertColumnSet = true;
+        if (!Query.isInsertColumnSet) {
+            Query.query += column;
+            Query.isInsertColumnSet = true;
         } else
-            query += ", " + column + " ";
+            Query.query += ", " + column + " ";
 
-        return instance;
+        return this;
     }
 
     public QueryBuilder setInsertColumn() {
-        query += ") VALUES ( ";
-        return instance;
+        Query.query += ") VALUES ( ";
+        return this;
     }
 
     public QueryBuilder setInsertParameter(Object parameter) {
-        if (!isInsertParameterSet) {
-            query += "?";
-            isInsertParameterSet = true;
+        if (!Query.isInsertParameterSet) {
+            Query.query += "?";
+            Query.isInsertParameterSet = true;
         } else
-            query += ", " + "?" + " ";
+            Query.query += ", " + "?" + " ";
 
-        parameters.add(parameter);
-
-        return instance;
+        Query.parameters.add(parameter);
+        return this;
     }
 
     public QueryBuilder setInsertParameter() {
-        query += ")";
-        return instance;
+        Query.query += ")";
+        return this;
     }
 
-    public static QueryBuilder setCallParameter(String parameter) {
+    public QueryBuilder setCallParameter(String parameter) {
         if (Objects.equals(parameter, "0"))
-            query += ")";
+            Query.query += ")";
 
         else {
-            if (!isCallParameterSet) {
-                query += "(" + parameter + " ";
-                isCallParameterSet = true;
+            if (!Query.isCallParameterSet) {
+                Query.query += "(" + parameter + " ";
+                Query.isCallParameterSet = true;
             } else
-                query += ", " + parameter + " ";
+                Query.query += ", " + parameter + " ";
 
-            parameters.add(parameter);
+            Query.parameters.add(parameter);
 
         }
-        return instance;
+        return this;
     }
 
-    public QueryBuilder where(String column, String operator, Object value) throws SQLException {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder where(String column, Object value) {
+        return where(column, "=", value);
+    }
+
+    public QueryBuilder where(String column, String operator, Object value) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
-        query += "?" + "?" + "?";
-        parameters.add(column);
-        parameters.add(operator);
-        parameters.add(value);
-        return instance;
+            Query.query += " AND ";
+
+        Query.query += column + operator + " ? ";
+//        parameters.add(column);
+//        parameters.add(operator);
+        Query.parameters.add(value);
+        return this;
     }
 
-    public static QueryBuilder whereIn(String column, String[] values) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+
+    public QueryBuilder whereIn(String column, String[] values) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
+            Query.query += " AND ";
 
-        query += column + " IN (" + String.join(", ", values) + ")";
-        return instance;
+        Query.query += column + " IN (" + String.join(", ", values) + ")";
+        return this;
 
     }
 
-    public static QueryBuilder whereNotIn(String column, String[] values) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereNotIn(String column, String[] values) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
+            Query.query += " AND ";
 
-        query += column + " NOT IN (" + String.join(", ", values) + ")";
-        return instance;
+        Query.query += column + " NOT IN (" + String.join(", ", values) + ")";
+        return this;
 
     }
 
-    public static QueryBuilder whereBetween(String column, String value1, String value2) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereBetween(String column, String value1, String value2) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
-        query += column + " BETWEEN " + value1 + " AND " + value2;
-        return instance;
+            Query.query += " AND ";
+        Query.query += column + " BETWEEN " + value1 + " AND " + value2;
+        return this;
 
     }
 
-    public static QueryBuilder whereNotBetween(String column, String value1, String value2) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereNotBetween(String column, String value1, String value2) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
-        query += column + " NOT BETWEEN " + value1 + " AND " + value2;
-        return instance;
+            Query.query += " AND ";
+        Query.query += column + " NOT BETWEEN " + value1 + " AND " + value2;
+        return this;
 
     }
 
-    public static QueryBuilder whereNull(String column) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereNull(String column) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
-        query += column + " IS NULL";
-        return instance;
+            Query.query += " AND ";
+        Query.query += column + " IS NULL";
+        return this;
 
     }
 
-    public static QueryBuilder whereNotNull(String column) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereNotNull(String column) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
-        query += column + " IS NOT NULL";
-        return instance;
+            Query.query += " AND ";
+        Query.query += column + " IS NOT NULL";
+        return this;
     }
 
-    public static QueryBuilder whereLike(String column, String value) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereLike(String column, String value) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
+            Query.query += " AND ";
 
-        query += column + " LIKE " + value;
-        return instance;
+        Query.query += column + " LIKE " + value;
+        return this;
     }
 
-    public static QueryBuilder whereNotLike(String column, String value) {
-        if (!isWhereSet) {
-            query += " WHERE ";
-            isWhereSet = true;
+    public QueryBuilder whereNotLike(String column, String value) {
+        if (!Query.isWhereSet) {
+            Query.query += " WHERE ";
+            Query.isWhereSet = true;
         } else
-            query += " AND ";
+            Query.query += " AND ";
 
-        query += column + " NOT LIKE " + value;
-        return instance;
+        Query.query += column + " NOT LIKE " + value;
+        return this;
     }
 
-//    public static void getMetaData(String tableName, String columnName, String value) throws SQLException {
+//    public  void getMetaData(String tableName, String columnName, String value) throws SQLException {
 //
 //        DatabaseMetaData metaData = DB_CRUD.getDatabaseConnection().getMetaData();
 //        ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
@@ -219,29 +236,49 @@ public class QueryBuilder {
 //    }
 
     public void build() {
-        System.out.println(query);
-        for (Object parameter : parameters) {
-            System.out.println(parameter);
-        }
-        try (PreparedStatement preparedStatement = DB_CRUD.getDatabaseConnection().prepareStatement(query)) {
-            for (int i = 0; i < parameters.size(); i++) {
-                preparedStatement.setObject(i + 1, parameters.get(i));
+        System.out.println(Query.query);
+        ResultSet resultSet = null;
+        try (PreparedStatement preparedStatement = DB.getDatabaseConnection().prepareStatement(Query.query, Statement.RETURN_GENERATED_KEYS)) {
+            if (!Query.parameters.isEmpty()) {
+                for (int i = 0; i < Query.parameters.size(); i++) {
+                    preparedStatement.setObject(i + 1, Query.parameters.get(i));
+                }
             }
+            Query.parameters.clear();
+            switch (Query.queryType) {
+                case READ:
+                    resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString("id"));
+                        Query.importedData.put(
+                                "RResults_" + resultSet.getString("id"),
+                                new Object[]{
+                                        resultSet.getString("username"),
+                                        resultSet.getString("password")
+                                });
 
-            preparedStatement.executeUpdate();
+                        Query.parameters.add(resultSet.getString("id"));
+                    }
+                    break;
+                case CUD:
+                    preparedStatement.executeUpdate();
+                    resultSet = preparedStatement.getGeneratedKeys();
+                    if (resultSet.next()) {
+                        Query.parameters.add(resultSet.getLong(1));
+                    }
+                    break;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            resetBooleans();
+            Query.resetBooleans();
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static void resetBooleans() {
-        isCallParameterSet = false;
-        isInsertColumnSet = false;
-        isInsertParameterSet = false;
-        isWhereSet = false;
-        parameters.clear();
-    }
 
 }

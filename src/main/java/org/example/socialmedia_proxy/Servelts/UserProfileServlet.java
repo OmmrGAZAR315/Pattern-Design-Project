@@ -5,9 +5,7 @@ import java.io.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import org.example.socialmedia_proxy.DB_CRUD.DB_CRUD;
 import org.example.socialmedia_proxy.DB_CRUD.QueryBuilder;
-import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
 import org.example.socialmedia_proxy.UserProfileService;
 
@@ -27,26 +25,14 @@ public class UserProfileServlet extends HttpServlet {
         // Retrieve user profile using the proxy service
 //            UserProfile userProfile = userProfileService.getUserProfile(userId);
         // Display user profile
-        UserProfile userProfile = new UserProfile("John Doe", 23, "fvdfv");
-//            DB_CRUD.create(userProfile);
 
-        QueryBuilder.getQueryBuilder()
-                .table("users")
-                .insert()
-                .setInsertColumn("username")
-                .setInsertColumn("age")
-                .setInsertColumn()
-                .setInsertParameter(userProfile.getName())
-                .setInsertParameter(userProfile.getAge())
-                .setInsertParameter()
-                .build();
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<h2>User Profile</h2>");
-        out.println("Name: " + userProfile.getName() + "<br>");
-        out.println("Email: " + userProfile.getEmail() + "<br>");
+//        out.println("Name: " + userProfile.getName() + "<br>");
+//        out.println("Email: " + userProfile.getEmail() + "<br>");
         // Display additional user profile details
         out.println("</body></html>");
         out.close();
