@@ -1,14 +1,15 @@
 package org.example.socialmedia_proxy.Proxy;
 
+import org.example.socialmedia_proxy.Cacheable;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.UserProfileService;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserProfileServiceProxy implements UserProfileService {
+public class UserProfileServiceProxy implements UserProfileService, Cacheable {
     private UserProfileService userProfileService;
-    private Map<Integer, UserProfile> userProfileCache;
+    private static Map<Integer, UserProfile> userProfileCache;
 
     public UserProfileServiceProxy() {
         this.userProfileService = new UserProfileServiceImpl();
@@ -22,9 +23,15 @@ public class UserProfileServiceProxy implements UserProfileService {
             return userProfileCache.get(userId);
         } else {
             UserProfile userProfile = userProfileService.getUserProfile(userId);
+            if (userProfile == null)
+                return null;
             userProfileCache.put(userId, userProfile);
             System.out.println("Fetching user profile from database for user ID: " + userId);
             return userProfile;
         }
+    }
+
+    public Map<Integer, UserProfile> getUserProfileCache() {
+        return userProfileCache;
     }
 }

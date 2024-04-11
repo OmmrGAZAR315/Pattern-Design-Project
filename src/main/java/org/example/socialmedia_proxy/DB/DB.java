@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy.DB_CRUD;
+package org.example.socialmedia_proxy.DB;
 
 import org.example.socialmedia_proxy.Database;
 import org.example.socialmedia_proxy.DatabaseSingleton;

@@ -1,6 +1,6 @@
-package org.example.socialmedia_proxy.DB_CRUD.Builder;
+package org.example.socialmedia_proxy.DB.Builder;
 
-import org.example.socialmedia_proxy.DB_CRUD.QueryBuilder;
+import org.example.socialmedia_proxy.DB.QueryBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -12,9 +12,10 @@ public interface Builder {
         return Query.parameters;
     }
 
-    public static Map<String, Object[]> getImportedData() {
+    public static Map<String, List<Map<String, Object>>> getImportedData() {
         return Query.importedData;
     }
+
     public Builder table(String tableName);
 
     public Builder select(String... columns);
@@ -23,14 +24,14 @@ public interface Builder {
 
     public Builder call(String procedureName);
 
-    public Builder setSelect(Object column);
+    public Builder setInsertColumn(String column);
 
-    public Builder setInsertColumn(Object column);
-
-    public Builder setInsertColumn();
+    public Builder closeInsertColumn();
 
     public Builder setInsertParameter(Object parameter);
-    public QueryBuilder setInsertParameter();
+
+    public QueryBuilder closeInsertParameter();
+
     public Builder setCallParameter(String parameter);
 
     public Builder where(String column, Object value);
@@ -56,7 +57,12 @@ public interface Builder {
 
 //    public  void getMetaData(String tableName, String columnName, String value) throws SQLException;
 
-    public void build();
+    public Builder build();
 
+    public Map<String, Object> first();
+
+    public Map<String, Object> last();
+
+    public List<Map<String, Object>> all();
 
 }

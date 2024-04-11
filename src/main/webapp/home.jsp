@@ -9,6 +9,6 @@
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
-<a href="userProfile-servlet">Hello Servlet</a>
+<a href="user_ids.jsp">Hello Servlet</a>
 </body>
 </html>

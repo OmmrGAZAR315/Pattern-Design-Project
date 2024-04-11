@@ -5,13 +5,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.socialmedia_proxy.DB_CRUD.Builder.Builder;
-import org.example.socialmedia_proxy.DB_CRUD.Builder.Query;
+import org.example.socialmedia_proxy.DB.Builder.Builder;
+import org.example.socialmedia_proxy.DB.Builder.Query;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 @WebServlet("/loginServlet")
 public class LoginServlet extends HttpServlet {
@@ -46,13 +45,11 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean authenticate(String username, String password) throws SQLException {
-        Builder.query
+       return !Builder.query
                 .table("users")
                 .select("*")
                 .where("username", username)
                 .where("password", password)
-                .build();
-        System.out.println(!Builder.getResultsIDs().isEmpty());
-        return !Builder.getResultsIDs().isEmpty();
+                .build().first().isEmpty();
     }
 }

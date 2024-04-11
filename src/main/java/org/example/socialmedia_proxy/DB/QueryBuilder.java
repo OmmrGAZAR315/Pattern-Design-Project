@@ -1,7 +1,7 @@
-package org.example.socialmedia_proxy.DB_CRUD;
+package org.example.socialmedia_proxy.DB;
 
-import org.example.socialmedia_proxy.DB_CRUD.Builder.Builder;
-import org.example.socialmedia_proxy.DB_CRUD.Builder.Query;
+import org.example.socialmedia_proxy.DB.Builder.Builder;
+import org.example.socialmedia_proxy.DB.Builder.Query;
 import org.example.socialmedia_proxy.QueryType;
 
 import java.sql.*;
@@ -30,13 +30,15 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder select(String... columns) {
-        String selectColumns;
         if (columns.length == 1) {
-            selectColumns = columns[0];
+            if (columns[0].equals("*"))
+                Query.selectAll = true;
+
+            Query.selectedColumns = columns[0];
         } else {
-            selectColumns = String.join(",", columns);
+            Query.selectedColumns = String.join(",", columns);
         }
-        Query.query = "SELECT " + selectColumns + " FROM " + Query.tableName;
+        Query.query = "SELECT " + Query.selectedColumns + " FROM " + Query.tableName;
         Query.queryType = QueryType.READ;
         return this;
     }
@@ -53,43 +55,34 @@ public class QueryBuilder implements Builder {
         return this;
     }
 
-    public QueryBuilder setSelect(Object column) {
-        if (!Query.isInsertColumnSet) {
+    public QueryBuilder setInsertColumn(String column) {
+        if (Query.isInsertColumnSet)
+            Query.query += ", " + column + " ";
+        else {
             Query.query += column;
             Query.isInsertColumnSet = true;
-        } else
-            Query.query += ", " + column + " ";
-
+        }
         return this;
     }
 
-    public QueryBuilder setInsertColumn(Object column) {
-        if (!Query.isInsertColumnSet) {
-            Query.query += column;
-            Query.isInsertColumnSet = true;
-        } else
-            Query.query += ", " + column + " ";
-
-        return this;
-    }
-
-    public QueryBuilder setInsertColumn() {
+    public QueryBuilder closeInsertColumn() {
         Query.query += ") VALUES ( ";
         return this;
     }
 
     public QueryBuilder setInsertParameter(Object parameter) {
-        if (!Query.isInsertParameterSet) {
+        if (Query.isInsertParameterSet)
+            Query.query += ", " + "?" + " ";
+        else {
             Query.query += "?";
             Query.isInsertParameterSet = true;
-        } else
-            Query.query += ", " + "?" + " ";
+        }
 
         Query.parameters.add(parameter);
         return this;
     }
 
-    public QueryBuilder setInsertParameter() {
+    public QueryBuilder closeInsertParameter() {
         Query.query += ")";
         return this;
     }
@@ -235,7 +228,7 @@ public class QueryBuilder implements Builder {
 //        }
 //    }
 
-    public void build() {
+    public Builder build() {
         System.out.println(Query.query);
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = DB.getDatabaseConnection().prepareStatement(Query.query, Statement.RETURN_GENERATED_KEYS)) {
@@ -248,26 +241,34 @@ public class QueryBuilder implements Builder {
             switch (Query.queryType) {
                 case READ:
                     resultSet = preparedStatement.executeQuery();
+                    List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
                     while (resultSet.next()) {
-                        System.out.println(resultSet.getString("id"));
-                        Query.importedData.put(
-                                "RResults_" + resultSet.getString("id"),
-                                new Object[]{
-                                        resultSet.getString("username"),
-                                        resultSet.getString("password")
-                                });
-
-                        Query.parameters.add(resultSet.getString("id"));
+                        Map<String, Object> row = new HashMap<>();
+                        if (Query.selectAll)
+                            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+                                row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
+                        else
+                            for (String column : Query.selectedColumns.split(","))
+                                row.put(column, resultSet.getObject(column));
+                        fetchedAllRows.add(row);
                     }
+                    Query.importedData.put("results", fetchedAllRows);
+
                     break;
                 case CUD:
                     preparedStatement.executeUpdate();
                     resultSet = preparedStatement.getGeneratedKeys();
-                    if (resultSet.next()) {
-                        Query.parameters.add(resultSet.getLong(1));
-                    }
+                    if (resultSet.next())
+                        Query.importedData.put("results",
+                                Collections.singletonList(
+                                        Map.of("id", resultSet.getInt(1)
+                                        )
+                                )
+                        );
+
                     break;
             }
+            return this;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -280,5 +281,25 @@ public class QueryBuilder implements Builder {
         }
     }
 
+    @Override
+    public Map<String, Object> first() {
+        if (Query.importedData.get("results").isEmpty())
+            return null;
+        return Query.importedData.get("results").get(0);
+    }
+
+    @Override
+    public Map<String, Object> last() {
+        if (Query.importedData.get("results").isEmpty())
+            return null;
+        return Query.importedData.get("results").get(Query.importedData.get("results").size() - 1);
+    }
+
+    @Override
+    public List<Map<String, Object>> all() {
+        if (Query.importedData.get("results").isEmpty())
+            return null;
+        return Query.importedData.get("results");
+    }
 
 }
