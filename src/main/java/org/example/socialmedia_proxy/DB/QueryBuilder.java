@@ -2,7 +2,6 @@ package org.example.socialmedia_proxy.DB;
 
 import org.example.socialmedia_proxy.DB.Builder.Builder;
 import org.example.socialmedia_proxy.DB.Builder.Query;
-import org.example.socialmedia_proxy.QueryType;
 
 import java.sql.*;
 import java.util.*;
@@ -231,7 +230,7 @@ public class QueryBuilder implements Builder {
     public Builder build() {
         System.out.println(Query.query);
         ResultSet resultSet = null;
-        try (PreparedStatement preparedStatement = DB.getDatabaseConnection().prepareStatement(Query.query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = DB.getConnection().prepareStatement(Query.query, Statement.RETURN_GENERATED_KEYS)) {
             if (!Query.parameters.isEmpty()) {
                 for (int i = 0; i < Query.parameters.size(); i++) {
                     preparedStatement.setObject(i + 1, Query.parameters.get(i));

@@ -1,6 +1,6 @@
 package org.example.socialmedia_proxy.DB.Builder;
 
-import org.example.socialmedia_proxy.QueryType;
+import org.example.socialmedia_proxy.DB.QueryType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

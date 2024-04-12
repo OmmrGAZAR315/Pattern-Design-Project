@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy;
+package org.example.socialmedia_proxy.DB;
 
 import java.io.FileInputStream;
 import java.io.IOException;

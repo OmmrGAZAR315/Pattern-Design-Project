@@ -5,9 +5,9 @@ import java.io.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import org.example.socialmedia_proxy.Cacheable;
+import org.example.socialmedia_proxy.Proxy.Cacheable;
 import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
-import org.example.socialmedia_proxy.UserProfileService;
+import org.example.socialmedia_proxy.Proxy.UserProfileService;
 
 @WebServlet("/userProfile")
 public class UserProfileServlet extends HttpServlet {

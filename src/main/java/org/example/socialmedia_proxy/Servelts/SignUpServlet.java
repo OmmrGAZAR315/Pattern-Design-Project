@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.socialmedia_proxy.DB.Builder.Builder;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
-import org.example.socialmedia_proxy.UserProfileService;
+import org.example.socialmedia_proxy.Proxy.UserProfileService;
 
 import java.io.IOException;
 

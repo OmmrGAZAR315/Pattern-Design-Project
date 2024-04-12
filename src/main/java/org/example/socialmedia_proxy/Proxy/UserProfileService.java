@@ -1,8 +1,6 @@
-package org.example.socialmedia_proxy;
+package org.example.socialmedia_proxy.Proxy;
 
 import org.example.socialmedia_proxy.Model.UserProfile;
-
-import java.util.Map;
 
 // UserProfileService.java
 public interface UserProfileService {

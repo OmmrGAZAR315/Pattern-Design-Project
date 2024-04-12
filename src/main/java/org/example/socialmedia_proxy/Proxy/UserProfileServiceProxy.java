@@ -1,8 +1,6 @@
 package org.example.socialmedia_proxy.Proxy;
 
-import org.example.socialmedia_proxy.Cacheable;
 import org.example.socialmedia_proxy.Model.UserProfile;
-import org.example.socialmedia_proxy.UserProfileService;
 
 import java.util.HashMap;
 import java.util.Map;

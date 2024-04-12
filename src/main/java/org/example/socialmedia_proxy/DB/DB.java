@@ -1,20 +1,19 @@
 package org.example.socialmedia_proxy.DB;
 
-import org.example.socialmedia_proxy.Database;
-import org.example.socialmedia_proxy.DatabaseSingleton;
-
 import java.sql.Connection;
+import java.sql.DriverManager;
 
-public class DB {
-    public static DatabaseSingleton databaseConnection;
+public abstract class DB {
+    private static Connection connection;
 
-    public DB(Database db) {
-        DatabaseSingleton.setDB(db);
-        databaseConnection = DatabaseSingleton.getInstance();
+    protected static void getDriverManager(String className, String url, String username, String password) throws Exception {
+        connection = DriverManager.getConnection("jdbc:" + url, username, password);
     }
 
-    public static Connection getDatabaseConnection() {
-        return databaseConnection.getConnection();
+    public static Connection getConnection() {
+        return connection;
     }
 
+    public abstract void setConnection(String db_connection, String host, String port, String database, String username, String password, String className) throws Exception;
 }
+
