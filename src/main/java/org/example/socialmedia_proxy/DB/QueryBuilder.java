@@ -260,8 +260,12 @@ public class QueryBuilder implements Builder {
                     break;
                 case CUD:
                     if (preparedStatement.executeUpdate() == 0)
-                        Query.importedData.put("errors", Collections.singletonList(
+                        Query.importedData.put("results", Collections.singletonList(
                                 Map.of("message", "No rows affected")
+                        ));
+                    else
+                        Query.importedData.put("results", Collections.singletonList(
+                                Map.of("message", "Success")
                         ));
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
@@ -271,7 +275,6 @@ public class QueryBuilder implements Builder {
                                         )
                                 )
                         );
-
                     break;
             }
             return this;
@@ -289,14 +292,8 @@ public class QueryBuilder implements Builder {
 
     @Override
     public Map<String, Object> first() {
-
-        if (!Query.importedData.get("errors").isEmpty())
-            return Query.importedData.get("errors").get(0);
-
-        if (!Query.importedData.get("results").isEmpty())
+        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
             return Query.importedData.get("results").get(0);
-
-
 
         return null;
     }
@@ -304,24 +301,17 @@ public class QueryBuilder implements Builder {
     @Override
     public Map<String, Object> last() {
 
-        if (!Query.importedData.get("errors").isEmpty())
-            return Query.importedData.get("errors").get(0);
-
-        if (!Query.importedData.get("results").isEmpty())
+        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
             return Query.importedData.get("results").get(Query.importedData.get("results").size() - 1);
-
 
         return null;
     }
 
     @Override
     public List<Map<String, Object>> all() {
-        if (!Query.importedData.get("errors").isEmpty())
-            return Query.importedData.get("errors");
 
-        if (!Query.importedData.get("results").isEmpty())
+        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
             return Query.importedData.get("results");
-
 
         return null;
     }

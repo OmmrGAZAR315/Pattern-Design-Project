@@ -13,16 +13,23 @@ import java.io.IOException;
 @WebServlet("/editUser")
 public class EditServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Builder.query
                 .table("users")
                 .update("username", "password", "name", "age")
                 .setUpdateParameter(request.getParameter("username"))
                 .setUpdateParameter(request.getParameter("password"))
                 .setUpdateParameter(request.getParameter("name"))
-                .setUpdateParameter(Integer.parseInt(request.getParameter("age")))
+                .setUpdateParameter(request.getParameter("age"))
                 .where("username", request.getParameter("username"))
                 .where("password", request.getParameter("password"))
                 .build();
+
+        if (Builder.query.first().get("message") == "success") {
+            response.sendRedirect("home.jsp");
+        } else {
+            response.setContentType("text/html");
+            response.getWriter().println("<html><body><h3>" + Builder.query.first().get("message") + "</h3></body></html>");
+        }
     }
 }
