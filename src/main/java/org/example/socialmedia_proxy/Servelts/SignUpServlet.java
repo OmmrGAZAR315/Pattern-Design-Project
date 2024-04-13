@@ -35,7 +35,8 @@ public class SignUpServlet extends HttpServlet {
                 .setInsertParameter(userProfile.getName())
                 .setInsertParameter(userProfile.getAge())
                 .build();
-        response.sendRedirect("index.jsp");
+        request.getSession().setAttribute("authenticated", true);
+        response.sendRedirect("home.jsp");
     }
 
     public void destroy() {
