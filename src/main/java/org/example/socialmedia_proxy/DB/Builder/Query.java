@@ -17,7 +17,7 @@ public class Query {
     public static boolean selectAll;
     public static String selectedColumns;
     public static String tableName;
-    //    static Map<String, String> values = new HashMap<>();
+        static Map<String, String> insertData = new HashMap<>();
 //    static Map<String, String> dataTypes = new HashMap<>();
     public static List<Object> parameters = new ArrayList<>();
     public static Map<String, List<Map<String, Object>>> importedData = new HashMap<>();

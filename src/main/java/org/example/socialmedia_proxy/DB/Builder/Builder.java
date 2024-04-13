@@ -20,17 +20,11 @@ public interface Builder {
 
     public Builder select(String... columns);
 
-    public Builder insert();
+    public Builder insert(String... columns);
 
     public Builder call(String procedureName);
 
-    public Builder setInsertColumn(String column);
-
-    public Builder closeInsertColumn();
-
     public Builder setInsertParameter(Object parameter);
-
-    public QueryBuilder closeInsertParameter();
 
     public Builder setCallParameter(String parameter);
 

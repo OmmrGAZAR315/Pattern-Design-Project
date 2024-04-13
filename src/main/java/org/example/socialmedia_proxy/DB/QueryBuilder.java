@@ -42,9 +42,20 @@ public class QueryBuilder implements Builder {
         return this;
     }
 
-    public QueryBuilder insert() {
+//    public QueryBuilder insert() {
+//        Query.query = "INSERT INTO " + Query.tableName;
+//        Query.query += "( ";
+//        Query.queryType = QueryType.CUD;
+//        return this;
+//    }
+
+    public QueryBuilder insert(String... columns) {
         Query.query = "INSERT INTO " + Query.tableName;
         Query.query += "( ";
+        Query.query += String.join(",", columns);
+        Query.query += ") VALUES ( ";
+        Query.parameters = new ArrayList<>();
+        Query.parameters.add(columns.length);
         Query.queryType = QueryType.CUD;
         return this;
     }
@@ -66,21 +77,6 @@ public class QueryBuilder implements Builder {
         return this;
     }
 
-    public QueryBuilder setInsertColumn(String column) {
-        if (Query.isInsertColumnSet)
-            Query.query += ", " + column + " ";
-        else {
-            Query.query += column;
-            Query.isInsertColumnSet = true;
-        }
-        return this;
-    }
-
-    public QueryBuilder closeInsertColumn() {
-        Query.query += ") VALUES ( ";
-        return this;
-    }
-
     public QueryBuilder setInsertParameter(Object parameter) {
         if (Query.isInsertParameterSet)
             Query.query += ", " + "?" + " ";
@@ -90,11 +86,12 @@ public class QueryBuilder implements Builder {
         }
 
         Query.parameters.add(parameter);
-        return this;
-    }
-
-    public QueryBuilder closeInsertParameter() {
-        Query.query += ")";
+        int numberOfColumns = (int) Query.parameters.get(0);
+        // if the number of columns is equal to the number of parameters
+        if (Query.parameters.size() - 1 == numberOfColumns) {
+            Query.query += ")";
+            Query.parameters.remove(0);
+        }
         return this;
     }
 

@@ -29,17 +29,11 @@ public class SignUpServlet extends HttpServlet {
         UserProfile userProfile = new UserProfile(username, password,name, age);
         Builder.query
                 .table("users")
-                .insert()
-                .setInsertColumn("username")
+                .insert("username","password","name","age")
                 .setInsertParameter(userProfile.getUsername())
-                .setInsertColumn("password")
                 .setInsertParameter(userProfile.getPassword())
-                .setInsertColumn("name")
                 .setInsertParameter(userProfile.getName())
-                .setInsertColumn("age")
                 .setInsertParameter(userProfile.getAge())
-                .closeInsertColumn()
-                .closeInsertParameter()
                 .build();
         response.sendRedirect("index.jsp");
     }
