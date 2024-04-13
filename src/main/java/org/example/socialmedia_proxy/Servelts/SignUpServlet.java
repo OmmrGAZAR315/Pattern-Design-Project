@@ -30,10 +30,10 @@ public class SignUpServlet extends HttpServlet {
         Builder.query
                 .table("users")
                 .insert("username","password","name","age")
-                .setInsertParameter(userProfile.getUsername())
-                .setInsertParameter(userProfile.getPassword())
-                .setInsertParameter(userProfile.getName())
-                .setInsertParameter(userProfile.getAge())
+                .setParameter(userProfile.getUsername())
+                .setParameter(userProfile.getPassword())
+                .setParameter(userProfile.getName())
+                .setParameter(userProfile.getAge())
                 .build();
         request.getSession().setAttribute("authenticated", true);
         response.sendRedirect("home.jsp");

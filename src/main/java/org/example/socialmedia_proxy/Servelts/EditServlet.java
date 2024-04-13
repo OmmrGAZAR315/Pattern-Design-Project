@@ -17,15 +17,15 @@ public class EditServlet extends HttpServlet {
         Builder.query
                 .table("users")
                 .update("username", "password", "name", "age")
-                .setUpdateParameter(request.getParameter("username"))
-                .setUpdateParameter(request.getParameter("password"))
-                .setUpdateParameter(request.getParameter("name"))
-                .setUpdateParameter(request.getParameter("age"))
+                .setParameter(request.getParameter("username"))
+                .setParameter(request.getParameter("password"))
+                .setParameter(request.getParameter("name"))
+                .setParameter(request.getParameter("age"))
                 .where("username", request.getParameter("username"))
                 .where("password", request.getParameter("password"))
                 .build();
 
-        if (Builder.query.first().get("message") == "success") {
+        if (Builder.query.first().get("message") == "Success") {
             response.sendRedirect("home.jsp");
         } else {
             response.setContentType("text/html");

@@ -21,19 +21,26 @@ public interface Builder {
     public Builder select(String... columns);
 
     public Builder insert(String... columns);
+
     public Builder update(String... columns);
+
     public Builder delete();
 
     public Builder call(String procedureName);
 
-    public Builder setInsertParameter(Object parameter);
-    public QueryBuilder setUpdateParameter(Object parameter);
+    public Builder setParameter(Object parameter);
+
+    public void setInsertParameter(Object parameter);
+
+    public void setUpdateParameter(Object parameter);
 
     public Builder setCallParameter(String parameter);
 
     public Builder where(String column, Object value);
 
-    public Builder where(String column, String operator, Object value);
+    public Builder orWhere(String column, Object value);
+
+    public Builder where(String column, String operator, Object value, String logicalOperator);
 
 
     public Builder whereIn(String column, String[] values);

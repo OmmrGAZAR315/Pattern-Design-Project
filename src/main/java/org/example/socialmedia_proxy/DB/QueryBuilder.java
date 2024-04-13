@@ -52,7 +52,7 @@ public class QueryBuilder implements Builder {
         Query.query += ") VALUES ( ";
 
         Query.parameters.add(columns.length);
-        Query.queryType = QueryType.CUD;
+        Query.queryType = QueryType.Create;
         return this;
     }
 
@@ -61,7 +61,7 @@ public class QueryBuilder implements Builder {
         Query.query += " SET ";
 
         Query.columns.addAll(Arrays.asList(columns));
-        Query.queryType = QueryType.CUD;
+        Query.queryType = QueryType.Update;
         return this;
     }
 
@@ -76,7 +76,17 @@ public class QueryBuilder implements Builder {
         return this;
     }
 
-    public QueryBuilder setInsertParameter(Object parameter) {
+    public QueryBuilder setParameter(Object parameter) {
+        if (Query.queryType == QueryType.Create)
+            setInsertParameter(parameter);
+
+        else if (Query.queryType == QueryType.Update)
+            setUpdateParameter(parameter);
+
+        return this;
+    }
+
+    public void setInsertParameter(Object parameter) {
         if (Query.isParameterSet)
             Query.query += ", " + "?" + " ";
         else {
@@ -91,10 +101,9 @@ public class QueryBuilder implements Builder {
             Query.query += ")";
             Query.parameters.remove(0);
         }
-        return this;
     }
 
-    public QueryBuilder setUpdateParameter(Object parameter) {
+    public void setUpdateParameter(Object parameter) {
         Query.query += Query.columns.get(0) + " = ?";
         Query.columns.remove(0);
         Query.parameters.add(parameter);
@@ -102,7 +111,6 @@ public class QueryBuilder implements Builder {
         if (!Query.columns.isEmpty())
             Query.query += ", ";
 
-        return this;
     }
 
     public QueryBuilder setCallParameter(String parameter) {
@@ -123,15 +131,19 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder where(String column, Object value) {
-        return where(column, "=", value);
+        return where(column, "=", value, "AND");
     }
 
-    public QueryBuilder where(String column, String operator, Object value) {
+    public QueryBuilder orWhere(String column, Object value) {
+        return where(column, "=", value, "OR");
+    }
+
+    public QueryBuilder where(String column, String operator, Object value, String logicalOperator) {
         if (!Query.isWhereSet) {
             Query.query += " WHERE ";
             Query.isWhereSet = true;
         } else
-            Query.query += " AND ";
+            Query.query += " " + logicalOperator + " ";
 
         Query.query += column + operator + " ? ";
 //        parameters.add(column);
@@ -259,6 +271,8 @@ public class QueryBuilder implements Builder {
 
                     break;
                 case CUD:
+                case Update:
+                case Create:
                     if (preparedStatement.executeUpdate() == 0)
                         Query.importedData.put("results", Collections.singletonList(
                                 Map.of("message", "No rows affected")
