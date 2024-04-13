@@ -24,44 +24,43 @@ public class QueryBuilder implements Builder {
     public QueryBuilder table(String tableName) {
         Query.tableName = "`" + tableName + "`";
         Query.resetBooleans();
+        Query.columns.clear();
         Query.parameters.clear();
         return this;
     }
 
     public QueryBuilder select(String... columns) {
+        String columnsSplitByComma;
         if (columns.length == 1) {
             if (columns[0].equals("*"))
                 Query.selectAll = true;
 
-            Query.selectedColumns = columns[0];
+            columnsSplitByComma = columns[0];
         } else {
-            Query.selectedColumns = String.join(",", columns);
+            columnsSplitByComma = String.join(",", columns);
         }
-        Query.query = "SELECT " + Query.selectedColumns + " FROM " + Query.tableName;
+        Query.query = "SELECT " + columnsSplitByComma + " FROM " + Query.tableName;
         Query.queryType = QueryType.READ;
+        Query.columns.addAll(Arrays.asList(columns));
         return this;
     }
-
-//    public QueryBuilder insert() {
-//        Query.query = "INSERT INTO " + Query.tableName;
-//        Query.query += "( ";
-//        Query.queryType = QueryType.CUD;
-//        return this;
-//    }
 
     public QueryBuilder insert(String... columns) {
         Query.query = "INSERT INTO " + Query.tableName;
         Query.query += "( ";
         Query.query += String.join(",", columns);
         Query.query += ") VALUES ( ";
-        Query.parameters = new ArrayList<>();
+
         Query.parameters.add(columns.length);
         Query.queryType = QueryType.CUD;
         return this;
     }
 
-    public QueryBuilder update() {
-        Query.query = "UPDATE " + Query.tableName + " SET ";
+    public QueryBuilder update(String... columns) {
+        Query.query = "UPDATE " + Query.tableName;
+        Query.query += " SET ";
+
+        Query.columns.addAll(Arrays.asList(columns));
         Query.queryType = QueryType.CUD;
         return this;
     }
@@ -78,11 +77,11 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder setInsertParameter(Object parameter) {
-        if (Query.isInsertParameterSet)
+        if (Query.isParameterSet)
             Query.query += ", " + "?" + " ";
         else {
             Query.query += "?";
-            Query.isInsertParameterSet = true;
+            Query.isParameterSet = true;
         }
 
         Query.parameters.add(parameter);
@@ -92,6 +91,17 @@ public class QueryBuilder implements Builder {
             Query.query += ")";
             Query.parameters.remove(0);
         }
+        return this;
+    }
+
+    public QueryBuilder setUpdateParameter(Object parameter) {
+        Query.query += Query.columns.get(0) + " = ?";
+        Query.columns.remove(0);
+        Query.parameters.add(parameter);
+
+        if (!Query.columns.isEmpty())
+            Query.query += ", ";
+
         return this;
     }
 
@@ -241,7 +251,7 @@ public class QueryBuilder implements Builder {
                             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
                                 row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
                         else
-                            for (String column : Query.selectedColumns.split(","))
+                            for (String column : Query.columns)
                                 row.put(column, resultSet.getObject(column));
                         fetchedAllRows.add(row);
                     }
@@ -249,7 +259,10 @@ public class QueryBuilder implements Builder {
 
                     break;
                 case CUD:
-                    System.out.println(preparedStatement.executeUpdate());
+                    if (preparedStatement.executeUpdate() == 0)
+                        Query.importedData.put("errors", Collections.singletonList(
+                                Map.of("message", "No rows affected")
+                        ));
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
                         Query.importedData.put("results",
@@ -265,7 +278,7 @@ public class QueryBuilder implements Builder {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            Query.resetBooleans();
+//            Query.resetBooleans();
             try {
                 if (resultSet != null) resultSet.close();
             } catch (Exception e) {
@@ -276,23 +289,41 @@ public class QueryBuilder implements Builder {
 
     @Override
     public Map<String, Object> first() {
-        if (Query.importedData.get("results").isEmpty())
-            return null;
-        return Query.importedData.get("results").get(0);
+
+        if (!Query.importedData.get("errors").isEmpty())
+            return Query.importedData.get("errors").get(0);
+
+        if (!Query.importedData.get("results").isEmpty())
+            return Query.importedData.get("results").get(0);
+
+
+
+        return null;
     }
 
     @Override
     public Map<String, Object> last() {
-        if (Query.importedData.get("results").isEmpty())
-            return null;
-        return Query.importedData.get("results").get(Query.importedData.get("results").size() - 1);
+
+        if (!Query.importedData.get("errors").isEmpty())
+            return Query.importedData.get("errors").get(0);
+
+        if (!Query.importedData.get("results").isEmpty())
+            return Query.importedData.get("results").get(Query.importedData.get("results").size() - 1);
+
+
+        return null;
     }
 
     @Override
     public List<Map<String, Object>> all() {
-        if (Query.importedData.get("results").isEmpty())
-            return null;
-        return Query.importedData.get("results");
+        if (!Query.importedData.get("errors").isEmpty())
+            return Query.importedData.get("errors");
+
+        if (!Query.importedData.get("results").isEmpty())
+            return Query.importedData.get("results");
+
+
+        return null;
     }
 
 }

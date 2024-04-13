@@ -16,8 +16,6 @@ public class UserProfile {
     }
 
     public UserProfile(Map<String, Object> userData) {
-        if (userData == null)
-            return;
         if (userData.get("username") == null)
             this.username = "null";
         else this.username = (String) userData.get("username");

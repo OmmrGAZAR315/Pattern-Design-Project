@@ -12,7 +12,7 @@ import org.example.socialmedia_proxy.Proxy.UserProfileService;
 
 import java.io.IOException;
 
-@WebServlet("/signupServlet")
+@WebServlet("/signup")
 public class SignUpServlet extends HttpServlet {
     private UserProfileService userProfileService;
 

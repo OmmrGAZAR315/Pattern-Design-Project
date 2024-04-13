@@ -21,10 +21,13 @@ public interface Builder {
     public Builder select(String... columns);
 
     public Builder insert(String... columns);
+    public Builder update(String... columns);
+    public Builder delete();
 
     public Builder call(String procedureName);
 
     public Builder setInsertParameter(Object parameter);
+    public QueryBuilder setUpdateParameter(Object parameter);
 
     public Builder setCallParameter(String parameter);
 

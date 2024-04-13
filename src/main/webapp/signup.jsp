@@ -42,7 +42,7 @@
 <body>
 <div class="container">
     <h2>Sign Up</h2>
-    <form action="signupServlet" id="signupForm" method="post" onsubmit="return validateForm()">
+    <form action="signup" id="signupForm" method="post" onsubmit="return validateForm()">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 
