@@ -24,17 +24,21 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        UserProfile userProfile = new UserProfile(username, password, 0);
-        System.out.println("username: " + userProfile.getUsername());
-        System.out.println("password: " + userProfile.getPassword());
+        String name = request.getParameter("name");
+        int age = Integer.parseInt(request.getParameter("age"));
+        UserProfile userProfile = new UserProfile(username, password,name, age);
         Builder.query
                 .table("users")
                 .insert()
                 .setInsertColumn("username")
                 .setInsertColumn("password")
+                .setInsertColumn("name")
+                .setInsertColumn("age")
                 .closeInsertColumn()
                 .setInsertParameter(userProfile.getUsername())
                 .setInsertParameter(userProfile.getPassword())
+                .setInsertParameter(userProfile.getName())
+                .setInsertParameter(userProfile.getAge())
                 .closeInsertParameter()
                 .build();
         response.sendRedirect("index.jsp");

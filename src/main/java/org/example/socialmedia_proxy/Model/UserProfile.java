@@ -8,9 +8,10 @@ public class UserProfile {
     private String name;
     private int age;
 
-    public UserProfile(String username, String password, int age) {
+    public UserProfile(String username, String password, String name, int age) {
         this.username = username;
         this.password = password;
+        this.name = name;
         this.age = age;
     }
 

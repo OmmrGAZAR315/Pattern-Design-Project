@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %>
 <%@ page import="java.util.Map" %>
-
+<jsp:include page="protectPage.jsp"/>
 
 <!DOCTYPE html>
 <html>
@@ -62,6 +62,7 @@
 <div class="right">
     <a href="user_ids.jsp">Add a User</a>
     <a href="index.jsp">Back to Home</a>
+    <a href="logout">Logout</a>
 </div>
 </body>
 </html>

@@ -24,7 +24,6 @@ public abstract class DB {
     public abstract void setConnection(String className, String db_connection, String host, String port, String database, String username, String password) throws Exception;
 
     static {
-        System.out.println("DB static block");
         try {
             EnvLoader.loadEnv();
 
