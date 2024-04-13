@@ -2,9 +2,9 @@
 <%
     HttpSession session2 = request.getSession(false);
     if (session2 == null || session2.getAttribute("authenticated") == null) {
-        response.sendRedirect("../webapp/login.jsp");
-    }
 %>
+<jsp:forward page="login.jsp"/>
+<% } %>
 <html>
 <head>
 </head>

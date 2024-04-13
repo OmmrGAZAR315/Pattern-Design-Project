@@ -49,6 +49,18 @@ public class QueryBuilder implements Builder {
         return this;
     }
 
+    public QueryBuilder update() {
+        Query.query = "UPDATE " + Query.tableName + " SET ";
+        Query.queryType = QueryType.CUD;
+        return this;
+    }
+
+    public QueryBuilder delete() {
+        Query.query = "DELETE FROM " + Query.tableName;
+        Query.queryType = QueryType.CUD;
+        return this;
+    }
+
     public QueryBuilder call(String procedureName) {
         Query.query = "{CALL " + procedureName;
         return this;
@@ -211,21 +223,6 @@ public class QueryBuilder implements Builder {
         return this;
     }
 
-//    public  void getMetaData(String tableName, String columnName, String value) throws SQLException {
-//
-//        DatabaseMetaData metaData = DB_CRUD.getDatabaseConnection().getMetaData();
-//        ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
-//        while (resultSet.next()) {
-//            if (Objects.equals(resultSet.getString("COLUMN_NAME"), columnName)) {
-//                System.out.println("Column Name: " + resultSet.getString("COLUMN_NAME"));
-//                System.out.println("Data Type: " + resultSet.getString("TYPE_NAME"));
-//
-//                dataTypes.put(resultSet.getString("COLUMN_NAME"), resultSet.getString("TYPE_NAME"));
-//                values.put(resultSet.getString("COLUMN_NAME"), value);
-//                break;
-//            }
-//        }
-//    }
 
     public Builder build() {
         System.out.println(Query.query);
@@ -255,7 +252,7 @@ public class QueryBuilder implements Builder {
 
                     break;
                 case CUD:
-                    preparedStatement.executeUpdate();
+                    System.out.println(preparedStatement.executeUpdate());
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
                         Query.importedData.put("results",

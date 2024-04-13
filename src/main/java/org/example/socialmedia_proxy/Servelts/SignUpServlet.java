@@ -31,14 +31,14 @@ public class SignUpServlet extends HttpServlet {
                 .table("users")
                 .insert()
                 .setInsertColumn("username")
-                .setInsertColumn("password")
-                .setInsertColumn("name")
-                .setInsertColumn("age")
-                .closeInsertColumn()
                 .setInsertParameter(userProfile.getUsername())
+                .setInsertColumn("password")
                 .setInsertParameter(userProfile.getPassword())
+                .setInsertColumn("name")
                 .setInsertParameter(userProfile.getName())
+                .setInsertColumn("age")
                 .setInsertParameter(userProfile.getAge())
+                .closeInsertColumn()
                 .closeInsertParameter()
                 .build();
         response.sendRedirect("index.jsp");
