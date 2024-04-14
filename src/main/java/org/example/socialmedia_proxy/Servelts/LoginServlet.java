@@ -6,15 +6,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.socialmedia_proxy.DB.Builder.Builder;
 import org.example.socialmedia_proxy.DB.Builder.Query;
+import org.example.socialmedia_proxy.DB.QueryBuilder;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.PasswordEncryption;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -50,7 +49,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean authenticate(String username, String password) throws Exception {
-        Map<String, Object> result = Builder.query
+        Map<String, Object> result = new QueryBuilder().getBuilder()
                 .table("users")
                 .select("*")
                 .where("username", username)

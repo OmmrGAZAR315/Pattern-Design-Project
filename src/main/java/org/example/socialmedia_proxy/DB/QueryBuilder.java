@@ -9,7 +9,8 @@ import java.util.*;
 public class QueryBuilder implements Builder {
     private static QueryBuilder instance;
 
-    public static QueryBuilder getQueryBuilder() {
+    @Override
+    public QueryBuilder getBuilder() {
         if (instance == null)
             instance = new QueryBuilder();
         return instance;

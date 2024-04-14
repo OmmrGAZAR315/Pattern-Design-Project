@@ -5,13 +5,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.socialmedia_proxy.DB.Builder.Builder;
+import org.example.socialmedia_proxy.DB.QueryBuilder;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
 import org.example.socialmedia_proxy.Proxy.UserProfileService;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @WebServlet("/signup")
 public class SignUpServlet extends HttpServlet {
@@ -33,7 +32,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Builder.query
+        new QueryBuilder().getBuilder()
                 .table("users")
                 .insert("username", "password", "name", "age", "secretKey")
                 .setParameter(userProfile.getUsername())

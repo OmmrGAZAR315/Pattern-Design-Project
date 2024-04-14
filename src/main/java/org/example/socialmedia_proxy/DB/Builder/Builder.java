@@ -1,12 +1,18 @@
 package org.example.socialmedia_proxy.DB.Builder;
 
-import org.example.socialmedia_proxy.DB.QueryBuilder;
+import org.example.socialmedia_proxy.DB.DatabaseConfig;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.socialmedia_proxy.DB.DatabaseConfig.DB_CLASS;
+import static org.example.socialmedia_proxy.DB.DatabaseConfig.DB_PLATFORM_CLASS;
+
 public interface Builder {
-    public Builder query = QueryBuilder.getQueryBuilder();
+    public Builder getBuilder();
 
     public static List<Object> getResultsIDs() {
         return Query.parameters;
