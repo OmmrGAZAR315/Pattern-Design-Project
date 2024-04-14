@@ -8,10 +8,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.socialmedia_proxy.DB.Builder.Builder;
 import org.example.socialmedia_proxy.DB.Builder.Query;
+import org.example.socialmedia_proxy.Model.UserProfile;
+import org.example.socialmedia_proxy.PasswordEncryption;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Objects;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -27,7 +32,7 @@ public class LoginServlet extends HttpServlet {
         boolean isAuthenticated;
         try {
             isAuthenticated = authenticate(username, password);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -44,13 +49,21 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private boolean authenticate(String username, String password) throws SQLException {
-        return Builder.query
+    private boolean authenticate(String username, String password) throws Exception {
+        Map<String, Object> result = Builder.query
                 .table("users")
                 .select("*")
                 .where("username", username)
-                .where("password", password)
+//                .where("password", password)
                 .build()
-                .first() != null;
+                .first();
+
+        if (result != null) {
+            UserProfile user = new UserProfile(result);
+            SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
+            return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));
+        } else {
+            return false;
+        }
     }
 }

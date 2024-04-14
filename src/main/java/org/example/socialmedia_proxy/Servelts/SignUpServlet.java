@@ -11,6 +11,7 @@ import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
 import org.example.socialmedia_proxy.Proxy.UserProfileService;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet("/signup")
 public class SignUpServlet extends HttpServlet {
@@ -26,14 +27,20 @@ public class SignUpServlet extends HttpServlet {
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         int age = Integer.parseInt(request.getParameter("age"));
-        UserProfile userProfile = new UserProfile(username, password,name, age);
+        UserProfile userProfile;
+        try {
+            userProfile = new UserProfile(username, password, name, age);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Builder.query
                 .table("users")
-                .insert("username","password","name","age")
+                .insert("username", "password", "name", "age", "secretKey")
                 .setParameter(userProfile.getUsername())
                 .setParameter(userProfile.getPassword())
                 .setParameter(userProfile.getName())
                 .setParameter(userProfile.getAge())
+                .setParameter(userProfile.getKey())
                 .build();
         request.getSession().setAttribute("authenticated", true);
         response.sendRedirect("home.jsp");
