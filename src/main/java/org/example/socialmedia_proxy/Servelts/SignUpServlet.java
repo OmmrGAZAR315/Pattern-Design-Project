@@ -11,6 +11,8 @@ import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
 import org.example.socialmedia_proxy.Proxy.UserProfileService;
 
 import java.io.IOException;
+import java.util.Map;
+
 
 @WebServlet("/signup")
 public class SignUpServlet extends HttpServlet {
@@ -32,7 +34,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        new QueryBuilder().getBuilder()
+        Map<String, Object> query = new QueryBuilder()
                 .table("users")
                 .insert("username", "password", "name", "age", "secretKey")
                 .setParameter(userProfile.getUsername())
@@ -40,7 +42,17 @@ public class SignUpServlet extends HttpServlet {
                 .setParameter(userProfile.getName())
                 .setParameter(userProfile.getAge())
                 .setParameter(userProfile.getKey())
-                .build();
+                .build()
+                .first();
+
+        query = new QueryBuilder()
+                .table("users")
+                .select("*")
+                .where("id", query.get("id"))
+                .build()
+                .first();
+
+        request.getSession().setAttribute("user", new UserProfile(query));
         request.getSession().setAttribute("authenticated", true);
         response.sendRedirect("home.jsp");
     }

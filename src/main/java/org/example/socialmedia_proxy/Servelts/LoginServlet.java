@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.socialmedia_proxy.DB.Builder.Query;
 import org.example.socialmedia_proxy.DB.QueryBuilder;
 import org.example.socialmedia_proxy.Model.UserProfile;
 import org.example.socialmedia_proxy.PasswordEncryption;
@@ -19,9 +18,10 @@ import java.util.Objects;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private UserProfile user;
+
     public void init() throws ServletException {
-        Query.resetBooleans();
-        Query.parameters.clear();
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -34,9 +34,11 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
         if (isAuthenticated) {
             HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+//            session.setAttribute("id", );
+//            session.setAttribute("key", );
             session.setAttribute("authenticated", true);
             response.sendRedirect("home.jsp");
         } else {
@@ -49,7 +51,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean authenticate(String username, String password) throws Exception {
-        Map<String, Object> result = new QueryBuilder().getBuilder()
+        Map<String, Object> result = new QueryBuilder()
                 .table("users")
                 .select("*")
                 .where("username", username)
@@ -58,7 +60,7 @@ public class LoginServlet extends HttpServlet {
                 .first();
 
         if (result != null) {
-            UserProfile user = new UserProfile(result);
+            user = new UserProfile(result);
             SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
             return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));
         } else {

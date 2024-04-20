@@ -7,19 +7,9 @@ import java.sql.*;
 import java.util.*;
 
 public class QueryBuilder implements Builder {
-    private static QueryBuilder instance;
-
-    @Override
-    public QueryBuilder getBuilder() {
-        if (instance == null)
-            instance = new QueryBuilder();
-        return instance;
-    }
-
     public QueryBuilder() {
         Query.isCallParameterSet = false;
         Query.isWhereSet = false;
-        instance = this;
     }
 
     public QueryBuilder table(String tableName) {

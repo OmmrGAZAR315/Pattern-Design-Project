@@ -11,7 +11,7 @@ import org.example.socialmedia_proxy.DB.QueryBuilder;
 public class DeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        new QueryBuilder().getBuilder()
+        new QueryBuilder()
                 .table("users")
                 .delete()
                 .where("username", request.getParameter("username"))

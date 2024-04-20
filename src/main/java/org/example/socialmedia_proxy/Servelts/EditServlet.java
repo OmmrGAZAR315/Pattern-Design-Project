@@ -14,7 +14,7 @@ import java.io.IOException;
 public class EditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        new QueryBuilder().getBuilder()
+        new QueryBuilder()
                 .table("users")
                 .update("username", "password", "name", "age")
                 .setParameter(request.getParameter("username"))
@@ -25,11 +25,11 @@ public class EditServlet extends HttpServlet {
                 .where("password", request.getParameter("password"))
                 .build();
 
-        if (new QueryBuilder().getBuilder().first().get("message") == "Success") {
+        if (new QueryBuilder().first().get("message") == "Success") {
             response.sendRedirect("home.jsp");
         } else {
             response.setContentType("text/html");
-            response.getWriter().println("<html><body><h3>" + new QueryBuilder().getBuilder().first().get("message") + "</h3></body></html>");
+            response.getWriter().println("<html><body><h3>" + new QueryBuilder().first().get("message") + "</h3></body></html>");
         }
     }
 }

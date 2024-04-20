@@ -12,8 +12,6 @@ import static org.example.socialmedia_proxy.DB.DatabaseConfig.DB_CLASS;
 import static org.example.socialmedia_proxy.DB.DatabaseConfig.DB_PLATFORM_CLASS;
 
 public interface Builder {
-    public Builder getBuilder();
-
     public static List<Object> getResultsIDs() {
         return Query.parameters;
     }

@@ -9,7 +9,7 @@ import java.util.Map;
 public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfile getUserProfile(int userId) {
-        Map<String, Object> userData = new QueryBuilder().getBuilder()
+        Map<String, Object> userData = new QueryBuilder()
                 .table("users")
                 .select("username", "password", "name", "age")
                 .where("id", userId)
