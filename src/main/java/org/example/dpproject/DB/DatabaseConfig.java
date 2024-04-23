@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy.DB;
+package org.example.dpproject.DB;
 
 public enum DatabaseConfig {
     DB_CLASS(System.getProperty("DB_CLASS")),

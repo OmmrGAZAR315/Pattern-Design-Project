@@ -1,14 +1,14 @@
-package org.example.socialmedia_proxy.Servelts;
+package org.example.dpproject.Servelts;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.socialmedia_proxy.DB.QueryBuilder;
-import org.example.socialmedia_proxy.Model.UserProfile;
-import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
-import org.example.socialmedia_proxy.Proxy.UserProfileService;
+import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.Model.UserProfile;
+import org.example.dpproject.Proxy.UserProfileService;
+import org.example.dpproject.Proxy.UserProfileServiceProxy;
 
 import java.io.IOException;
 import java.util.Map;

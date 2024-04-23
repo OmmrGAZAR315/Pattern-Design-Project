@@ -1,5 +1,6 @@
-package org.example.socialmedia_proxy.Proxy;
-import org.example.socialmedia_proxy.Model.UserProfile;
+package org.example.dpproject.Proxy;
+
+import org.example.dpproject.Model.UserProfile;
 
 import java.util.Map;
 public interface Cacheable {

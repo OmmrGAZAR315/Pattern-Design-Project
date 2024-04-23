@@ -1,7 +1,8 @@
-package org.example.socialmedia_proxy.DB;
+package org.example.dpproject.DB;
 
-import org.example.socialmedia_proxy.DB.Builder.Builder;
-import org.example.socialmedia_proxy.DB.Builder.Query;
+
+import org.example.dpproject.DB.Builder.Builder;
+import org.example.dpproject.DB.Builder.Query;
 
 import java.sql.*;
 import java.util.*;

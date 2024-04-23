@@ -1,8 +1,8 @@
-package org.example.socialmedia_proxy.Proxy;
+package org.example.dpproject.Proxy;
 
-import org.example.socialmedia_proxy.DB.Builder.Builder;
-import org.example.socialmedia_proxy.DB.QueryBuilder;
-import org.example.socialmedia_proxy.Model.UserProfile;
+
+import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.Model.UserProfile;
 
 import java.util.Map;
 

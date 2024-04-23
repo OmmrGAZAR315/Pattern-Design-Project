@@ -1,6 +1,7 @@
-package org.example.socialmedia_proxy.DB.DB_Platforms;
+package org.example.dpproject.DB.DB_Platforms;
 
-import org.example.socialmedia_proxy.DB.DB;
+
+import org.example.dpproject.DB.DB;
 
 public class MS_SQL_SERVER_DB extends DB {
     @Override

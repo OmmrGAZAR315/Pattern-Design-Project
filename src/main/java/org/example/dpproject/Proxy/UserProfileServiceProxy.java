@@ -1,6 +1,7 @@
-package org.example.socialmedia_proxy.Proxy;
+package org.example.dpproject.Proxy;
 
-import org.example.socialmedia_proxy.Model.UserProfile;
+
+import org.example.dpproject.Model.UserProfile;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,13 +1,13 @@
-package org.example.socialmedia_proxy.Servelts;
+package org.example.dpproject.Servelts;
 
 import java.io.*;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import org.example.socialmedia_proxy.Proxy.Cacheable;
-import org.example.socialmedia_proxy.Proxy.UserProfileServiceProxy;
-import org.example.socialmedia_proxy.Proxy.UserProfileService;
+import org.example.dpproject.Proxy.Cacheable;
+import org.example.dpproject.Proxy.UserProfileService;
+import org.example.dpproject.Proxy.UserProfileServiceProxy;
 
 @WebServlet("/userProfile")
 public class UserProfileServlet extends HttpServlet {

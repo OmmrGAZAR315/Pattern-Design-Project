@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy.DB;
+package org.example.dpproject.DB;
 
 public enum QueryType {
     CUD,

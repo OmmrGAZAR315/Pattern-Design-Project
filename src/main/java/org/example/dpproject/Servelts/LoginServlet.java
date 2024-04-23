@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy.Servelts;
+package org.example.dpproject.Servelts;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.socialmedia_proxy.DB.QueryBuilder;
-import org.example.socialmedia_proxy.Model.UserProfile;
+import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.Model.UserProfile;
 import org.example.socialmedia_proxy.PasswordEncryption;
 
 import javax.crypto.SecretKey;

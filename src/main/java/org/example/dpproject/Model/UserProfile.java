@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy.Model;
+package org.example.dpproject.Model;
 
 import org.example.socialmedia_proxy.PasswordEncryption;
 

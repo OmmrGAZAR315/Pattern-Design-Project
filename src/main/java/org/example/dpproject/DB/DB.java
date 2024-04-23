@@ -1,12 +1,12 @@
-package org.example.socialmedia_proxy.DB;
+package org.example.dpproject.DB;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Objects;
 
-import static org.example.socialmedia_proxy.DB.DatabaseConfig.*;
+import static org.example.dpproject.DB.DatabaseConfig.*;
+
 
 public abstract class DB {
     private static Connection connection;
