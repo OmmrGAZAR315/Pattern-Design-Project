@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QueryBuilder;
 import org.example.dpproject.Model.UserProfile;
-import org.example.socialmedia_proxy.PasswordEncryption;
+import org.example.dpproject.PasswordEncryption;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -37,8 +37,6 @@ public class LoginServlet extends HttpServlet {
         if (isAuthenticated) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-//            session.setAttribute("id", );
-//            session.setAttribute("key", );
             session.setAttribute("authenticated", true);
             response.sendRedirect("home.jsp");
         } else {
@@ -55,12 +53,17 @@ public class LoginServlet extends HttpServlet {
                 .table("users")
                 .select("*")
                 .where("username", username)
-//                .where("password", password)
                 .build()
                 .first();
 
         if (result != null) {
             user = new UserProfile(result);
+            String id =
+                    PasswordEncryption.encrypt(
+                            String.valueOf(result.get("id")),
+                            PasswordEncryption.reconstructKey(this.user.getKey())
+                    );
+            user.setId(id);
             SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
             return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));
         } else {

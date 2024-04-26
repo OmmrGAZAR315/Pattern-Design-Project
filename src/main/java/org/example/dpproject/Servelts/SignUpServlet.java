@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.DB.QueryBuilder;
 import org.example.dpproject.Model.UserProfile;
+import org.example.dpproject.PasswordEncryption;
 import org.example.dpproject.Proxy.UserProfileService;
 import org.example.dpproject.Proxy.UserProfileServiceProxy;
 
@@ -44,15 +45,24 @@ public class SignUpServlet extends HttpServlet {
                 .setParameter(userProfile.getKey())
                 .build()
                 .first();
-
+        int userId = (int) query.get("id");
         query = new QueryBuilder()
                 .table("users")
                 .select("*")
-                .where("id", query.get("id"))
+                .where("id", userId)
                 .build()
                 .first();
-
-        request.getSession().setAttribute("user", new UserProfile(query));
+        userProfile = new UserProfile(query);
+        try {
+            String id = PasswordEncryption.encrypt(
+                    String.valueOf(userId),
+                    PasswordEncryption.reconstructKey(userProfile.getKey())
+            );
+            userProfile.setId(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        request.getSession().setAttribute("user", userProfile);
         request.getSession().setAttribute("authenticated", true);
         response.sendRedirect("home.jsp");
     }

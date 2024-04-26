@@ -22,14 +22,14 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder select(String... columns) {
-        String columnsSplitByComma;
+        String columnsSplitByComma= "id, ";
         if (columns.length == 1) {
             if (columns[0].equals("*"))
                 Query.selectAll = true;
 
             columnsSplitByComma = columns[0];
         } else {
-            columnsSplitByComma = String.join(",", columns);
+            columnsSplitByComma += String.join(", ", columns);
         }
         Query.query = "SELECT " + columnsSplitByComma + " FROM " + Query.tableName;
         Query.queryType = QueryType.READ;
@@ -285,9 +285,8 @@ public class QueryBuilder implements Builder {
             }
             return this;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error executing query: \n" + e.getMessage());
         } finally {
-//            Query.resetBooleans();
             try {
                 if (resultSet != null) resultSet.close();
             } catch (Exception e) {

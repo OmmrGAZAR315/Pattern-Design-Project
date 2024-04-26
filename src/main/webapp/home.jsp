@@ -12,17 +12,26 @@
     if (user != null) {
         userProfile = (UserProfile) user;
     }
+    assert userProfile != null;
 %>
 <h1><%="Hell World, MR." + userProfile.getName()%>
+    <h3><%="ID: " + userProfile.getId()%>
     <h2><%="username: " + userProfile.getUsername()%>
     </h2>
     <h2 style="display: flex; align-items: center;">
+        <%if(request.getAttribute("shown_password")!=null){%>
+        <%= "password: " + request.getAttribute("shown_password") %>
+        <%}else{ %>
         <%= "password: " + userProfile.getPassword() %>
+
         <form action="showPassword" method="post" style="margin-left: 1%;">
-<%--            <input type="hidden" name="id" value="<%= request.getSession().getAttribute("id") %>"/>--%>
+            <input type="hidden" name="id" value="<%= userProfile.getId() %>"/>
+            <input type="hidden" name="key" value="<%=userProfile.getKeyToString() %>"/>
             <button type="submit">Show</button>
         </form>
+        <%}%>
     </h2>
+
 
     <br/>
     <a href="user_ids.jsp">Hello Servlet</a>

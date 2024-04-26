@@ -1,12 +1,15 @@
 package org.example.dpproject.Model;
 
-import org.example.socialmedia_proxy.PasswordEncryption;
+
+import org.example.dpproject.PasswordEncryption;
 
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Map;
 
 public class UserProfile {
+    private String id;
     private String username;
     private String password;
     private String name;
@@ -47,7 +50,6 @@ public class UserProfile {
             this.key = null;
         else
             this.key = (byte[]) userData.get("secretKey");
-
     }
 
     public void setPassword(String password) {
@@ -72,5 +74,17 @@ public class UserProfile {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getKeyToString() {
+       return Base64.getEncoder().encodeToString(key);
     }
 }

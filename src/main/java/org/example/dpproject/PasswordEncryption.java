@@ -1,4 +1,4 @@
-package org.example.socialmedia_proxy;
+package org.example.dpproject;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -29,5 +29,8 @@ public class PasswordEncryption {
     }
     public static SecretKey reconstructKey(byte[] keyBytes) {
         return new javax.crypto.spec.SecretKeySpec(keyBytes, "AES");
+    }
+    public static SecretKey reconstructKey(String keyParam) {
+        return reconstructKey(Base64.getDecoder().decode(keyParam));
     }
 }
