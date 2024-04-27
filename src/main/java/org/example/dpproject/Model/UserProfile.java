@@ -27,17 +27,17 @@ public class UserProfile {
 
     public UserProfile(Map<String, Object> userData) {
         if (userData.get("username") == null)
-            this.username = "null";
+            this.username = null;
         else
             this.username = (String) userData.get("username");
 
         if (userData.get("password") == null)
-            this.password = "null";
+            this.password = null;
         else
             this.password = (String) userData.get("password");
 
         if (userData.get("name") == null)
-            this.name = "null";
+            this.name = null;
         else
             this.name = (String) userData.get("name");
 

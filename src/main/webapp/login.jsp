@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-        /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
         }

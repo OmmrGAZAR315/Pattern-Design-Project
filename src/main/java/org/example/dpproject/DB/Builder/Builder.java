@@ -8,7 +8,7 @@ public interface Builder {
         return Query.parameters;
     }
 
-    public static Map<String, List<Map<String, Object>>> getImportedData() {
+    public static List<Map<String, Object>> getImportedData() {
         return Query.importedData;
     }
 
