@@ -36,7 +36,7 @@ public class AddPostServlet extends HttpServlet {
         QueryBuilder query = new QueryBuilder();
 
         query.table("posts").insert("title",
-                "content")
+                "content","id")
                 .setParameter(post.getTitle())
                 .setParameter(post.getContent()).
                 setParameter(post.getUserId()).
