@@ -8,9 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.socialmedia_proxy.DB.QueryBuilder;
 import org.example.socialmedia_proxy.Model.Post;
+import org.example.socialmedia_proxy.Model.UserProfile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet("/addPost")
@@ -20,9 +20,11 @@ public class AddPostServlet extends HttpServlet {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
         String userId = retrieveUserId(req);
+        Post post = new Post(title, content, userId);
 
-        Post post = new Post(title, content,userId);
         savePost(post);
+
+        resp.sendRedirect("home.jsp");
 
 
     }
@@ -33,29 +35,48 @@ public class AddPostServlet extends HttpServlet {
     }
 
     public void savePost(Post post) {
+
         QueryBuilder query = new QueryBuilder();
 
         query.table("posts").insert("title",
-                "content","id")
+                        "content", "id")
                 .setParameter(post.getTitle())
                 .setParameter(post.getContent()).
                 setParameter(post.getUserId()).
                 build();
-
-
-
     }
 
+
+
     private String retrieveUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false); // Retrieves the session without creating a new one if it doesn't exist
+        QueryBuilder query2 = new QueryBuilder();
+        HttpSession session = request.getSession(false); // Retrieve existing session
         if (session != null) {
-            Object userIdObject = session.getAttribute("id");
-            if (userIdObject != null && userIdObject instanceof Integer) {
-                return (String) userIdObject; // Casting the user ID to an integer and returning it
+            UserProfile user = (UserProfile) session.getAttribute("user");
+            if (user != null) {
+                String username = user.getUsername();
+                // Execute query to retrieve user's ID from the database
+                Map<String, Object> result = query2.table("users")
+                        .select("id")
+                        .where("username", username)
+                        .build()
+                        .first();
+
+                if (result != null && result.containsKey("id")) {
+                    // Retrieve user's ID from the result map and convert it to string
+                    String userId = String.valueOf(result.get("id"));
+                    return userId;
+                } else {
+                    // Handle case where user is not found in the database
+                    // You may want to log this event or return a default value
+                }
+            } else {
+                // Handle case where user object is not found in session
             }
+        } else {
+            // Handle case where session is not found
         }
-        // If user ID is not found in the session or is not an integer, return a default value or handle the situation as needed
-        return "Not Found"; // Placeholder value or handle the situation as needed
+        return null; // Return null if user's ID cannot be retrieved
     }
 
 }

@@ -20,9 +20,6 @@
     <label for="content">Content:</label><br>
     <textarea id="content" name="content"></textarea><br>
 
-    <!-- You may hide this field if the user is already logged in and you have their ID -->
-    <input type="hidden" id="userId" name="userId" value="1"><br>
-
     <button type="submit">Submit</button>
 </form>
 </body>
