@@ -28,6 +28,6 @@ public class ShowPostsServlet extends HttpServlet {
         List<Map<String , Object>> Posts= dao.fetchPosts();
         req.setAttribute("Posts", Posts);
         req.getRequestDispatcher("ShowPosts.jsp").forward(req, resp);
-
+        System.out.println("Why are u gae ?");
     }
 }
