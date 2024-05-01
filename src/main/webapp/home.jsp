@@ -1,34 +1,68 @@
-<%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@page import="org.example.socialmedia_proxy.Model.postDao" %>
+<%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Home Page</title>
+    <style>
+        /* Example CSS styles for the post container */
+        .post-container {
+            width: 80%;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .post {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-<% Object user = request.getSession().getAttribute("user");
+<%
+    // Fetch user profile from session
+    Object user = request.getSession().getAttribute("user");
     UserProfile userProfile = null;
     if (user != null) {
         userProfile = (UserProfile) user;
     }
-%>
-<h1><%="Hell World, MR." + userProfile.getName()%>
-    <h2><%="username: " + userProfile.getUsername()%>
-    </h2>
-    <h2 style="display: flex; align-items: center;">
-        <%= "password: " + userProfile.getPassword() %>
-        <form action="showPassword" method="post" style="margin-left: 1%;">
-<%--            <input type="hidden" name="id" value="<%= request.getSession().getAttribute("id") %>"/>--%>
-            <button type="submit">Show</button>
-        </form>
-    </h2>
 
-    <br/>
-    <a href="user_ids.jsp">Hello Servlet</a>
-    <a href="addPost">Add Post</a>
-    <a href="logout">Logout</a>
+    // Fetch posts from the database
+    postDao postsDao = new postDao();
+    List<Map<String, Object>> posts = postsDao.fetchPosts();
+%>
+
+<h1>Welcome to the Home Page, <%= userProfile.getName() %></h1>
+
+<h2>User Profile:</h2>
+<p>Username: <%= userProfile.getUsername() %></p>
+<p>Password: <%= userProfile.getPassword() %></p>
+
+<h2>Recent Posts:</h2>
+<div class="post-container">
+    <%
+        // Iterate over the list of posts
+        for (Map<String, Object> post : posts) {
+    %>
+    <div class="post">
+        <!-- Access post data using keys -->
+        <h3><%= post.get("title") %></h3>
+        <p><%= post.get("content") %></p>
+        <!-- Assuming other keys such as user_id, date, etc. -->
+        <!-- You can access them in a similar way -->
+    </div>
+    <% } %>
+</div>
+
+<br/>
+<a href="user_ids.jsp">Hello Servlet</a>
+<a href="addPost">Add Post</a>
+
+<a href="logout">Logout</a>
 
 </body>
 </html>
