@@ -14,7 +14,6 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
-import java.util.Objects;
 
 @WebServlet("/showPassword")
 public class ShowPassword extends HttpServlet {
@@ -23,11 +22,26 @@ public class ShowPassword extends HttpServlet {
         if (session == null || session.getAttribute("authenticated") == null)
             response.sendRedirect("login.jsp");
         else {
-           UserProfile userProfile = (UserProfile) request.getSession(false).getAttribute("user");
+            System.out.println("ShowPassword");
+            String id = request.getParameter("id");
+            String keyParam = request.getParameter("key");
+            SecretKey secretKey = PasswordEncryption.reconstructKey(keyParam);
+            int userId;
+            try {
+                userId = Integer.parseInt(PasswordEncryption.decrypt(id, secretKey));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            Map<String, Object> user = new QueryBuilder()
+                    .select("*")
+                    .where("id", userId)
+                    .build()
+                    .first();
+
+            UserProfile userProfile = new UserProfile(user);
+            System.out.println(userProfile);
             String password;
             try {
-                String keyParam = request.getParameter("key");
-            SecretKey secretKey = PasswordEncryption.reconstructKey(keyParam);
                 password = PasswordEncryption.decrypt(userProfile.getPassword(), secretKey);
             } catch (Exception e) {
                 throw new RuntimeException(e);

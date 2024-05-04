@@ -20,7 +20,7 @@ public class Query {
     public static String tableName;
     static Map<String, String> insertData = new HashMap<>();
     //    static Map<String, String> dataTypes = new HashMap<>();
-    public static List<Map<String, Object>> importedData = new ArrayList<>();
+    public static Map<String, List<Map<String, Object>>> importedData = new HashMap<>();
 
     public static void resetBooleans() {
         isCallParameterSet = false;

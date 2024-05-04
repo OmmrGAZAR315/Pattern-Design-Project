@@ -5,3 +5,10 @@
 %>
 <jsp:forward page="login.jsp"/>
 <% } %>
+<html>
+<head>
+</head>
+<body>
+<!-- Your content here -->
+</body>
+</html>

@@ -20,6 +20,10 @@ import java.util.Objects;
 public class LoginServlet extends HttpServlet {
     private UserProfile user;
 
+    public void init() throws ServletException {
+
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String username = request.getParameter("username");
@@ -54,14 +58,13 @@ public class LoginServlet extends HttpServlet {
 
         if (result != null) {
             user = new UserProfile(result);
-            SecretKey key = PasswordEncryption.reconstructKey(this.user.getKey());
             String id =
                     PasswordEncryption.encrypt(
                             String.valueOf(result.get("id")),
-                            key
+                            PasswordEncryption.reconstructKey(this.user.getKey())
                     );
             user.setId(id);
-            key = PasswordEncryption.reconstructKey(user.getKey());
+            SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
             return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));
         } else {
             return false;

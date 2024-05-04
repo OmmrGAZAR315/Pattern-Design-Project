@@ -22,7 +22,7 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder select(String... columns) {
-        String columnsSplitByComma = "id, ";
+        String columnsSplitByComma= "id, ";
         if (columns.length == 1) {
             if (columns[0].equals("*"))
                 Query.selectAll = true;
@@ -259,24 +259,26 @@ public class QueryBuilder implements Builder {
                                 row.put(column, resultSet.getObject(column));
                         fetchedAllRows.add(row);
                     }
-                    Query.importedData.addAll(fetchedAllRows);
+                    Query.importedData.put("results", fetchedAllRows);
 
                     break;
                 case CUD:
                 case Update:
                 case Create:
                     if (preparedStatement.executeUpdate() == 0)
-                        Query.importedData.add(
+                        Query.importedData.put("results", Collections.singletonList(
                                 Map.of("message", "No rows affected")
-                        );
+                        ));
                     else
-                        Query.importedData.add(
+                        Query.importedData.put("results", Collections.singletonList(
                                 Map.of("message", "Success")
-                        );
+                        ));
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
-                        Query.importedData.add(
-                                Map.of("id", resultSet.getInt(1)
+                        Query.importedData.put("results",
+                                Collections.singletonList(
+                                        Map.of("id", resultSet.getInt(1)
+                                        )
                                 )
                         );
                     break;
@@ -295,8 +297,8 @@ public class QueryBuilder implements Builder {
 
     @Override
     public Map<String, Object> first() {
-        if (Query.importedData != null && !Query.importedData.isEmpty())
-            return Query.importedData.get(0);
+        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
+            return Query.importedData.get("results").get(0);
 
         return null;
     }
@@ -304,8 +306,8 @@ public class QueryBuilder implements Builder {
     @Override
     public Map<String, Object> last() {
 
-        if (Query.importedData != null && !Query.importedData.isEmpty())
-            return Query.importedData.get(Query.importedData.size() - 1);
+        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
+            return Query.importedData.get("results").get(Query.importedData.get("results").size() - 1);
 
         return null;
     }
@@ -313,8 +315,8 @@ public class QueryBuilder implements Builder {
     @Override
     public List<Map<String, Object>> all() {
 
-        if (Query.importedData != null && !Query.importedData.isEmpty())
-            return Query.importedData;
+        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
+            return Query.importedData.get("results");
 
         return null;
     }

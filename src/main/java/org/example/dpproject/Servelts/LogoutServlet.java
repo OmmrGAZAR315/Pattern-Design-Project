@@ -14,7 +14,9 @@ import java.sql.SQLException;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Invalidate session to clear authentication state
         request.getSession().invalidate();
+        // Redirect to the login page
         response.sendRedirect("login.jsp");
     }
 }
