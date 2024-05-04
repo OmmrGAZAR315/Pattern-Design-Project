@@ -6,7 +6,9 @@ import java.util.Properties;
 
 public class EnvLoader {
     public static void loadEnv() {
-        try (FileInputStream fis = new FileInputStream("C:\\Users\\omara\\IdeaProjects\\DPProject\\.env")) {
+        String absolutePath = EnvLoader.class.getResource(".").getPath();
+
+        try (FileInputStream fis = new FileInputStream(absolutePath.substring(0, absolutePath.indexOf("/target/")) + "/.env")) {
             Properties properties = new Properties();
             properties.load(fis);
             for (String key : properties.stringPropertyNames()) {
