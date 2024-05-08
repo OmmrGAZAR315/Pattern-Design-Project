@@ -1,10 +1,12 @@
 package org.example.dpproject.app.Services;
 
 
+import org.example.dpproject.app.Http.Responses.HttpResponse;
 import org.example.dpproject.app.Repositories.UserRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserService {
     protected UserRepository userRepository;
@@ -13,13 +15,9 @@ public class UserService {
         this.userRepository = new UserRepository();
     }
 
-    public void deleteUser(int id) {
+    public boolean deleteUser(int id) {
         Map<String, Object> result = this.userRepository.deleteUser(id);
-        if (result.get("status_code") == HttpResonse.SUCCESS.getValue()) {
-            System.out.println("User not found");
-        } else {
-            System.out.println("User deleted");
-        }
+        return Objects.equals(result.get("status_code"), HttpResponse.OK.getCode());
 
     }
 }

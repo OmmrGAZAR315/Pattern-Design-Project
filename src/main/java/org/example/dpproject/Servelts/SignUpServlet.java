@@ -35,7 +35,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Map<String, Object> query = new QueryBuilder()
+        Map<String, Object> objectMap = new QueryBuilder()
                 .table("users")
                 .insert("username", "password", "name", "age", "secretKey")
                 .setParameter(userProfile.getUsername())
@@ -45,23 +45,15 @@ public class SignUpServlet extends HttpServlet {
                 .setParameter(userProfile.getKey())
                 .build()
                 .first();
-        int userId = (int) query.get("id");
-        query = new QueryBuilder()
+        int userId = (int) objectMap.get("id");
+        objectMap = new QueryBuilder()
                 .table("users")
                 .select("*")
                 .where("id", userId)
                 .build()
                 .first();
-        userProfile = new UserProfile(query);
-        try {
-            String id = PasswordEncryption.encrypt(
-                    String.valueOf(userId),
-                    PasswordEncryption.reconstructKey(userProfile.getKey())
-            );
-            userProfile.setId(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        userProfile = new UserProfile(objectMap);
+        userProfile.setId(userId);
         request.getSession().setAttribute("user", userProfile);
         request.getSession().setAttribute("authenticated", true);
         response.sendRedirect("home.jsp");

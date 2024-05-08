@@ -6,12 +6,15 @@ import java.util.Base64;
 import java.util.Map;
 
 public class UserProfile {
-    private String id;
+    private int id;
     private String username;
     private String password;
     private String name;
     private int age;
     private byte[] key;
+
+    public UserProfile() {
+    }
 
     public UserProfile(String username, String password, String name, int age) throws Exception {
         this.username = username;
@@ -73,15 +76,15 @@ public class UserProfile {
         return password;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     public String getKeyToString() {
-       return Base64.getEncoder().encodeToString(key);
+        return Base64.getEncoder().encodeToString(key);
     }
 }

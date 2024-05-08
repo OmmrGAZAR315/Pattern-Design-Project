@@ -58,11 +58,7 @@ public class LoginServlet extends HttpServlet {
 
         if (result != null) {
             user = new UserProfile(result);
-            String id =
-                    PasswordEncryption.encrypt(
-                            String.valueOf(result.get("id")),
-                            PasswordEncryption.reconstructKey(this.user.getKey())
-                    );
+            int id = (int) result.get("id");
             user.setId(id);
             SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
             return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));

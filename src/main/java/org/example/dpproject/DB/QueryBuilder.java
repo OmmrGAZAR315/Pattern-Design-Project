@@ -3,6 +3,7 @@ package org.example.dpproject.DB;
 
 import org.example.dpproject.DB.Builder.Builder;
 import org.example.dpproject.DB.Builder.Query;
+import org.example.dpproject.app.Http.Responses.HttpResponse;
 
 import java.sql.*;
 import java.util.*;
@@ -267,13 +268,15 @@ public class QueryBuilder implements Builder {
                 case Update:
                 case Create:
                     if (preparedStatement.executeUpdate() == 0)
-                        Query.importedData.put("results", Collections.singletonList(
-                                Map.of("message", "No rows affected")
+                        Query.importedData.put("messages", Collections.singletonList(
+                                Map.of("message", HttpResponse.BAD_REQUEST.getMessage() + " No rows affected",
+                                        "status_code", HttpResponse.BAD_REQUEST.getCode()
+                                )
                         ));
                     else
-                        Query.importedData.put("results", Collections.singletonList(
-                                Map.of("message", "Success",
-                                        "status_code", 200
+                        Query.importedData.put("messages", Collections.singletonList(
+                                Map.of("message", HttpResponse.OK.getMessage(),
+                                        "status_code", HttpResponse.OK.getCode()
                                 )
                         ));
                     resultSet = preparedStatement.getGeneratedKeys();
@@ -288,7 +291,11 @@ public class QueryBuilder implements Builder {
             }
             return this;
         } catch (SQLException e) {
-            throw new RuntimeException("Error executing query: \n" + e.getMessage());
+            Query.importedData.put("messages", Collections.singletonList(
+                    Map.of("message", "Error executing query: \n" + e.getMessage(),
+                            "status_code", 500
+                    )
+            ));
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -296,6 +303,7 @@ public class QueryBuilder implements Builder {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
     @Override
@@ -324,4 +332,8 @@ public class QueryBuilder implements Builder {
         return null;
     }
 
+    @Override
+    public Map<String, Object> getMessages() {
+        return Query.importedData.get("messages").get(0);
+    }
 }

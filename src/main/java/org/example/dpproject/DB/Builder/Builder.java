@@ -65,5 +65,6 @@ public interface Builder {
     public Map<String, Object> last();
 
     public List<Map<String, Object>> all();
+    public Map<String, Object> getMessages();
 
 }
