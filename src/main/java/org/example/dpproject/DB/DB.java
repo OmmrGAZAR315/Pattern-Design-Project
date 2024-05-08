@@ -27,7 +27,7 @@ public abstract class DB {
         try {
             EnvLoader.loadEnv();
 
-            Class<?> clazz = Class.forName(DB_PLATFORM_CLASS.getValue());
+            Class<?> clazz = Class.forName("org.example.dpproject.DB.DB_Platforms."+DB_PLATFORM_CLASS.getValue());
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             Object instance = constructor.newInstance();
             Method method = clazz.getMethod(
