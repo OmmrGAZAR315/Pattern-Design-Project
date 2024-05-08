@@ -1,33 +1,37 @@
 package org.example.socialmedia_proxy.Servelts;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.example.socialmedia_proxy.Model.UserDataDao;
 
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import org.example.socialmedia_proxy.Model.postDao;
 
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
-@WebServlet ("/home")
-public class ShowPostsServlet extends HttpServlet {
+@WebServlet ("/userprofile")
+public class UserpostsServlet extends HttpServlet {
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UserDataDao usr = new UserDataDao();
         postDao dao = new postDao();
+        String userId = usr.retrieveUserId(req);
+        List<Map<String, Object>> posts = dao.fetchPostsOfUser(userId);
+        req.setAttribute("posts", posts);
+        req.getRequestDispatcher("/userprofile.jsp").forward(req, resp);
 
-        List<Map<String , Object>> Posts= dao.fetchPosts();
-        req.setAttribute("Posts", Posts);
-        req.getRequestDispatcher("ShowPosts.jsp").forward(req, resp);
-        System.out.println("Why are u gae ?");
+
     }
+
+
+
+
+
 }

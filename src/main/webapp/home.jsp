@@ -8,6 +8,7 @@
 <html>
 <head>
     <title>Home Page</title>
+
     <style>
         /* Example CSS styles for the post container */
         .post-container {
@@ -23,6 +24,11 @@
     </style>
 </head>
 <body>
+
+<a href="userprofile">UserProfile</a>
+
+
+
 <%
     // Fetch user profile from session
     Object user = request.getSession().getAttribute("user");
@@ -34,13 +40,13 @@
     // Fetch posts from the database
     postDao postsDao = new postDao();
     List<Map<String, Object>> posts = postsDao.fetchPosts();
+
+
 %>
 
 <h1>Welcome to the Home Page, <%= userProfile.getName() %></h1>
 
-<h2>User Profile:</h2>
-<p>Username: <%= userProfile.getUsername() %></p>
-<p>Password: <%= userProfile.getPassword() %></p>
+
 
 <h2>Recent Posts:</h2>
 <div class="post-container">
@@ -52,6 +58,8 @@
         <!-- Access post data using keys -->
         <h3><%= post.get("title") %></h3>
         <p><%= post.get("content") %></p>
+
+
         <!-- Assuming other keys such as user_id, date, etc. -->
         <!-- You can access them in a similar way -->
     </div>
@@ -59,7 +67,7 @@
 </div>
 
 <br/>
-<a href="user_ids.jsp">Hello Servlet</a>
+
 <a href="addPost">Add Post</a>
 
 <a href="logout">Logout</a>
