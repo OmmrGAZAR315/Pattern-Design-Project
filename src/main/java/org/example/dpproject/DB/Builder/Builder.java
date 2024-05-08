@@ -33,6 +33,7 @@ public interface Builder {
     public Builder setCallParameter(String parameter);
 
     public Builder where(String column, Object value);
+    public Builder whereId(Object value);
 
     public Builder orWhere(String column, Object value);
 

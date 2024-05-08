@@ -1,10 +1,7 @@
-package org.example.dpproject.Model;
+package org.example.dpproject.app.Model;
 
-
-import org.example.dpproject.PasswordEncryption;
 
 import javax.crypto.SecretKey;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Map;
 

@@ -5,9 +5,9 @@ import java.io.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import org.example.dpproject.Proxy.Cacheable;
-import org.example.dpproject.Proxy.UserProfileService;
-import org.example.dpproject.Proxy.UserProfileServiceProxy;
+import org.example.dpproject.app.Proxy.Cacheable;
+import org.example.dpproject.app.Proxy.UserProfileService;
+import org.example.dpproject.app.Proxy.UserProfileServiceProxy;
 
 @WebServlet("/userProfile")
 public class UserProfileServlet extends HttpServlet {

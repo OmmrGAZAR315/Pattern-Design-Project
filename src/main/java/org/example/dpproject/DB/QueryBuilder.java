@@ -22,7 +22,7 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder select(String... columns) {
-        String columnsSplitByComma= "id, ";
+        String columnsSplitByComma = "id, ";
         if (columns.length == 1) {
             if (columns[0].equals("*"))
                 Query.selectAll = true;
@@ -130,6 +130,10 @@ public class QueryBuilder implements Builder {
         return where(column, "=", value, "OR");
     }
 
+    public QueryBuilder whereId(Object value) {
+        return where("id", "=", value, "AND");
+    }
+
     public QueryBuilder where(String column, String operator, Object value, String logicalOperator) {
         if (!Query.isWhereSet) {
             Query.query += " WHERE ";
@@ -138,12 +142,9 @@ public class QueryBuilder implements Builder {
             Query.query += " " + logicalOperator + " ";
 
         Query.query += column + operator + " ? ";
-//        parameters.add(column);
-//        parameters.add(operator);
         Query.parameters.add(value);
         return this;
     }
-
 
     public QueryBuilder whereIn(String column, String[] values) {
         if (!Query.isWhereSet) {
@@ -271,7 +272,9 @@ public class QueryBuilder implements Builder {
                         ));
                     else
                         Query.importedData.put("results", Collections.singletonList(
-                                Map.of("message", "Success")
+                                Map.of("message", "Success",
+                                        "status_code", 200
+                                )
                         ));
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())

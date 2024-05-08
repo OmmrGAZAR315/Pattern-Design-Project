@@ -1,4 +1,4 @@
-<%@ page import="org.example.dpproject.Model.UserProfile" %>
+<%@ page import="org.example.dpproject.app.Model.UserProfile" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>

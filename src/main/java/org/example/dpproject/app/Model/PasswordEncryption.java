@@ -1,4 +1,4 @@
-package org.example.dpproject;
+package org.example.dpproject.app.Model;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

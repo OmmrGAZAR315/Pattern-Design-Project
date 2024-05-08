@@ -1,7 +1,7 @@
-package org.example.dpproject.Proxy;
+package org.example.dpproject.app.Proxy;
 
 
-import org.example.dpproject.Model.UserProfile;
+import org.example.dpproject.app.Model.UserProfile;
 
 import java.util.HashMap;
 import java.util.Map;

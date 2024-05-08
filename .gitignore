@@ -12,3 +12,4 @@ target/
 *.iws
 *.iml
 *.ipr
+hot-seconds.xml
