@@ -20,7 +20,7 @@ public class postDao  {
 
             Posts = q.
                     table("posts").
-                    select("title", "content", "id").
+                    select("title", "content", "id","postId").
                     build().
                     all();
           return Posts;

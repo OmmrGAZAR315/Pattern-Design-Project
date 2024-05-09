@@ -5,42 +5,32 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.socialmedia_proxy.Model.Post;
-import org.example.socialmedia_proxy.Model.UserDataDao;
-
-import org.example.socialmedia_proxy.Model.postDao;
+import org.example.socialmedia_proxy.Model.*;
 
 import java.io.IOException;
 
+@WebServlet ("/addcomment")
+public class AddCommentsServlet extends HttpServlet {
 
-@WebServlet("/addPost")
-public class AddPostServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
+
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDataDao usr = new UserDataDao();
-        postDao pstdao = new postDao();
-        String title = req.getParameter("title");
+        commentDao com = new commentDao();
+        String postid = req.getParameter("postid");
         String content = req.getParameter("content");
         String userId = usr.retrieveUserId(req);
-        Post post = new Post(title, content, userId);
-        pstdao.savePost(post);
+        comment c = new comment(content,userId,postid);
+        com.addCommentToDatabase(c);
         resp.sendRedirect("home.jsp");
 
-
     }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect("AddPost.jsp");
-    }
-
-
-
-
-
-
-
 }

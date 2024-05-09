@@ -2,6 +2,7 @@
 <%@ page import="java.util.Map" %>
 <%@page import="org.example.socialmedia_proxy.Model.postDao" %>
 <%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %>
+<%@ page import="org.example.socialmedia_proxy.Model.commentDao" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>
@@ -41,34 +42,57 @@
     postDao postsDao = new postDao();
     List<Map<String, Object>> posts = postsDao.fetchPosts();
 
+    commentDao commentsDao = new commentDao();
 
 %>
 
 <h1>Welcome to the Home Page, <%= userProfile.getName() %></h1>
-
+<a href="addPost">Add Post</a>
 
 
 <h2>Recent Posts:</h2>
 <div class="post-container">
     <%
-        // Iterate over the list of posts
-        for (Map<String, Object> post : posts) {
+    for (Map<String, Object> post : posts) {
     %>
-    <div class="post">
-        <!-- Access post data using keys -->
-        <h3><%= post.get("title") %></h3>
-        <p><%= post.get("content") %></p>
+
+    <div class="post-container">
+        <div class="post">
+            <h3><%= post.get("title") %></h3>
+            <p><%= post.get("content") %></p>
 
 
-        <!-- Assuming other keys such as user_id, date, etc. -->
-        <!-- You can access them in a similar way -->
+            <%
+                String postId = String.valueOf(post.get("postId"));
+                List<Map<String, Object>> postComments = commentsDao.FetchCommentsForPost(postId);
+            %>
+            <% if (postComments != null && !postComments.isEmpty()) { %>
+            <h4>Comments:</h4>
+            <ul>
+                <% for (Map<String, Object> comment : postComments) { %>
+                <li><%= comment.get("text") %> </li>
+                <% } %>
+            </ul>
+
+            <% } else { %>
+            <p>No comments yet.</p>
+            <% } %>
+
+            <!-- Add a form to allow users to add comments -->
+            <form action="addcomment" method="post">
+                <input type="hidden" name="postid" value="<%= postId %>">
+                <label for="comment">Add Comment:</label><br>
+                <textarea id="comment" name="content" rows="2" cols="50"></textarea><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     </div>
-    <% } %>
-</div>
 
-<br/>
+        <% } %>
 
-<a href="addPost">Add Post</a>
+    <br/>
+
+
 
 <a href="logout">Logout</a>
 

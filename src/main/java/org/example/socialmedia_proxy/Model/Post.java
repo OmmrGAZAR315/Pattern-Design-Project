@@ -1,6 +1,8 @@
 package org.example.socialmedia_proxy.Model;
 
+import javax.xml.stream.events.Comment;
 import java.util.Date;
+import java.util.List;
 
 public class Post {
 
@@ -12,6 +14,8 @@ public class Post {
     private int groupid;
 
 
+
+
     public Post(String title, String content, String userID) {
 
         this.title = title;
@@ -20,6 +24,8 @@ public class Post {
         this.groupid = groupid;
 
     }
+
+
 
     public int getPostId() {
         return postId;
