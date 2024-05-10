@@ -1,4 +1,4 @@
-package org.example.dpproject.app.Model;
+package org.example.dpproject.app.Models;
 
 
 import javax.crypto.SecretKey;

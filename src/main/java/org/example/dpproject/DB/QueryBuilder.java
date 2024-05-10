@@ -273,12 +273,25 @@ public class QueryBuilder implements Builder {
                                         "status_code", HttpResponse.BAD_REQUEST.getCode()
                                 )
                         ));
-                    else
+                    else {
+                        HttpResponse successResponse;
+                        switch (Query.queryType) {
+                            case Update:
+                                successResponse = HttpResponse.OK;
+                                break;
+                            case Create:
+                                successResponse = HttpResponse.CREATED;
+                                break;
+                            default:
+                                successResponse = HttpResponse.NO_CONTENT;
+                                break;
+                        }
                         Query.importedData.put("messages", Collections.singletonList(
-                                Map.of("message", HttpResponse.OK.getMessage(),
-                                        "status_code", HttpResponse.OK.getCode()
+                                Map.of("message", successResponse.getMessage(),
+                                        "status_code", successResponse.getCode()
                                 )
                         ));
+                    }
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
                         Query.importedData.put("results",
@@ -303,7 +316,7 @@ public class QueryBuilder implements Builder {
                 e.printStackTrace();
             }
         }
-        return null;
+        return this;
     }
 
     @Override

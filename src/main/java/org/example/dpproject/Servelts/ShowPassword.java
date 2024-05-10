@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Model.UserProfile;
-import org.example.dpproject.app.Model.PasswordEncryption;
+import org.example.dpproject.app.Models.UserProfile;
+import org.example.dpproject.app.Models.PasswordEncryption;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;

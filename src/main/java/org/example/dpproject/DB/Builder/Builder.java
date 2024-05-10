@@ -4,13 +4,6 @@ import java.util.Map;
 
 
 public interface Builder {
-    public static List<Object> getResultsIDs() {
-        return Query.parameters;
-    }
-
-    public static Map<String, List<Map<String, Object>>> getImportedData() {
-        return Query.importedData;
-    }
 
     public Builder table(String tableName);
 

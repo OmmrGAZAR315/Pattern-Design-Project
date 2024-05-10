@@ -1,5 +1,7 @@
 package org.example.dpproject.DB;
 
+import org.example.dpproject.app.Models.AbsolutePath;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -26,8 +28,10 @@ public abstract class DB {
     static {
         try {
             EnvLoader.loadEnv();
-
-            Class<?> clazz = Class.forName("org.example.dpproject.DB.DB_Platforms."+DB_PLATFORM_CLASS.getValue());
+            String absolutePath = AbsolutePath.getPath(DB.class);
+            // Get the last part of the path, which is the name of the project
+             absolutePath = absolutePath.substring(absolutePath.lastIndexOf("/")+1);
+            Class<?> clazz = Class.forName("org.example."+absolutePath.toLowerCase() + ".DB.DB_Platforms." + DB_PLATFORM_CLASS.getValue());
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             Object instance = constructor.newInstance();
             Method method = clazz.getMethod(

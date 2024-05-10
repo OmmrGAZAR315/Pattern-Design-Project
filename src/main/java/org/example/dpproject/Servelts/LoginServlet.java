@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Model.UserProfile;
-import org.example.dpproject.app.Model.PasswordEncryption;
+import org.example.dpproject.app.Models.UserProfile;
+import org.example.dpproject.app.Models.PasswordEncryption;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -61,6 +61,7 @@ public class LoginServlet extends HttpServlet {
             int id = (int) result.get("id");
             user.setId(id);
             SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
+            System.out.println(password +" "+ key);
             return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));
         } else {
             return false;

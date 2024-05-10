@@ -2,7 +2,7 @@ package org.example.dpproject.app.Http.Requests.User;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dpproject.app.Model.UserProfile;
+import org.example.dpproject.app.Models.UserProfile;
 
 public class UserRequest_DELETE extends UserRequest {
     public static UserProfile validate(HttpServletRequest request, HttpServletResponse response) {

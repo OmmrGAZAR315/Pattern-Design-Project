@@ -5,13 +5,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dpproject.DB.Builder.Builder;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Model.UserProfile;
-import org.example.dpproject.app.Model.PasswordEncryption;
+import org.example.dpproject.app.Http.Responses.HttpResponse;
+import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Proxy.UserProfileService;
 import org.example.dpproject.app.Proxy.UserProfileServiceProxy;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -35,7 +37,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Map<String, Object> objectMap = new QueryBuilder()
+        Builder result = new QueryBuilder()
                 .table("users")
                 .insert("username", "password", "name", "age", "secretKey")
                 .setParameter(userProfile.getUsername())
@@ -43,8 +45,10 @@ public class SignUpServlet extends HttpServlet {
                 .setParameter(userProfile.getName())
                 .setParameter(userProfile.getAge())
                 .setParameter(userProfile.getKey())
-                .build()
-                .first();
+                .build();
+        if ((int) result.getMessages().get("status_code") == HttpResponse.CREATED.getCode()) {
+        }
+        Map<String, Object> objectMap = result.first();
         int userId = (int) objectMap.get("id");
         objectMap = new QueryBuilder()
                 .table("users")

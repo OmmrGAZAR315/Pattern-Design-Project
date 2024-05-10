@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.app.Http.Requests.User.UserRequest_DELETE;
-import org.example.dpproject.app.Model.UserProfile;
+import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
