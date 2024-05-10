@@ -84,6 +84,22 @@ public class UserProfile {
         this.id = id;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setKey(byte[] key) {
+        this.key = key;
+    }
+
     public String getKeyToString() {
         return Base64.getEncoder().encodeToString(key);
     }
