@@ -10,12 +10,9 @@ import java.io.IOException;
 public class UserRequest_DELETE extends UserRequest {
     public static UserProfile validate(HttpServletRequest request, HttpServletResponse response) {
         int id = checkID(request, response);
-        String name = checkName(request, response);
 
         String errorCollection = "";
         errorCollection  +=  ReturnCheck(id, "ID");
-        errorCollection  +=  ReturnCheck(name, "Name");
-System.out.println(errorCollection);
         if (!errorCollection.isEmpty()) {
             request.setAttribute("error", errorCollection);
             try {
@@ -28,7 +25,6 @@ System.out.println(errorCollection);
 
         UserProfile userProfile = new UserProfile();
         userProfile.setId(id);
-        userProfile.setUsername(name);
         return userProfile;
     }
 }
