@@ -5,7 +5,6 @@ target/
 .env
 mvnw.cmd
 pom.xml
-
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
