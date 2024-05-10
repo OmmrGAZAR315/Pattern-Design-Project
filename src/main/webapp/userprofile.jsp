@@ -1,15 +1,8 @@
-<%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %><%--
-  Created by IntelliJ IDEA.
-  User: pc
-  Date: 5/7/2024
-  Time: 10:23 PM
-  To change this template use File | Settings | File Templates.
---%>
 <jsp:include page="protectPage.jsp"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.example.dpproject.app.Models.UserProfile" %>
 <html>
 <head>
     <title>UserProfile</title>
@@ -22,9 +15,6 @@
     if (user != null) {
         userProfile = (UserProfile) user;
     }
-
-
-
 
 %>
 

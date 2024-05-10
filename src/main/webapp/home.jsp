@@ -1,8 +1,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@page import="org.example.socialmedia_proxy.Model.postDao" %>
-<%@ page import="org.example.socialmedia_proxy.Model.UserProfile" %>
-<%@ page import="org.example.socialmedia_proxy.Model.commentDao" %>
+<%@page import="org.example.dpproject.app.Models.postDao" %>
+
+<%@ page import="org.example.dpproject.app.Models.commentDao" %>
+<%@ page import="org.example.dpproject.app.Models.UserProfile" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>
