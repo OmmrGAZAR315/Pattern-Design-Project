@@ -32,7 +32,7 @@
 
         <input type="submit" value="Login">
     </form>
-<%--    <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>--%>
+ <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>
     </div>
 </main>
 </body>
