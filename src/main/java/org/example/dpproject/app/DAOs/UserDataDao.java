@@ -1,8 +1,9 @@
-package org.example.dpproject.app.Models;
+package org.example.dpproject.app.DAOs;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.app.Models.UserProfile;
 
 
 import java.util.Map;

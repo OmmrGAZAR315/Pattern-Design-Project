@@ -1,18 +1,20 @@
-package org.example.dpproject.app.Http.Requests.User;
+package org.example.dpproject.app.Http.Requests.UserRequest;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Models.UserProfile;
 
 import java.io.IOException;
 
-public class UserRequest_DELETE extends UserRequest {
-    public static UserProfile validate(HttpServletRequest request, HttpServletResponse response) {
+public class UserRequests extends Requests {
+    static String errorCollection = "";
+
+    public static UserDto validate_delete_request(HttpServletRequest request, HttpServletResponse response) {
         int id = checkID(request, response);
 
-        String errorCollection = "";
-        errorCollection  +=  ReturnCheck(id, "ID");
+        errorCollection += ReturnChecker(id, "ID");
         if (!errorCollection.isEmpty()) {
             request.setAttribute("error", errorCollection);
             try {
@@ -20,11 +22,11 @@ public class UserRequest_DELETE extends UserRequest {
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
+            errorCollection = "";
             return null;
         }
 
-        UserProfile userProfile = new UserProfile();
-        userProfile.setId(id);
-        return userProfile;
+        return new UserDto()
+                .setId(id);
     }
 }

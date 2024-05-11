@@ -1,7 +1,8 @@
-package org.example.dpproject.app.Models;
+package org.example.dpproject.app.DAOs;
 
 
 import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.app.Models.Post;
 
 import java.util.ArrayList;
 import java.util.List;

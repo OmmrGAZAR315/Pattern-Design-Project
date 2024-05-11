@@ -1,10 +1,10 @@
-package org.example.dpproject.app.Http.Requests.User;
+package org.example.dpproject.app.Http.Requests.UserRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-public abstract class UserRequest {
+public abstract class Requests {
     public static int checkID(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         if (id != null &&
@@ -15,7 +15,7 @@ public abstract class UserRequest {
         } else
             return -1;
     }
-    public static String ReturnCheck(Object ob, String errorMessage) {
+    public static String ReturnChecker(Object ob, String errorMessage) {
         if (ob.equals(-1)|| ob.equals("-1")) {
             return "Invalid " + errorMessage + "\n";
         }

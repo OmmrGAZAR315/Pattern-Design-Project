@@ -5,7 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dpproject.app.Http.Requests.User.UserRequest_DELETE;
+
+import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.Http.Requests.UserRequest.UserRequests;
 import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Services.UserService;
 
@@ -23,12 +25,12 @@ public class DeleteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        UserProfile userProfile = UserRequest_DELETE.validate(request, response);
+        UserDto userDto = UserRequests.validate_delete_request(request, response);
 
-        if (userProfile == null) {
+        if (userDto == null) {
             response.sendRedirect("error.jsp");
         } else {
-            if (this.service.deleteUser(userProfile.getId())) {
+            if (this.service.deleteUser(userDto.getId())) {
                 response.sendRedirect("success.jsp");
             } else {
                 response.sendRedirect("error.jsp");

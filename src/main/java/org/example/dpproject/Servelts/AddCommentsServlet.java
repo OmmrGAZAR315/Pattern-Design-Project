@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dpproject.app.Models.UserDataDao;
+import org.example.dpproject.app.DAOs.UserDataDao;
 import org.example.dpproject.app.Models.comment;
 import org.example.dpproject.app.Models.commentDao;
 
