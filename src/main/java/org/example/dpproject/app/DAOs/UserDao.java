@@ -8,9 +8,7 @@ import org.example.dpproject.app.Models.UserProfile;
 
 import java.util.Map;
 
-public class UserDataDao {
-
-
+public class UserDao {
 
     public String retrieveUserId(HttpServletRequest request) {
 

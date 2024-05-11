@@ -1,25 +1,42 @@
 package org.example.dpproject.app.Http.Requests.UserRequest;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+
 
 public abstract class Requests {
-    public static int checkID(HttpServletRequest request, HttpServletResponse response) {
-        String id = request.getParameter("id");
-        if (id != null &&
-                id.matches("^[0-9]*$") &&
-                0 < Integer.parseInt(id)) {
+    static String errorCollection = "";
 
-            return Integer.parseInt(id);
-        } else
-            return -1;
-    }
-    public static String ReturnChecker(Object ob, String errorMessage) {
-        if (ob.equals(-1)|| ob.equals("-1")) {
-            return "Invalid " + errorMessage + "\n";
+    public static boolean checkID(String id) {
+        try {
+            return 0 < Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            return false;
         }
-        return "";
+    }
 
+    public static String validation(boolean ob, String obName) {
+        if (!ob)
+            return "Invalid " + obName + "\n";
+        else
+            return "";
+
+    }
+
+    public static boolean isValidated(HttpServletRequest request, HttpServletResponse response) {
+        if (!errorCollection.isEmpty()) {
+            request.setAttribute("error", errorCollection);
+            try {
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+            errorCollection = "";
+            return false;
+        }
+        return true;
     }
 }
