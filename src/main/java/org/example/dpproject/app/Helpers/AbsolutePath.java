@@ -1,4 +1,4 @@
-package org.example.dpproject.app.Models;
+package org.example.dpproject.app.Helpers;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;

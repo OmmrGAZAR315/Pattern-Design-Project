@@ -1,11 +1,7 @@
-package org.example.dpproject.DB;
-
-import org.example.dpproject.app.Models.AbsolutePath;
+package org.example.dpproject.app.Helpers;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class EnvLoader {
