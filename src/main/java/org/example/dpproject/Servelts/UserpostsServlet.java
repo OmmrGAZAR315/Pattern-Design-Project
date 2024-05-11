@@ -5,10 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dpproject.app.Models.UserDataDao;
+import org.example.dpproject.app.DAOs.UserDao;
 
 
-import org.example.dpproject.app.Models.postDao;
+import org.example.dpproject.app.DAOs.postDao;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +20,7 @@ public class UserpostsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDataDao usr = new UserDataDao();
+        UserDao usr = new UserDao();
         postDao dao = new postDao();
         String userId = usr.retrieveUserId(req);
         List<Map<String, Object>> posts = dao.fetchPostsOfUser(userId);
