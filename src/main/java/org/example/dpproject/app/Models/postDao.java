@@ -2,6 +2,7 @@ package org.example.dpproject.app.Models;
 
 
 import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.app.Observer.PostObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class postDao  {
 
     QueryBuilder q = new QueryBuilder();
     List<Map<String,Object>> Posts = new ArrayList<>();
+    private List<PostObserver> observers = new ArrayList<>();
 
 
     public List<Map<String, Object>> fetchPosts ()
@@ -44,11 +46,10 @@ public class postDao  {
 
     public void savePost(Post post) {
 
-        QueryBuilder query = new QueryBuilder();
 
-        query.table("posts").insert("title",
+
+        q.table("posts").insert("title",
                         "content","id")
-
                 .setParameter(post.getTitle())
                 .setParameter(post.getContent()).
                 setParameter(post.getUserId()).
@@ -58,16 +59,20 @@ public class postDao  {
     }
 
 
+    public void notifyObservers() {
+        for (PostObserver observer : observers) {
+            observer.updateMessage();
+        }
 
+    }
 
+    public void addObserver(PostObserver observer) {
+        observers.add(observer);
+    }
 
-
-
-
-
-
-
-
+    public void removeObserver(PostObserver observer) {
+        observers.remove(observer);
+    }
 
 
 }
