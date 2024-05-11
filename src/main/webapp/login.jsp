@@ -3,51 +3,37 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], input[type="password"], input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="CSS\normalization.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="CSS\fonts.css">
+    <!-- Font Awesome Library -->
+    <link rel="stylesheet" href="CSS\all.min.css">
+    <!-- Main template CSS file -->
+    <link rel="stylesheet" href="CSS\main.css">
+    <link rel="stylesheet" href="CSS\Form.css">
 </head>
 <body>
-<div class="container">
-    <h2>Login</h2>
+<header>
+    <h1>Forum</h1>
+    <ul>
+        <li><a href="home.jsp">Home</a></li>
+        <li><a href="signup.jsp">Sign Up</a></li>
+    </ul>
+</header>
+<main class="center-flex">
+    <h1 aria-label="Login"></h1>
+    <div class="container center-flex form-div">
+        <p>Login</p>
     <form action="login" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input placeholder="Userame" type="text" id="username" name="username" required>
+        <input placeholder="Password" type="password" id="password" name="password" required>
 
         <input type="submit" value="Login">
     </form>
-    <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>
-</div>
+<%--    <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>--%>
+    </div>
+</main>
 </body>
 </html>

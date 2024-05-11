@@ -1,0 +1,142 @@
+/* Variables Start */
+:root {
+    --main-color: #5698C8;
+}
+/* Variables End */
+
+/* --------------*/
+
+/* Global Rules Start */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html{
+    scroll-behavior: smooth;
+}
+body{
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--main-color);
+}
+main{
+    min-height: 100vh;
+}
+ul {
+    list-style: none;
+}
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+@media (min-width: 380px){
+    .container{
+        width: 350px;
+    }
+}
+@media (min-width: 559px){
+    .container{
+        width: 550px;
+    }
+}
+@media (min-width: 759px){
+    .container{
+        width: 750px;
+    }
+}
+@media (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+.center-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Global Rules End*/
+
+/* ------------ */
+
+/* Components Start */
+/* Components End */
+
+/* ------------ */
+
+/* Important for Accessibility. */
+h1[aria-label] {
+    display: none;
+}
+
+/* ------------ */
+
+/* Header Beginning */
+header{
+    background-color: rgb(35, 37, 74);
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+header>h1{
+    all: unset;
+    order: 2;
+    flex: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+header ul{
+    display: flex;
+    order: 1;
+    margin-left: 10px;
+}
+header ul li{
+    margin-right: 10px;
+}
+header ul li a{
+    all: unset;
+    cursor: pointer;
+}
+header ul li:hover{
+    color: #2485F7;
+}
+
+/* Header Ending */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Done الحمد لله  */
