@@ -1,6 +1,5 @@
 package org.example.dpproject.Servelts;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,9 +7,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Requests.UserRequest.UserRequest;
+import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet("/deleteUser")
 public class DeleteServlet extends HttpServlet {
@@ -28,11 +29,8 @@ public class DeleteServlet extends HttpServlet {
         if (userDto == null) {
             response.sendRedirect("error.jsp");
         } else {
-            if (this.service.deleteUser(userDto)) {
-                response.sendRedirect("success.jsp");
-            } else {
-                response.sendRedirect("error.jsp");
-            }
+            Map<String, Object> queryResult = this.service.deleteUser(userDto);
+            UserResponse.dispatch(request, response, queryResult, "delete");
         }
     }
 }

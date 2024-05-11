@@ -269,7 +269,7 @@ public class QueryBuilder implements Builder {
                 case Create:
                     if (preparedStatement.executeUpdate() == 0)
                         Query.importedData.put("messages", Collections.singletonList(
-                                Map.of("message", HttpResponse.BAD_REQUEST.getMessage() + " No rows affected",
+                                Map.of("message", HttpResponse.BAD_REQUEST.getMessage(),
                                         "status_code", HttpResponse.BAD_REQUEST.getCode()
                                 )
                         ));

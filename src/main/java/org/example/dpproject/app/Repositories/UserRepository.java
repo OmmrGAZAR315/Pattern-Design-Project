@@ -26,6 +26,7 @@ public class UserRepository {
     }
 
     public Map<String, Object> updateUser(UserDto dto) {
+        // Get the columns from the dto
         String[] columns = new String[dto.toMap().size()];
         List<String> columnsList = new ArrayList<>(dto.toMap().keySet());
         columns = columnsList.toArray(columns);

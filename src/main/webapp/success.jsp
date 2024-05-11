@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Success</h1>
-<p>Your user profile has been successfully deleted.</p>
+<p>Your user profile has been successfully <%=request.getAttribute("action")%>.</p>
 <p>Thank you for using our service.</p>
 </body>
 </html>
