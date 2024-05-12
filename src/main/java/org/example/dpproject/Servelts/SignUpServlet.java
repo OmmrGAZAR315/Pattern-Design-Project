@@ -7,13 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.DB.Builder.Builder;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Http.Responses.HttpResponse;
+import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Proxy.UserProfileService;
 import org.example.dpproject.app.Proxy.UserProfileServiceProxy;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 
