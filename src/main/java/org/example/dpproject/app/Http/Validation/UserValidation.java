@@ -1,4 +1,4 @@
-package org.example.dpproject.app.Http.Requests;
+package org.example.dpproject.app.Http.Validation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
