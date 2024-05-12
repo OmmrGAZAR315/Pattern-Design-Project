@@ -31,17 +31,17 @@ public class AddPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDao usr = new UserDao();
-        postDao pstdao = new postDao();
+        postDao pstDao = new postDao();
         String title = req.getParameter("title");
         String content = req.getParameter("content");
         String userId = usr.retrieveUserId(req);
         Post post = new Post(title, content, userId);
-        pstdao.savePost(post);
+        pstDao.savePost(post);
 
         //Observer code by yours Truly medo
-        PostObserver postwatcher= new PostWatcher(pstdao);
-        pstdao.addObserver(postwatcher);
-        pstdao.notifyObservers();
+        PostObserver postwatcher= new PostWatcher(pstDao);
+        pstDao.addObserver(postwatcher);
+        pstDao.notifyObservers();
 
         resp.sendRedirect("home.jsp");
 
