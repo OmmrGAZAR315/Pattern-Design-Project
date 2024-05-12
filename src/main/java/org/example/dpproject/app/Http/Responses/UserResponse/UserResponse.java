@@ -2,7 +2,7 @@ package org.example.dpproject.app.Http.Responses.UserResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dpproject.app.Http.Responses.HttpResponse;
+import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.Responses.Responses;
 
 import java.util.Map;

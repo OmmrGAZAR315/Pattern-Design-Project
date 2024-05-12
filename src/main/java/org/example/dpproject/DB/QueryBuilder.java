@@ -3,7 +3,7 @@ package org.example.dpproject.DB;
 
 import org.example.dpproject.DB.Builder.Builder;
 import org.example.dpproject.DB.Builder.Query;
-import org.example.dpproject.app.Http.Responses.HttpResponse;
+import org.example.dpproject.app.Helpers.HttpResponse;
 
 import java.sql.*;
 import java.util.*;
