@@ -3,6 +3,7 @@ package org.example.dpproject.app.Http.Validation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.app.Helpers.ParametersType;
+import org.example.dpproject.app.Helpers.RegexPattern;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 
 public class UserValidation extends Validation {
@@ -29,12 +30,12 @@ public class UserValidation extends Validation {
         ParametersType password = ParametersType.optional;
         ParametersType age = ParametersType.optional;
 
-        requestErrors(id, userDto.isIdPassed(), "ID", userDto.getId(), "[1-9]\\d*");
-        requestErrors(name, userDto.isNamePassed(), "Name", userDto.getName(), "[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*");
-        requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(), "[a-zA-Z0-9_]{4,16}");
+        requestErrors(id, userDto.isIdPassed(), "ID", userDto.getId(), RegexPattern.ID.getPattern());
+        requestErrors(name, userDto.isNamePassed(), "Name", userDto.getName(), RegexPattern.NAME.getPattern());
+        requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(), RegexPattern.USERNAME.getPattern());
         requestErrors(password, userDto.isPasswordPassed(), "Password", userDto.getPassword(),
-                "(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}");
-        requestErrors(age, userDto.isAgePassed(), "Age", userDto.getAge(), "(?:[1-9][0-9]?|1[01][0-9]|120)");
+                RegexPattern.PASSWORD.getPattern());
+        requestErrors(age, userDto.isAgePassed(), "Age", userDto.getAge(), RegexPattern.AGE.getPattern());
 
         if (userDto.isNotPassedMinimumParameters(minimumPassedParameters))
             errorCollection += "must at least pass " + minimumPassedParameters + " parameters";

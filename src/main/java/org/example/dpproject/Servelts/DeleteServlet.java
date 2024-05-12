@@ -28,9 +28,10 @@ public class DeleteServlet extends HttpServlet {
         UserDto userDto = UserValidation.validate_delete_request(request, response);
         if (userDto == null) {
             response.sendRedirect("error.jsp");
-        } else {
-            Map<String, Object> queryResult = this.service.deleteUser(userDto);
-            UserResponse.dispatch(request, response, queryResult, "delete");
+            return;
         }
+        Map<String, Object> queryResult = this.service.deleteUser(userDto);
+        UserResponse.dispatch(request, response, queryResult, "delete");
+
     }
 }

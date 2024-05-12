@@ -30,7 +30,7 @@ public abstract class Validation {
 
 
     public static boolean parameterValidation_with_RegexPattern(String str, String regexPattern) {
-        return str.matches("^" + regexPattern + "+$");
+        return str.matches(regexPattern);
     }
 
     public static boolean isValidated(HttpServletRequest request, HttpServletResponse response) {

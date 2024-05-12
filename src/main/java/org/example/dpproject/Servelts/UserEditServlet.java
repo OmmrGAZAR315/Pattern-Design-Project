@@ -26,10 +26,11 @@ public class UserEditServlet extends HttpServlet {
         UserDto userDto = UserValidation.validate_edit_request(request, response);
         if (userDto == null) {
             response.sendRedirect("error.jsp");
-        } else {
-            Map<String, Object> queryResult = this.service.updateUser(userDto);
-            UserResponse.dispatch(request, response, queryResult, "edit");
-
+            return;
         }
+        Map<String, Object> queryResult = this.service.updateUser(userDto);
+        UserResponse.dispatch(request, response, queryResult, "edit");
+
+
     }
 }
