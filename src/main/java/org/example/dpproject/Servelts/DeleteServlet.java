@@ -24,7 +24,7 @@ public class DeleteServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserDto userDto = UserValidation.validate_delete_request(request, response);
         if (userDto == null) {
             response.sendRedirect("error.jsp");
