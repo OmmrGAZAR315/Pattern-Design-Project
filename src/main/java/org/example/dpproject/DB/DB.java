@@ -33,6 +33,7 @@ public abstract class DB {
             // Get the last part of the path, which is the name of the project
              absolutePath = absolutePath.substring(absolutePath.lastIndexOf("/")+1);
             Class<?> clazz = Class.forName("org.example."+absolutePath.toLowerCase() + ".DB.DB_Platforms." + DB_PLATFORM_CLASS.getValue());
+
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             Object instance = constructor.newInstance();
             Method method = clazz.getMethod(
