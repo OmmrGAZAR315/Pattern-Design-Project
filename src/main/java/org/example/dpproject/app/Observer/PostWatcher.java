@@ -1,6 +1,6 @@
 package org.example.dpproject.app.Observer;
 
-import org.example.dpproject.app.Models.postDao;
+import org.example.dpproject.app.DAOs.postDao;
 
 public class PostWatcher implements PostObserver{
 

@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dpproject.app.Models.UserDataDao;
+import org.example.dpproject.app.DAOs.UserDao;
 import org.example.dpproject.app.Models.comment;
 import org.example.dpproject.app.Models.commentDao;
 
@@ -25,7 +25,7 @@ public class AddCommentsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDataDao usr = new UserDataDao();
+        UserDao usr = new UserDao();
         commentDao com = new commentDao();
         String postid = req.getParameter("postid");
         String content = req.getParameter("content");

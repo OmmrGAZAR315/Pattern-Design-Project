@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@page import="org.example.dpproject.app.Models.postDao" %>
+<%@page import="org.example.dpproject.app.DAOs.postDao" %>
 
 <%@ page import="org.example.dpproject.app.Models.commentDao" %>
 <%@ page import="org.example.dpproject.app.Models.UserProfile" %>

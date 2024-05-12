@@ -1,10 +1,14 @@
 package org.example.dpproject.app.Services;
 
 
+import org.example.dpproject.app.DAOs.UserDao;
+import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Responses.HttpResponse;
+import org.example.dpproject.app.Models.PasswordEncryption;
+import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Repositories.UserRepository;
 
-import java.util.List;
+import javax.crypto.SecretKey;
 import java.util.Map;
 import java.util.Objects;
 
@@ -12,12 +16,28 @@ public class UserService {
     protected UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = new UserRepository();
+        this.userRepository = new UserRepository("users");
     }
 
-    public boolean deleteUser(int id) {
-        Map<String, Object> result = this.userRepository.deleteUser(id);
-        return Objects.equals(result.get("status_code"), HttpResponse.OK.getCode());
+    public Map<String, Object> deleteUser(UserDto dto) {
+        return this.userRepository.deleteUser(dto);
 
+    }
+
+    public Map<String, Object> updateUser(UserDto dto) {
+        Map<String, Object> user = this.userRepository.getUserById(dto.getId());
+        if (user == null) {
+            return Map.of("error", "User not found");
+        }
+        if (dto.getPassword() != null) {
+            UserProfile userProfile = new UserProfile(user);
+            SecretKey key = PasswordEncryption.reconstructKey(userProfile.getKey());
+            try {
+                dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
+            } catch (Exception e) {
+                return Map.of("error", "Error encrypting password");
+            }
+        }
+        return this.userRepository.updateUser(dto);
     }
 }

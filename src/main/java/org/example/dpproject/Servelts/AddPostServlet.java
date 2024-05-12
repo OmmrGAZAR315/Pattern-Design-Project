@@ -6,11 +6,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.app.Models.Post;
-import org.example.dpproject.app.Models.UserDataDao;
+import org.example.dpproject.app.DAOs.UserDao;
 
-import org.example.dpproject.app.Models.postDao;
+
+import org.example.dpproject.app.DAOs.postDao;
 import org.example.dpproject.app.Observer.PostObserver;
 import org.example.dpproject.app.Observer.PostWatcher;
+
+import org.example.dpproject.app.DAOs.postDao;
 
 import java.io.IOException;
 
@@ -27,7 +30,7 @@ public class AddPostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDataDao usr = new UserDataDao();
+        UserDao usr = new UserDao();
         postDao pstdao = new postDao();
         String title = req.getParameter("title");
         String content = req.getParameter("content");
