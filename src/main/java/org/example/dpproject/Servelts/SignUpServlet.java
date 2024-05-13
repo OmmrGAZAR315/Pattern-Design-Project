@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.DB.Builder.Builder;
+import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.DB.QueryBuilder;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Models.UserProfile;
@@ -25,42 +26,44 @@ public class SignUpServlet extends HttpServlet {
         userProfileService = new UserProfileServiceProxy();
     }
 
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        String username = request.getParameter("username");
-//        String password = request.getParameter("password");
-//        String name = request.getParameter("name");
-//        int age = Integer.parseInt(request.getParameter("age"));
-//        UserProfile userProfile;
-//        try {
-//            userProfile = new UserProfile(username, password, name, age);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        Builder result = new QueryBuilder()
-//                .table("users")
-//                .insert("username", "password", "name", "age", "secretKey")
-//                .setParameter(userProfile.getUsername())
-//                .setParameter(userProfile.getPassword())
-//                .setParameter(userProfile.getName())
-//                .setParameter(userProfile.getAge())
-//                .setParameter(userProfile.getKey())
-//                .build();
-//        if ((int) result.getMessages().get("status_code") == HttpResponse.CREATED.getCode()) {
-//        }
-//        Map<String, Object> objectMap = result.first();
-//        int userId = (int) objectMap.get("id");
-//        objectMap = new QueryBuilder()
-//                .table("users")
-//                .select("*")
-//                .where("id", userId)
-//                .build()
-//                .first();
-//        userProfile = new UserProfile(objectMap);
-//        userProfile.setId(userId);
-//        request.getSession().setAttribute("user", userProfile);
-//        request.getSession().setAttribute("authenticated", true);
-//        response.sendRedirect("home.jsp");
-//    }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        int age = Integer.parseInt(request.getParameter("age"));
+        UserProfile userProfile;
+        try {
+            userProfile = new UserProfile(username, password, name, age);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        QBResults result = new QueryBuilder()
+                .table("users")
+                .insert("username", "password", "name", "age", "secretKey")
+                .setParameter(userProfile.getUsername())
+                .setParameter(userProfile.getPassword())
+                .setParameter(userProfile.getName())
+                .setParameter(userProfile.getAge())
+                .setParameter(userProfile.getKey())
+                .build();
+        if (result.getStatusCode() != HttpResponse.CREATED.getCode()) {
+            response.sendRedirect("error.jsp");
+            return;
+        }
+        Map<String, Object> objectMap = result.first();
+        int userId = (int) objectMap.get("id");
+        objectMap = new QueryBuilder()
+                .table("users")
+                .select("*")
+                .where("id", userId)
+                .build()
+                .first();
+        userProfile = new UserProfile(objectMap);
+        userProfile.setId(userId);
+        request.getSession().setAttribute("user", userProfile);
+        request.getSession().setAttribute("authenticated", true);
+        response.sendRedirect("home.jsp");
+    }
 
     public void destroy() {
     }

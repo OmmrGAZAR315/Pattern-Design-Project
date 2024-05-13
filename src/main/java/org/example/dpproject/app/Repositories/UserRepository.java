@@ -52,12 +52,4 @@ public class UserRepository {
                 .build();
     }
 
-    public QBResults login(UserDto dto) {
-        return new QueryBuilder()
-                .table("users")
-                .select("*")
-                .where("username", dto.getUsername())
-                .where("password", dto.getPassword())
-                .build();
-    }
 }

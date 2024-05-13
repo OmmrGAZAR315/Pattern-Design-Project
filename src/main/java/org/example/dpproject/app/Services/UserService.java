@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public QBResults login(UserDto dto) {
-        QBResults results = this.userRepository.pluck("secretKey").getUserBy("username", dto.getUsername());
+        QBResults results = this.userRepository.pluck("secretKey", "password").getUserBy("username", dto.getUsername());
         if (results.getStatusCode() != HttpResponse.OK.getCode())
             return results.setCustom_message("username not found");
 
@@ -51,20 +51,10 @@ public class UserService {
         } catch (Exception e) {
             return results.setCustom_message("error encrypting password");
         }
-        results = this.userRepository.login(dto);
-        if (results.getStatusCode() != HttpResponse.OK.getCode())
-            return results.setCustom_message("invalid username and password");
-
-        userProfile = new UserProfile(results.first());
-        boolean authenticated = false;
-        try {
-            authenticated = Objects.equals(userProfile.getPassword(), PasswordEncryption.encrypt(dto.getPassword(), key));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        if (authenticated) {
+        if (Objects.equals(dto.getPassword(), userProfile.getPassword()))
             return results;
-        } else
-            return results.setMessage(HttpResponse.UNAUTHORIZED);
+        else results.setCustom_message("invalid username and password");
+
+        return results;
     }
 }
