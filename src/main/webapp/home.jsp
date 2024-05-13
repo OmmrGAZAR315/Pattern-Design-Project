@@ -4,6 +4,8 @@
 
 <%@ page import="org.example.dpproject.app.Models.commentDao" %>
 <%@ page import="org.example.dpproject.app.Models.UserProfile" %>
+<%@ page import="org.example.dpproject.DB.QBResults" %>
+<%@ page import="org.example.dpproject.app.Helpers.HttpResponse" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>
@@ -20,6 +22,7 @@
             padding: 20px;
             margin-top: 20px;
         }
+
         .post {
             margin-bottom: 20px;
         }
@@ -28,7 +31,6 @@
 <body>
 
 <a href="userprofile">UserProfile</a>
-
 
 
 <%
@@ -47,36 +49,39 @@
 
 %>
 
-<h1>Welcome to the Home Page, <%= userProfile.getName() %></h1>
+<h1>Welcome to the Home Page, <%= userProfile.getName() %>
+</h1>
 <a href="addPost">Add Post</a>
 
 
 <h2>Recent Posts:</h2>
 <div class="post-container">
-    <%
+        <%
     for (Map<String, Object> post : posts) {
     %>
 
     <div class="post-container">
         <div class="post">
-            <h3><%= post.get("title") %></h3>
-            <p><%= post.get("content") %></p>
+            <h3><%= post.get("title") %>
+            </h3>
+            <p><%= post.get("content") %>
+            </p>
 
 
             <%
                 String postId = String.valueOf(post.get("postId"));
-                List<Map<String, Object>> postComments = commentsDao.FetchCommentsForPost(postId);
+                QBResults postComments = commentsDao.FetchCommentsForPost(postId);
             %>
-            <% if (postComments != null && !postComments.isEmpty()) { %>
+            <% if (postComments.getStatusCode() == HttpResponse.NOT_FOUND.getCode()) { %>
+            <p>No comments yet.</p>
+            <% } else { %>
             <h4>Comments:</h4>
             <ul>
-                <% for (Map<String, Object> comment : postComments) { %>
-                <li><%= comment.get("text") %> </li>
+                <% for (Map<String, Object> comment : postComments.all()) { %>
+                <li><%= comment.get("text") %>
+                </li>
                 <% } %>
             </ul>
-
-            <% } else { %>
-            <p>No comments yet.</p>
             <% } %>
 
             <!-- Add a form to allow users to add comments -->
@@ -94,8 +99,7 @@
     <br/>
 
 
-
-<a href="logout">Logout</a>
+    <a href="logout">Logout</a>
 
 </body>
 </html>
