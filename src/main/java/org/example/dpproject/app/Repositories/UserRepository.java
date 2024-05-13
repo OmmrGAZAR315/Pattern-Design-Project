@@ -52,9 +52,9 @@ public class UserRepository {
                 .build();
     }
 
-    public QBResults signUp(UserDto dto,byte[] key) {
-       return new QueryBuilder()
-                .table("users")
+    public QBResults signUp(UserDto dto, byte[] key) {
+        return new QueryBuilder()
+                .table(table)
                 .insert("username", "password", "name", "age", "secretKey")
                 .setParameter(dto.getUsername())
                 .setParameter(dto.getPassword())

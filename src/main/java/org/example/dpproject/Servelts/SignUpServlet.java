@@ -34,10 +34,9 @@ public class SignUpServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserDto userDto = UserValidation.validate_signUp_request(request, response);
-        if (userDto == null) {
-            response.sendRedirect("error.jsp");
+        if (userDto == null)
             return;
-        }
+
         QBResults qbResults = this.service.signUp(userDto);
         if (qbResults == null) {
             response.sendRedirect("error.jsp");
