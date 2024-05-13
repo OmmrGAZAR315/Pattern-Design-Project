@@ -35,7 +35,7 @@ public abstract class Validation {
 
     public static boolean isValidated(HttpServletRequest request, HttpServletResponse response) {
         if (!errorCollection.isEmpty()) {
-            request.setAttribute("error", errorCollection);
+            request.setAttribute("message", errorCollection);
             try {
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             } catch (ServletException | IOException e) {

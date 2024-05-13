@@ -237,7 +237,7 @@ public class QueryBuilder implements Builder {
     }
 
 
-    public Builder build() {
+    public QBResults build() {
         System.out.println(Query.query);
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = DB.getConnection().prepareStatement(Query.query, Statement.RETURN_GENERATED_KEYS)) {
@@ -246,52 +246,55 @@ public class QueryBuilder implements Builder {
                     preparedStatement.setObject(i + 1, Query.parameters.get(i));
                 }
             }
+            HttpResponse response;
             Query.parameters.clear();
             switch (Query.queryType) {
                 case READ:
-                    resultSet = preparedStatement.executeQuery();
-                    List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
-                    while (resultSet.next()) {
-                        Map<String, Object> row = new HashMap<>();
-                        if (Query.selectAll)
-                            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
-                                row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
-                        else
-                            for (String column : Query.columns)
-                                row.put(column, resultSet.getObject(column));
-                        fetchedAllRows.add(row);
+
+                    try {
+                        resultSet = preparedStatement.executeQuery();
+                        response = HttpResponse.OK;
+                    } catch (Exception e) {
+                        response = HttpResponse.BAD_REQUEST;
                     }
-                    Query.importedData.put("results", fetchedAllRows);
+                    List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
+                    if (!resultSet.isBeforeFirst())
+                        response = HttpResponse.NOT_FOUND;
+                    else {
+                        while (resultSet.next()) {
+                            Map<String, Object> row = new HashMap<>();
+                            if (Query.selectAll)
+                                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+                                    row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
+                            else
+                                for (String column : Query.columns)
+                                    row.put(column, resultSet.getObject(column));
+                            fetchedAllRows.add(row);
+                        }
+                        Query.importedData.put("results", fetchedAllRows);
+                    }
+                    Query.importedData.put("messages", addMessage(response));
 
                     break;
                 case CUD:
                 case Update:
                 case Create:
                     if (preparedStatement.executeUpdate() == 0)
-                        Query.importedData.put("messages", Collections.singletonList(
-                                Map.of("message", HttpResponse.BAD_REQUEST.getMessage(),
-                                        "status_code", HttpResponse.BAD_REQUEST.getCode()
-                                )
-                        ));
+                        response = HttpResponse.BAD_REQUEST;
                     else {
-                        HttpResponse successResponse;
                         switch (Query.queryType) {
                             case Update:
-                                successResponse = HttpResponse.OK;
+                                response = HttpResponse.OK;
                                 break;
                             case Create:
-                                successResponse = HttpResponse.CREATED;
+                                response = HttpResponse.CREATED;
                                 break;
                             default:
-                                successResponse = HttpResponse.NO_CONTENT;
+                                response = HttpResponse.NO_CONTENT;
                                 break;
                         }
-                        Query.importedData.put("messages", Collections.singletonList(
-                                Map.of("message", successResponse.getMessage(),
-                                        "status_code", successResponse.getCode()
-                                )
-                        ));
                     }
+                    Query.importedData.put("messages", addMessage(response));
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
                         Query.importedData.put("results",
@@ -302,51 +305,34 @@ public class QueryBuilder implements Builder {
                         );
                     break;
             }
-            return this;
+            return new QBResults(Query.importedData);
         } catch (SQLException e) {
-            Query.importedData.put("messages", Collections.singletonList(
-                    Map.of("message", "Error executing query: \n" + e.getMessage(),
-                            "status_code", 500
-                    )
-            ));
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Map<String, Object> messageMap = new HashMap<>();
+            messageMap.put("message", "Error executing query: \n" + e.getMessage());
+            messageMap.put("status_code", HttpResponse.INTERNAL_SERVER_ERROR.getCode());
+
+            List<Map<String, Object>> messagesList = new ArrayList<>();
+            messagesList.add(messageMap);
+
+            Query.importedData.put("messages", messagesList);
+
         }
-        return this;
+        try {
+            if (resultSet != null)
+                resultSet.close();
+        } catch (SQLException ignored) {
+        }
+
+        return new QBResults(Query.importedData);
     }
 
-    @Override
-    public Map<String, Object> first() {
-        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
-            return Query.importedData.get("results").get(0);
+    private List<Map<String, Object>> addMessage(HttpResponse response) {
+        Map<String, Object> messageMap = new HashMap<>();
+        messageMap.put("message", response.getMessage());
+        messageMap.put("status_code", response.getCode());
 
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> last() {
-
-        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
-            return Query.importedData.get("results").get(Query.importedData.get("results").size() - 1);
-
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> all() {
-
-        if (Query.importedData.get("results") != null && !Query.importedData.get("results").isEmpty())
-            return Query.importedData.get("results");
-
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMessages() {
-        return Query.importedData.get("messages").get(0);
+        List<Map<String, Object>> messagesList = new ArrayList<>();
+        messagesList.add(messageMap);
+        return messagesList;
     }
 }

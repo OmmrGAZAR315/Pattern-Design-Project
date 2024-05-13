@@ -46,4 +46,18 @@ public class UserValidation extends Validation {
             return null;
     }
 
+    public static UserDto validate_login_request(HttpServletRequest request, HttpServletResponse response) {
+        UserDto userDto = new UserDto(request.getParameterMap());
+        ParametersType username = ParametersType.required;
+        ParametersType password = ParametersType.required;
+
+        requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(), RegexPattern.USERNAME.getPattern());
+        requestErrors(password, userDto.isPasswordPassed(), "Password", userDto.getPassword(),
+                RegexPattern.USERNAME.getPattern());
+
+        if (isValidated(request, response))
+            return userDto;
+        else
+            return null;
+    }
 }

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
@@ -30,8 +31,11 @@ public class DeleteServlet extends HttpServlet {
             response.sendRedirect("error.jsp");
             return;
         }
-        Map<String, Object> queryResult = this.service.deleteUser(userDto);
-        UserResponse.dispatch(request, response, queryResult, "delete");
+        QBResults results = this.service.deleteUser(userDto);
+        new UserResponse()
+                .forwardInSuccess("home.jsp")
+                .forwardInError("error.jsp")
+                .dispatch(request, response, results, "delete");
 
     }
 }

@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
@@ -28,8 +29,10 @@ public class UserEditServlet extends HttpServlet {
             response.sendRedirect("error.jsp");
             return;
         }
-        Map<String, Object> queryResult = this.service.updateUser(userDto);
-        UserResponse.dispatch(request, response, queryResult, "edit");
+        QBResults queryResult = this.service.updateUser(userDto);
+
+        new UserResponse()
+                .dispatch(request, response, queryResult, "edit");
 
 
     }

@@ -1,31 +1,36 @@
 package org.example.dpproject.app.Repositories;
 
-import org.example.dpproject.DB.Builder.Builder;
+import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.DB.QueryBuilder;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 public class UserRepository {
     private final String table;
+    private String[] pluck = {"*"};
 
     public UserRepository(String table) {
         this.table = table;
     }
 
-    public Map<String, Object> deleteUser(UserDto dto) {
+    public UserRepository pluck(String... pluck) {
+        this.pluck = pluck;
+        return this;
+    }
+
+    public QBResults deleteUser(UserDto dto) {
         return new QueryBuilder()
                 .table(table)
                 .delete()
                 .whereId(dto.getId())
-                .build()
-                .getMessages();
+                .build();
     }
 
-    public Map<String, Object> updateUser(UserDto dto) {
+    public QBResults updateUser(UserDto dto) {
         // Get the columns from the dto
         String[] columns = new String[dto.toMap().size()];
         List<String> columnsList = new ArrayList<>(dto.toMap().keySet());
@@ -35,17 +40,24 @@ public class UserRepository {
                 .table(table)
                 .update(columns);
         dto.toMap().values().forEach(query::setParameter);
-        query.where("id", dto.getId())
-                .build();
-        return query.getMessages();
+        query.where("id", dto.getId());
+        return query.build();
     }
 
-    public  Map<String, Object> getUserById(String id) {
+    public QBResults getUserBy(String column, String value) {
         return new QueryBuilder()
                 .table(table)
-                .select("secretKey")
-                .where("id", id)
-                .build()
-                .first();
+                .select(pluck)
+                .where(column, value)
+                .build();
+    }
+
+    public QBResults login(UserDto dto) {
+        return new QueryBuilder()
+                .table("users")
+                .select("*")
+                .where("username", dto.getUsername())
+                .where("password", dto.getPassword())
+                .build();
     }
 }
