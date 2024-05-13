@@ -40,7 +40,8 @@ public class UserService {
     }
 
     public QBResults login(UserDto dto) {
-        QBResults results = this.userRepository.pluck("secretKey", "password").getUserBy("username", dto.getUsername());
+        QBResults results = this.userRepository
+                .getUserBy("username", dto.getUsername());
         if (results.getStatusCode() != HttpResponse.OK.getCode())
             return results.setCustom_message("username not found");
 
