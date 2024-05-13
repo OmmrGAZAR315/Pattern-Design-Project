@@ -2,7 +2,6 @@ package org.example.dpproject.app.Services;
 
 
 import org.example.dpproject.DB.QBResults;
-import org.example.dpproject.DB.QueryBuilder;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Models.PasswordEncryption;
@@ -10,7 +9,6 @@ import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Repositories.UserRepository;
 
 import javax.crypto.SecretKey;
-import java.util.Map;
 import java.util.Objects;
 
 public class UserService {
@@ -75,9 +73,6 @@ public class UserService {
             return results.setCustom_message("error creating user");
 
         int userId = (int) results.first().get("id");
-        results = userRepository.getUserBy("id", userId);
-        UserProfile userProfile = new UserProfile(results.first());
-        userProfile.setId(userId);
-        return results;
+        return userRepository.getUserBy("id", userId);
     }
 }

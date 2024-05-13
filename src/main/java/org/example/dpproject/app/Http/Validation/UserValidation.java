@@ -65,8 +65,8 @@ public class UserValidation extends Validation {
         UserDto userDto = new UserDto(request.getParameterMap());
         ParametersType username = ParametersType.required;
         ParametersType password = ParametersType.required;
-        ParametersType name = ParametersType.optional;
-        ParametersType age = ParametersType.optional;
+        ParametersType name = ParametersType.required;
+        ParametersType age = ParametersType.required;
 
         requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(),
                 RegexPattern.USERNAME.getPattern());
