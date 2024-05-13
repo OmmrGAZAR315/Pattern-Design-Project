@@ -1,70 +1,40 @@
 package org.example.dpproject.Servelts;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.DB.QBResults;
+import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
+import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Models.UserProfile;
-import org.example.dpproject.app.Models.PasswordEncryption;
+import org.example.dpproject.app.Services.UserService;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
-import java.util.Objects;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserProfile user;
+    private UserService service;
 
-    public void init() throws ServletException {
-
+    public void init() {
+        this.service = new UserService();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        boolean isAuthenticated;
-        try {
-            isAuthenticated = authenticate(username, password);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        UserDto userDto = UserValidation.validate_login_request(request, response);
+        if (userDto == null) {
+            response.sendRedirect("error.jsp");
+            return;
         }
-        if (isAuthenticated) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            session.setAttribute("authenticated", true);
-            response.sendRedirect("home.jsp");
-        } else {
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            out.println("<html><body>");
-            out.println("<h3>Invalid username or password</h3>");
-            out.println("</body></html>");
+        QBResults queryResults = this.service.login(userDto);
+        if (queryResults == null) {
+            response.sendRedirect("error.jsp");
+            return;
         }
-    }
+        UserResponse.login(request, response, queryResults);
 
-    private boolean authenticate(String username, String password) throws Exception {
-        Map<String, Object> result = new QueryBuilder()
-                .table("users")
-                .select("*")
-                .where("username", username)
-                .build()
-                .first();
-
-        if (result != null) {
-            user = new UserProfile(result);
-            int id = (int) result.get("id");
-            user.setId(id);
-            SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
-            System.out.println(password +" "+ key);
-            return Objects.equals(user.getPassword(), PasswordEncryption.encrypt(password, key));
-        } else {
-            return false;
-        }
     }
 }

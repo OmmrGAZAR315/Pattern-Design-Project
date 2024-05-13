@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
@@ -22,14 +23,17 @@ public class UserEditServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserDto userDto = UserValidation.validate_edit_request(request, response);
         if (userDto == null) {
             response.sendRedirect("error.jsp");
-        } else {
-            Map<String, Object> queryResult = this.service.updateUser(userDto);
-            UserResponse.dispatch(request, response, queryResult, "edit");
-
+            return;
         }
+        QBResults queryResult = this.service.updateUser(userDto);
+
+        new UserResponse()
+                .dispatch(request, response, queryResult, "edit");
+
+
     }
 }
