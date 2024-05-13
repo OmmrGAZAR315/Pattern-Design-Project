@@ -53,7 +53,7 @@ public class UserValidation extends Validation {
 
         requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(), RegexPattern.USERNAME.getPattern());
         requestErrors(password, userDto.isPasswordPassed(), "Password", userDto.getPassword(),
-                RegexPattern.NAME.getPattern());
+                RegexPattern.PASSWORD.getPattern());
 
         if (isValidated(request, response))
             return userDto;
