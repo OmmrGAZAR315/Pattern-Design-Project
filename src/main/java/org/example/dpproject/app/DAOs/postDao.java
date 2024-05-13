@@ -19,12 +19,16 @@ public class postDao  {
     public List<Map<String, Object>> fetchPosts ()
     {
 
+        if (Posts.isEmpty()) {
             Posts = q.
                     table("posts").
-                    select("title", "content", "id","postId").
+                    select("title", "content", "id", "postId").
                     build().
                     all();
-          return Posts;
+            return Posts;
+        }else {
+            return Posts;
+        }
 
 
     }

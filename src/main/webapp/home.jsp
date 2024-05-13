@@ -6,6 +6,7 @@
 <%@ page import="org.example.dpproject.app.Models.UserProfile" %>
 <%@ page import="org.example.dpproject.DB.QBResults" %>
 <%@ page import="org.example.dpproject.app.Helpers.HttpResponse" %>
+<%@ page import="java.util.Collections" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>
@@ -44,14 +45,31 @@
     // Fetch posts from the database
     postDao postsDao = new postDao();
     List<Map<String, Object>> posts = postsDao.fetchPosts();
-
+    Collections.reverse(posts);
     commentDao commentsDao = new commentDao();
 
 %>
 
 <h1>Welcome to the Home Page, <%= userProfile.getName() %>
 </h1>
-<a href="addPost">Add Post</a>
+
+
+<button id="showFormButton">Add Post</button>
+
+<div id="postForm" style="display: none;">
+    <h1>Add Post</h1>
+    <form action="addPost" method="post">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+
 
 
 <h2>Recent Posts:</h2>
@@ -100,6 +118,7 @@
 
 
     <a href="logout">Logout</a>
-
+            <!-- Link to external JavaScript file -->
+            <script src="AddPostToggle.js" ></script>
 </body>
 </html>

@@ -27,9 +27,11 @@ public class AddCommentsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDao usr = new UserDao();
         commentDao com = new commentDao();
+
         String postid = req.getParameter("postid");
         String content = req.getParameter("content");
         String userId = usr.retrieveUserId(req);
+
         comment c = new comment(content,userId,postid);
         com.addCommentToDatabase(c);
         resp.sendRedirect("home.jsp");
