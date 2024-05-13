@@ -30,12 +30,12 @@ public abstract class Validation {
 
 
     public static boolean parameterValidation_with_RegexPattern(String str, String regexPattern) {
-        return str.matches("^" + regexPattern + "+$");
+        return str.matches(regexPattern);
     }
 
     public static boolean isValidated(HttpServletRequest request, HttpServletResponse response) {
         if (!errorCollection.isEmpty()) {
-            request.setAttribute("error", errorCollection);
+            request.setAttribute("message", errorCollection);
             try {
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
@@ -45,5 +45,9 @@ public abstract class Validation {
             return false;
         }
         return true;
+    }
+
+    public static boolean isNotPassedMinimumParameters(int minimumPassedParameters, int passedParameterCounter) {
+        return passedParameterCounter < minimumPassedParameters;
     }
 }

@@ -107,8 +107,4 @@ public class UserDto {
     public String getAge() {
         return age;
     }
-
-    public boolean isNotPassedMinimumParameters(int minimumPassedParameters) {
-        return getPassedParameterCounter() < minimumPassedParameters;
-    }
 }

@@ -1,4 +1,7 @@
 package org.example.dpproject.DB.Builder;
+
+import org.example.dpproject.DB.QBResults;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,7 @@ public interface Builder {
     public Builder setCallParameter(String parameter);
 
     public Builder where(String column, Object value);
+
     public Builder whereId(Object value);
 
     public Builder orWhere(String column, Object value);
@@ -51,13 +55,6 @@ public interface Builder {
 
 //    public  void getMetaData(String tableName, String columnName, String value) throws SQLException;
 
-    public Builder build();
-
-    public Map<String, Object> first();
-
-    public Map<String, Object> last();
-
-    public List<Map<String, Object>> all();
-    public Map<String, Object> getMessages();
+    public QBResults build();
 
 }
