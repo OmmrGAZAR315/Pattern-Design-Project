@@ -1,7 +1,6 @@
 package org.example.dpproject.app.Models;
 
 
-import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Map;
 
@@ -25,6 +24,11 @@ public class UserProfile {
     }
 
     public UserProfile(Map<String, Object> userData) {
+        if (userData.get("id") == null)
+            this.id = (int) userData.get("id");
+        else
+            this.username = (String) userData.get("username");
+
         if (userData.get("username") == null)
             this.username = "null";
         else
