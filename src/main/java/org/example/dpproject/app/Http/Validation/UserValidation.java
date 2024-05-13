@@ -37,7 +37,7 @@ public class UserValidation extends Validation {
                 RegexPattern.PASSWORD.getPattern());
         requestErrors(age, userDto.isAgePassed(), "Age", userDto.getAge(), RegexPattern.AGE.getPattern());
 
-        if (userDto.isNotPassedMinimumParameters(minimumPassedParameters))
+        if (isNotPassedMinimumParameters(minimumPassedParameters,userDto.getPassedParameterCounter()))
             errorCollection += "must at least pass " + minimumPassedParameters + " parameters";
 
         if (isValidated(request, response))
@@ -53,7 +53,27 @@ public class UserValidation extends Validation {
 
         requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(), RegexPattern.USERNAME.getPattern());
         requestErrors(password, userDto.isPasswordPassed(), "Password", userDto.getPassword(),
+                RegexPattern.PASSWORD.getPattern());
+
+        if (isValidated(request, response))
+            return userDto;
+        else
+            return null;
+    }
+
+    public static UserDto validate_signUp_request(HttpServletRequest request, HttpServletResponse response) {
+        UserDto userDto = new UserDto(request.getParameterMap());
+        ParametersType username = ParametersType.required;
+        ParametersType password = ParametersType.required;
+        ParametersType name = ParametersType.optional;
+        ParametersType age = ParametersType.optional;
+
+        requestErrors(username, userDto.isUsernamePassed(), "Username", userDto.getUsername(),
                 RegexPattern.USERNAME.getPattern());
+        requestErrors(password, userDto.isPasswordPassed(), "Password", userDto.getPassword(),
+                RegexPattern.PASSWORD.getPattern());
+        requestErrors(name, userDto.isNamePassed(), "Name", userDto.getName(), RegexPattern.NAME.getPattern());
+        requestErrors(age, userDto.isAgePassed(), "Age", userDto.getAge(), RegexPattern.AGE.getPattern());
 
         if (isValidated(request, response))
             return userDto;

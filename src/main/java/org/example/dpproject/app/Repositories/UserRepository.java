@@ -44,7 +44,7 @@ public class UserRepository {
         return query.build();
     }
 
-    public QBResults getUserBy(String column, String value) {
+    public QBResults getUserBy(String column, Object value) {
         return new QueryBuilder()
                 .table(table)
                 .select(pluck)
@@ -52,4 +52,15 @@ public class UserRepository {
                 .build();
     }
 
+    public QBResults signUp(UserDto dto,byte[] key) {
+       return new QueryBuilder()
+                .table("users")
+                .insert("username", "password", "name", "age", "secretKey")
+                .setParameter(dto.getUsername())
+                .setParameter(dto.getPassword())
+                .setParameter(dto.getName())
+                .setParameter(dto.getAge())
+                .setParameter(key)
+                .build();
+    }
 }

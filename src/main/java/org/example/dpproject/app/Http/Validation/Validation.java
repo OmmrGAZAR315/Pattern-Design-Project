@@ -46,4 +46,8 @@ public abstract class Validation {
         }
         return true;
     }
+
+    public static boolean isNotPassedMinimumParameters(int minimumPassedParameters, int passedParameterCounter) {
+        return passedParameterCounter < minimumPassedParameters;
+    }
 }

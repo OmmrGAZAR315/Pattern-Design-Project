@@ -29,22 +29,12 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("error.jsp");
             return;
         }
-        QBResults queryResult = this.service.login(userDto);
-        if (queryResult == null) {
+        QBResults queryResults = this.service.login(userDto);
+        if (queryResults == null) {
             response.sendRedirect("error.jsp");
             return;
         }
-        UserResponse userResponse = new UserResponse() {
-            public void anonymousFunctionInSuccessCase() {
-                HttpSession session = request.getSession();
-                session.setAttribute("user", new UserProfile(queryResult.first()));
-                session.setAttribute("authenticated", true);
-            }
-        };
-        userResponse
-                .forwardInSuccess("home.jsp")
-                .forwardInError("error.jsp")
-                .dispatch(request, response, queryResult, "login");
+        UserResponse.login(request, response, queryResults);
 
     }
 }

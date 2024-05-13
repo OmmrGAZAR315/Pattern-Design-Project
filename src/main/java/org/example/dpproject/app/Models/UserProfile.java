@@ -16,11 +16,10 @@ public class UserProfile {
     public UserProfile() {
     }
 
-    public UserProfile(String username, String password, String name, int age) throws Exception {
+    public UserProfile(String username, String password, String name, int age, byte[] key) throws Exception {
         this.username = username;
-        SecretKey key = PasswordEncryption.generateKey();
-        this.password = PasswordEncryption.encrypt(password, key);
-        this.key = key.getEncoded();
+        this.password = password;
+        this.key = key;
         this.name = name;
         this.age = age;
     }

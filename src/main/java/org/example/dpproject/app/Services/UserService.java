@@ -2,6 +2,7 @@ package org.example.dpproject.app.Services;
 
 
 import org.example.dpproject.DB.QBResults;
+import org.example.dpproject.DB.QueryBuilder;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Models.PasswordEncryption;
@@ -9,6 +10,7 @@ import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Repositories.UserRepository;
 
 import javax.crypto.SecretKey;
+import java.util.Map;
 import java.util.Objects;
 
 public class UserService {
@@ -55,6 +57,27 @@ public class UserService {
             return results;
         else results.setCustom_message("invalid username and password");
 
+        return results;
+    }
+
+    public QBResults signUp(UserDto dto) {
+        byte[] keyBytes;
+        try {
+            SecretKey key = PasswordEncryption.generateKey();
+            dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
+            keyBytes = PasswordEncryption.generateKey().getEncoded();
+        } catch (Exception e) {
+            return null;
+        }
+
+        QBResults results = userRepository.signUp(dto, keyBytes);
+        if (results.getStatusCode() != HttpResponse.CREATED.getCode())
+            return results.setCustom_message("error creating user");
+
+        int userId = (int) results.first().get("id");
+        results = userRepository.getUserBy("id", userId);
+        UserProfile userProfile = new UserProfile(results.first());
+        userProfile.setId(userId);
         return results;
     }
 }
