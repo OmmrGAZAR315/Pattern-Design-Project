@@ -1,6 +1,6 @@
 package org.example.dpproject.app.Http.Responses;
 
-public enum HttpResponse {
+public enum  HttpResponse {
     OK(200, "OK"),
     CREATED(201, "Created"),
     NO_CONTENT(204, "No Content"),
