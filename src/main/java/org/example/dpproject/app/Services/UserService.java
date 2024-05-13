@@ -1,16 +1,13 @@
 package org.example.dpproject.app.Services;
 
 
-import org.example.dpproject.app.DAOs.UserDao;
 import org.example.dpproject.app.Http.DTOs.UserDto;
-import org.example.dpproject.app.Http.Responses.HttpResponse;
 import org.example.dpproject.app.Models.PasswordEncryption;
 import org.example.dpproject.app.Models.UserProfile;
 import org.example.dpproject.app.Repositories.UserRepository;
 
 import javax.crypto.SecretKey;
 import java.util.Map;
-import java.util.Objects;
 
 public class UserService {
     protected UserRepository userRepository;

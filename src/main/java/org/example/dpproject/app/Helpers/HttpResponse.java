@@ -1,4 +1,4 @@
-package org.example.dpproject.app.Http.Responses;
+package org.example.dpproject.app.Helpers;
 
 public enum  HttpResponse {
     OK(200, "OK"),

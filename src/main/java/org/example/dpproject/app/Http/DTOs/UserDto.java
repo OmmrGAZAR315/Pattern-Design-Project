@@ -4,33 +4,47 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserDto {
-    private String id;
+    private final String id;
     private final String username;
     private String password;
     private final String name;
     private final String age;
+    private int passedParameterCounter = 0;
 
     public UserDto(Map<String, String[]> parameters) {
         if (parameters.get("id") == null)
             this.id = null;
-        else
+        else {
             this.id = parameters.get("id")[0];
+            passedParameterCounter++;
+        }
         if (parameters.get("username") == null)
             this.username = null;
-        else
+        else {
             this.username = parameters.get("username")[0];
+            passedParameterCounter++;
+        }
         if (parameters.get("password") == null)
             this.password = null;
-        else
+        else {
             this.password = parameters.get("password")[0];
+            passedParameterCounter++;
+
+        }
         if (parameters.get("name") == null)
             this.name = null;
-        else
+        else {
             this.name = parameters.get("name")[0];
+            passedParameterCounter++;
+
+        }
         if (parameters.get("age") == null)
             this.age = null;
-        else
+        else {
             this.age = parameters.get("age")[0];
+            passedParameterCounter++;
+
+        }
     }
 
     public Map<String, String> toMap() {
@@ -44,6 +58,30 @@ public class UserDto {
         if (age != null)
             map.put("age", age);
         return map;
+    }
+
+    public boolean isIdPassed() {
+        return id != null;
+    }
+
+    public int getPassedParameterCounter() {
+        return passedParameterCounter;
+    }
+
+    public boolean isUsernamePassed() {
+        return username != null;
+    }
+
+    public boolean isNamePassed() {
+        return name != null;
+    }
+
+    public boolean isPasswordPassed() {
+        return password != null;
+    }
+
+    public boolean isAgePassed() {
+        return age != null;
     }
 
     public String getId() {
@@ -68,5 +106,9 @@ public class UserDto {
 
     public String getAge() {
         return age;
+    }
+
+    public boolean isNotPassedMinimumParameters(int minimumPassedParameters) {
+        return getPassedParameterCounter() < minimumPassedParameters;
     }
 }
