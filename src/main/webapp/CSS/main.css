@@ -84,17 +84,23 @@ header{
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-header>h1{
+header h1{
     all: unset;
+}
+.home-header{
+    justify-content: space-between;
+}
+.home-h1{
     order: 2;
     flex: 1;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
+
 header ul{
     display: flex;
     order: 1;

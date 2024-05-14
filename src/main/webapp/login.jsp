@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="CSS\normalization.css">
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="CSS\fonts.css">
-    <!-- Font Awesome Library -->
-    <link rel="stylesheet" href="CSS\all.min.css">
     <!-- Main template CSS file -->
     <link rel="stylesheet" href="CSS\main.css">
     <link rel="stylesheet" href="CSS\Form.css">
@@ -17,10 +13,6 @@
 <body>
 <header>
     <h1>Forum</h1>
-    <ul>
-        <li><a href="home.jsp">Home</a></li>
-        <li><a href="signup.jsp">Sign Up</a></li>
-    </ul>
 </header>
 <main class="center-flex">
     <h1 aria-label="Login"></h1>

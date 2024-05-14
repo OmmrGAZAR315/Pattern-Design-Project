@@ -6,22 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <!-- To render all elements normally. -->
-    <link rel="stylesheet" href="CSS\normalization.css">
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="CSS\fonts.css">
-    <!-- Font Awesome Library -->
-    <link rel="stylesheet" href="CSS\all.min.css">
+    <link rel="stylesheet" href="CSS/normalization.css">
     <!-- Main template CSS file -->
-    <link rel="stylesheet" href="CSS\main.css">
-    <link rel="stylesheet" href="CSS\Form.css">
+    <link rel="stylesheet" href="CSS/main.css">
+    <link rel="stylesheet" href="CSS/Form.css">
 </head>
 <body>
     <header>
         <h1>Forum</h1>
-        <ul>
-            <li><a href="home.jsp">Home</a></li>
-            <li><a href="login.jsp">Login</a></li>
-        </ul>
     </header>
     <main class="center-flex">
         <h1 aria-label="Sign Up"></h1>
