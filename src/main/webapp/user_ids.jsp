@@ -19,7 +19,7 @@
         request.getSession().removeAttribute("error");
     }
 %>
-<form action="userProfile" method="get">
+<form action="user" method="get">
     <label for="userId">Enter User ID:</label>
     <input type="text" autofocus id="userId" name="userId">
     <input type="submit" value="Submit">

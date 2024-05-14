@@ -250,7 +250,6 @@ public class QueryBuilder implements Builder {
             Query.parameters.clear();
             switch (Query.queryType) {
                 case READ:
-
                     try {
                         resultSet = preparedStatement.executeQuery();
                         response = HttpResponse.OK;

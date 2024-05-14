@@ -1,10 +1,14 @@
 package org.example.dpproject.app.Models;
 
+import org.example.dpproject.DB.QueryBuilder;
+import org.example.dpproject.DB.Relation;
+import org.example.dpproject.app.Helpers.HelperClass;
 
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
-public class UserProfile {
+public class User extends Relation {
     private int id;
     private String username;
     private String password;
@@ -12,10 +16,10 @@ public class UserProfile {
     private int age;
     private byte[] key;
 
-    public UserProfile() {
+    public User() {
     }
 
-    public UserProfile(String username, String password, String name, int age, byte[] key) throws Exception {
+    public User(String username, String password, String name, int age, byte[] key) throws Exception {
         this.username = username;
         this.password = password;
         this.key = key;
@@ -23,7 +27,12 @@ public class UserProfile {
         this.age = age;
     }
 
-    public UserProfile(Map<String, Object> userData) {
+    public Post[] posts() {
+        List<Map<String, Object>> postsList = this.hasMany("posts", "user_id", "id").all();
+        return HelperClass.convertListMapToArray(Post.class, postsList);
+    }
+
+    public User(Map<String, Object> userData) {
         if (userData.get("username") == null)
             this.username = "null";
         else

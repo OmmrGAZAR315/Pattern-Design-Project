@@ -64,10 +64,6 @@ public class UserDto {
         return id != null;
     }
 
-    public int getPassedParameterCounter() {
-        return passedParameterCounter;
-    }
-
     public boolean isUsernamePassed() {
         return username != null;
     }
@@ -94,6 +90,10 @@ public class UserDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getPassedParameterCounter() {
+        return passedParameterCounter;
     }
 
     public void setPassword(String password) {

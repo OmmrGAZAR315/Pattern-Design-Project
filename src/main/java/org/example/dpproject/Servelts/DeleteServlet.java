@@ -6,13 +6,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.example.dpproject.DB.QBResults;
+import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Http.Validation.UserValidation;
-import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
-import java.util.Map;
 
 @WebServlet("/deleteUser")
 public class DeleteServlet extends HttpServlet {
@@ -32,10 +32,10 @@ public class DeleteServlet extends HttpServlet {
             return;
         }
         QBResults results = this.service.deleteUser(userDto);
-        new UserResponse()
+        new Responses()
                 .forwardInSuccess("home.jsp")
                 .forwardInError("error.jsp")
-                .dispatch(request, response, results, "delete");
+                .dispatch(request, response, results, "delete", HttpResponse.NO_CONTENT.getCode());
 
     }
 }
