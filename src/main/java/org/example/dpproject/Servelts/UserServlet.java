@@ -9,8 +9,8 @@ import org.example.dpproject.app.Proxy.Cacheable;
 import org.example.dpproject.app.Proxy.UserProfileService;
 import org.example.dpproject.app.Proxy.UserProfileServiceProxy;
 
-@WebServlet("/userProfile")
-public class UserProfileServlet extends HttpServlet {
+@WebServlet("/user")
+public class UserServlet extends HttpServlet {
     private UserProfileService userProfileService;
     private Cacheable cacheable;
 

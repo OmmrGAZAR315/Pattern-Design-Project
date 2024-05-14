@@ -3,7 +3,7 @@ package org.example.dpproject.app.Http.DTOs;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserDto {
+public class UserDto extends DTO{
     private final String id;
     private final String username;
     private String password;

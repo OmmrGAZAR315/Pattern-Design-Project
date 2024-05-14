@@ -45,7 +45,7 @@ public class ShowPassword extends HttpServlet {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            request.setAttribute("shown_password", password);
+            request.getSession().setAttribute("shown_password", password);
             request.getRequestDispatcher("home.jsp").forward(request, response);
         }
     }

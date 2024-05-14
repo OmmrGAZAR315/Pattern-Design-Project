@@ -8,3 +8,4 @@ function getAllPosts() {
             console.error('Error fetching data:', error);
         });
 }
+getAllPosts();

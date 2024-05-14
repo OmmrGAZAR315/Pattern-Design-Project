@@ -255,6 +255,8 @@ public class QueryBuilder implements Builder {
                         response = HttpResponse.OK;
                     } catch (Exception e) {
                         response = HttpResponse.BAD_REQUEST;
+                        Query.importedData.put("messages", addMessage(response));
+                        return new QBResults(Query.importedData);
                     }
                     List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
                     if (!resultSet.isBeforeFirst())
@@ -320,6 +322,8 @@ public class QueryBuilder implements Builder {
             if (resultSet != null)
                 resultSet.close();
         } catch (SQLException ignored) {
+            Query.importedData.put("messages", addMessage(HttpResponse.INTERNAL_SERVER_ERROR));
+            return new QBResults(Query.importedData);
         }
 
         return new QBResults(Query.importedData);

@@ -22,14 +22,11 @@
             margin-bottom: 20px;
         }
     </style>
-    <script src="getAllPosts.js"></script>
-
 </head>
 <body>
 
 <a href="userprofile">UserProfile</a>
 <a href="logout">Logout</a>
-
 <%
     Object userOb = request.getSession().getAttribute("user");
     Object postsOb = request.getSession().getAttribute("posts");
@@ -58,21 +55,18 @@
    else
    {%>
     <h4>Posts:</h4>
-        <%for (Post post : posts) {%>
+        <%//for (Post post : posts) {%>
     <div class="post-container">
         <div class="post">
-            <h3><%= post.getTitle() %>
+            <h3><%= posts[0].getTitle() %>
             </h3>
-            <p><%= post.getContent() %>
+            <p><%= posts[0].getContent() %>
             </p>
             <%
-                String postId = String.valueOf(post.getId());
-                Comment[] postComments = null;
-                Object postCommentsOb = request.getSession().getAttribute("post_comments");
-                if (postCommentsOb == null) {%>
+                Comment[] postComments = posts[0].comments();
+                if (postComments == null) {%>
             <p>No comments yet.</p>
-            <% } else {
-                postComments = (Comment[]) postCommentsOb;%>
+            <% } else {%>
             <h4>Comments:</h4>
             <ul>
                 <% for (Comment comment : postComments) { %>
@@ -82,17 +76,17 @@
             </ul>
             <% } %>
 
-            <!-- Add a form to allow users to add comments -->
-            <form action="addcomment" method="post">
-                <input type="hidden" name="postid" value="<%= postId %>">
+            <form action="comments" method="post">
+                <input type="hidden" name="postId" value="<%= posts[0].getId() %>">
+                <input type="hidden" name="userId" value="<%= user.getId() %>">
                 <label for="comment">Add Comment:</label><br>
-                <textarea id="comment" name="content" rows="2" cols="50"></textarea><br>
+                <textarea id="comment" name="text" rows="2" cols="50"></textarea><br>
                 <input type="submit" value="Submit">
             </form>
         </div>
     </div>
 
-        <% }
+        <% //}
    } %>
 
     <br/>

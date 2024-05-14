@@ -17,8 +17,8 @@ public class commentDao {
 
         queryBuilder.table("comments").insert("text", "commenter_id", "post_id")
                 .setParameter(comment.getText())
-                .setParameter(comment.getCommentorid())
-                .setParameter(comment.getPostid())
+                .setParameter(comment.getUserId())
+                .setParameter(comment.getPostId())
                 .build();
     }
 

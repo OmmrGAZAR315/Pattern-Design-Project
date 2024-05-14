@@ -8,6 +8,7 @@ import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
+import org.example.dpproject.app.Models.User;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;

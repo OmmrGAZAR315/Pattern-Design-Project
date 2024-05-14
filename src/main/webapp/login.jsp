@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,14 +26,15 @@
     <h1 aria-label="Login"></h1>
     <div class="container center-flex form-div">
         <p>Login</p>
-    <form action="login" method="post">
-        <input placeholder="Userame" type="text" id="username" name="username" required>
-        <input placeholder="Password" type="password" id="password" name="password" required>
+        <form action="login" method="post">
+            <input placeholder="Userame" type="text" id="username" name="username" required>
+            <input placeholder="Password" type="password" id="password" name="password" required>
 
-        <input type="submit" value="Login">
-    </form>
- <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>
+            <input type="submit" value="Login">
+        </form>
+        <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>
     </div>
 </main>
+<script src="getAllPosts.js"></script>
 </body>
 </html>

@@ -55,7 +55,7 @@ public class Post extends Relation {
     }
 
     public Comment[] comments() {
-        List<Map<String, Object>> commentsList = this.hasMany("comments", "posts_id", "id").all();
+        List<Map<String, Object>> commentsList = this.hasMany("comments", "post_id", id).all();
        return HelperClass.convertListMapToArray(Comment.class, commentsList);
     }
 

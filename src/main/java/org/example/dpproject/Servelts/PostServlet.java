@@ -35,11 +35,6 @@ public class PostServlet extends HttpServlet {
                     Post[] posts = HelperClass.convertListMapToArray(Post.class, queryResults.all());
                     HttpSession session = request.getSession();
                     session.setAttribute("posts", posts);
-                    try {
-                        resp.sendRedirect("home.jsp");
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
                 }
             };
         }

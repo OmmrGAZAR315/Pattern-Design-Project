@@ -8,7 +8,7 @@ import org.example.dpproject.app.Helpers.HttpResponse;
 import java.util.Map;
 
 public class Responses {
-    private static String errorPage;
+    private static String errorPage="error.jsp";
     private static String successPage;
    private static String page;
 
@@ -30,7 +30,7 @@ public class Responses {
 
     public void dispatch(HttpServletRequest request, HttpServletResponse response,
                          QBResults queryResult, String $action, int statusCode) {
-        request.setAttribute("action", $action);
+        request.getSession().setAttribute("action", $action);
 
         try {
             Object msg;
@@ -54,10 +54,10 @@ public class Responses {
                 code = queryResult.getStatusCode();
 
             }
-            request.setAttribute("message", msg);
-            request.setAttribute("status_code", code);
+            request.getSession().setAttribute("message", msg);
+            request.getSession().setAttribute("status_code", code);
             anonymousFunctionInSuccessCase();
-            response.sendRedirect("home.jsp");
+            response.sendRedirect(page);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

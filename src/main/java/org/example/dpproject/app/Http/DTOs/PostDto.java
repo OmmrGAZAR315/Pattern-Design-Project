@@ -7,6 +7,7 @@ public class PostDto extends DTO {
     private final String id;
     private String title;
     private String content;
+    protected int passedParameterCounter = 0;
 
     public PostDto(Map<String, String[]> parameters) {
         if (parameters.get("id") == null)
@@ -60,5 +61,8 @@ public class PostDto extends DTO {
 
     public String getContent() {
         return content;
+    }
+    public int getPassedParameterCounter() {
+        return passedParameterCounter;
     }
 }

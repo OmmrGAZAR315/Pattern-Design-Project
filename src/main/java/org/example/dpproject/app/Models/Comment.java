@@ -1,24 +1,32 @@
 package org.example.dpproject.app.Models;
 
-import org.example.dpproject.DB.Relation;
-
 import java.util.Map;
 
 public class Comment {
     private int id;
     private String text;
-    private String commentorid;
-    private String postid;
+    private int userId;
+    private int postId;
 
+    public Comment(Map<String, Object> userData) {
+        System.out.println("userData: " + userData);
+        if (userData.get("id") == null)
+            this.id = 0;
+        else
+            this.id = (int) userData.get("id");
+        if (userData.get("user_id") == null)
+            this.userId = 0;
+        else
+            this.userId = (int) userData.get("user_id");
+        if (userData.get("post_id") == null)
+            this.postId = 0;
+        else
+            this.postId = (int) userData.get("post_id");
 
-    public Comment(String text, String commetor, String postid) {
-        this.text = text;
-        this.commentorid = commetor;
-        this.postid = postid;
-    }
-    public Comment(Map<String, Object> comment) {
-        this.id = (int) comment.get("id");
-        this.text = (String) comment.get("user_id");
+        if (userData.get("text") == null)
+            this.text = "null";
+        else
+            this.text = (String) userData.get("text");
     }
 
     public String getText() {
@@ -37,19 +45,11 @@ public class Comment {
         this.id = id;
     }
 
-    public String getCommentorid() {
-        return commentorid;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setCommentorid(String commentorid) {
-        this.commentorid = commentorid;
-    }
-
-    public String getPostid() {
-        return postid;
-    }
-
-    public void setPostid(String postid) {
-        this.postid = postid;
+    public int getPostId() {
+        return postId;
     }
 }

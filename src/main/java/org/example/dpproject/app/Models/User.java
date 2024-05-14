@@ -27,12 +27,16 @@ public class User extends Relation {
         this.age = age;
     }
 
-    public Post[] posts() {
-        List<Map<String, Object>> postsList = this.hasMany("posts", "user_id", "id").all();
-        return HelperClass.convertListMapToArray(Post.class, postsList);
-    }
+//    public Post[] posts() {
+//        List<Map<String, Object>> postsList = this.hasMany("posts", "user_id", id).all();
+//        return HelperClass.convertListMapToArray(Post.class, postsList);
+//    }
 
     public User(Map<String, Object> userData) {
+        if (userData.get("id") == null)
+            this.id = 0;
+        else
+            this.id = (int) userData.get("id");
         if (userData.get("username") == null)
             this.username = "null";
         else
