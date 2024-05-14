@@ -26,7 +26,6 @@ public class LoginServlet extends HttpServlet {
             return;
 
         QBResults queryResults = this.service.login(userDto);
-        System.out.println(queryResults.getStatusCode());
         HelperClass.login(request, response, queryResults);
 
     }

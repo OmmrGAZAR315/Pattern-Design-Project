@@ -62,9 +62,10 @@ public class UserService {
     public QBResults signUp(UserDto dto) {
         byte[] keyBytes;
         try {
+
             SecretKey key = PasswordEncryption.generateKey();
             dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
-            keyBytes = PasswordEncryption.generateKey().getEncoded();
+            keyBytes = key.getEncoded();
         } catch (Exception e) {
             return new QBResults().setCustom_message("error encrypting password");
         }
