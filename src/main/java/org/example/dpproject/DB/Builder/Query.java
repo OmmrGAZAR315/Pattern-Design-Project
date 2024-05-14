@@ -8,23 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 public class Query {
-    public static String query;
-    public static QueryType queryType;
-    public static boolean isCallParameterSet;
-    public static boolean isInsertColumnSet;
-    public static boolean isParameterSet;
-    public static boolean isWhereSet;
-    public static boolean selectAll;
-    public static List<String> columns= new ArrayList<>();
-    public static List<Object> parameters = new ArrayList<>();
-    public static String tableName;
-    public static Map<String, List<Map<String, Object>>> importedData = new HashMap<>();
+    public  String query;
+    public  QueryType queryType;
+    public  boolean isCallParameterSet;
+    public  boolean isInsertColumnSet;
+    public  boolean isParameterSet;
+    public  boolean isWhereSet;
+    public  boolean selectAll;
+    public  List<String> columns= new ArrayList<>();
+    public  List<Object> parameters = new ArrayList<>();
+    public  String tableName;
+    public  Map<String, List<Map<String, Object>>> importedData = new HashMap<>();
 
-    public static void resetBooleans() {
-        isCallParameterSet = false;
-        isInsertColumnSet = false;
-        isParameterSet = false;
-        isWhereSet = false;
-        selectAll = false;
-    }
 }

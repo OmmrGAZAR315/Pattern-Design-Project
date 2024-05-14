@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class User extends Relation {
+    public static final String table = "users";
     private int id;
     private String username;
     private String password;
@@ -27,10 +28,9 @@ public class User extends Relation {
         this.age = age;
     }
 
-//    public Post[] posts() {
-//        List<Map<String, Object>> postsList = this.hasMany("posts", "user_id", id).all();
-//        return HelperClass.convertListMapToArray(Post.class, postsList);
-//    }
+    public Post[] posts() {
+        return this.hasMany(Post.class, "user_id", id);
+    }
 
     public User(Map<String, Object> userData) {
         if (userData.get("id") == null)

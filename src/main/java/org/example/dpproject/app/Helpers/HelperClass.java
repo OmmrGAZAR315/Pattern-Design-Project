@@ -17,10 +17,9 @@ public class HelperClass {
         T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, list.size());
         try {
             Constructor<T> constructor = clazz.getConstructor(Map.class);
-            for (int i = 0; i < list.size(); i++) {
-//                System.out.println("list.get(" + i + ") " + list.get(i));
+            for (int i = 0; i < list.size(); i++)
                 array[i] = constructor.newInstance(list.get(i));
-            }
+
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
                  InvocationTargetException e) {
             e.printStackTrace();

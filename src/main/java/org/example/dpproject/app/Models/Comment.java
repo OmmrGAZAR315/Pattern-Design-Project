@@ -3,6 +3,7 @@ package org.example.dpproject.app.Models;
 import java.util.Map;
 
 public class Comment {
+    public static final String table = "comments";
     private int id;
     private String text;
     private int userId;

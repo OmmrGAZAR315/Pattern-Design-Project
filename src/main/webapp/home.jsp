@@ -55,15 +55,15 @@
    else
    {%>
     <h4>Posts:</h4>
-        <%//for (Post post : posts) {%>
+        <%for (Post post : posts) {%>
     <div class="post-container">
         <div class="post">
-            <h3><%= posts[0].getTitle() %>
+            <h3><%= post.getTitle() %>
             </h3>
-            <p><%= posts[0].getContent() %>
+            <p><%= post.getContent() %>
             </p>
             <%
-                Comment[] postComments = posts[0].comments();
+                Comment[] postComments = post.comments();
                 if (postComments == null) {%>
             <p>No comments yet.</p>
             <% } else {%>
@@ -77,7 +77,7 @@
             <% } %>
 
             <form action="comments" method="post">
-                <input type="hidden" name="postId" value="<%= posts[0].getId() %>">
+                <input type="hidden" name="postId" value="<%= post.getId() %>">
                 <input type="hidden" name="userId" value="<%= user.getId() %>">
                 <label for="comment">Add Comment:</label><br>
                 <textarea id="comment" name="text" rows="2" cols="50"></textarea><br>
@@ -86,7 +86,7 @@
         </div>
     </div>
 
-        <% //}
+        <% }
    } %>
 
     <br/>

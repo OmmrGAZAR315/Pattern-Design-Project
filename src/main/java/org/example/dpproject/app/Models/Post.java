@@ -1,14 +1,12 @@
 package org.example.dpproject.app.Models;
 
 import org.example.dpproject.DB.Relation;
-import org.example.dpproject.app.Helpers.HelperClass;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 public class Post extends Relation {
-
+    public static final String table = "posts";
     private int id;
     private String title;
     private String content;
@@ -55,8 +53,7 @@ public class Post extends Relation {
     }
 
     public Comment[] comments() {
-        List<Map<String, Object>> commentsList = this.hasMany("comments", "post_id", id).all();
-       return HelperClass.convertListMapToArray(Comment.class, commentsList);
+        return this.hasMany(Comment.class, "post_id", id);
     }
 
     public int getGroupid() {

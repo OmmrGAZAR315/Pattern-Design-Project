@@ -63,7 +63,6 @@ public class PostServlet extends HttpServlet {
         };
         postResponse
                 .forwardInSuccess("home.jsp")
-                .forwardInError("error.jsp")
                 .dispatch(request, resp, queryResults, "create post", HttpResponse.CREATED.getCode());
 
     }
