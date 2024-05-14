@@ -12,28 +12,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home Page</title>
-
-    <style>
-        /* Example CSS styles for the post container */
-        .post-container {
-            width: 80%;
-            margin: auto;
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .post {
-            margin-bottom: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="CSS/normalization.css">
+    <!-- Main template CSS file -->
+    <link rel="stylesheet" href="CSS/main.css">
+    <link rel="stylesheet" href="CSS/Home.css">
 </head>
 <body>
-
-<a href="userprofile">UserProfile</a>
-
-
+    <header class="home-header">
+        <ul><li><a href="userprofile">UserProfile</a></li></ul>
+        <h1 class="home-h1">Forum</h1>
+<%--idea: make the userprofile of header is simply the name of the user--%>
+<%--idea: remove toggle add post and make it simply static in home--%>
+    </header>
+    <main>
 <%
     // Fetch user profile from session
     Object user = request.getSession().getAttribute("user");
@@ -49,31 +43,19 @@
     commentDao commentsDao = new commentDao();
 
 %>
+<%--    <h1>Welcome to the Home Page, <%= userProfile.getName() %></h1>--%>
+<%--    <button id="showFormButton">Add Post</button>--%>
 
-<h1>Welcome to the Home Page, <%= userProfile.getName() %>
-</h1>
+    <div id="postForm" class="add-post">
+        <h1>Create post</h1>
+        <form action="addPost" method="post">
+            <input placeholder="title" type="text" id="title" name="title">
+            <textarea placeholder="Body" id="content" name="content"></textarea>
+            <button type="submit" class="btn">Post</button>
+        </form>
+    </div>
 
-
-<button id="showFormButton">Add Post</button>
-
-<div id="postForm" style="display: none;">
-    <h1>Add Post</h1>
-    <form action="addPost" method="post">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br>
-
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content"></textarea><br>
-
-        <button type="submit">Submit</button>
-    </form>
-</div>
-
-
-
-
-<h2>Recent Posts:</h2>
-<div class="post-container">
+    <div class="posts-container">
         <%
     for (Map<String, Object> post : posts) {
     %>
@@ -105,8 +87,7 @@
             <!-- Add a form to allow users to add comments -->
             <form action="addcomment" method="post">
                 <input type="hidden" name="postid" value="<%= postId %>">
-                <label for="comment">Add Comment:</label><br>
-                <textarea id="comment" name="content" rows="2" cols="50"></textarea><br>
+                <textarea placeholder="Write a comment.." id="comment" name="content" rows="2" cols="50"></textarea><br>
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -118,7 +99,7 @@
 
 
     <a href="logout">Logout</a>
-            <!-- Link to external JavaScript file -->
+</main>
             <script src="AddPostToggle.js" ></script>
 </body>
 </html>
