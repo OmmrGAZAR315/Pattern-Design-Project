@@ -13,13 +13,12 @@ public class commentDao {
     QueryBuilder queryBuilder = new QueryBuilder();
 
 
-    public void addCommentToDatabase(comment comment) {
+    public void addCommentToDatabase(Comment comment) {
 
         queryBuilder.table("comments").insert("text", "commenter_id", "post_id")
-
-                .setParameter(comment.getCommentText())
-                .setParameter(comment.getCommentorid())
-                .setParameter(comment.getPostid())
+                .setParameter(comment.getText())
+                .setParameter(comment.getUserId())
+                .setParameter(comment.getPostId())
                 .build();
     }
 

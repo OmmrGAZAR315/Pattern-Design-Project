@@ -3,7 +3,7 @@ package org.example.dpproject.app.Http.DTOs;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserDto {
+public class UserDto extends DTO{
     private final String id;
     private final String username;
     private String password;
@@ -64,10 +64,6 @@ public class UserDto {
         return id != null;
     }
 
-    public int getPassedParameterCounter() {
-        return passedParameterCounter;
-    }
-
     public boolean isUsernamePassed() {
         return username != null;
     }
@@ -94,6 +90,10 @@ public class UserDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getPassedParameterCounter() {
+        return passedParameterCounter;
     }
 
     public void setPassword(String password) {

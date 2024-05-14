@@ -5,9 +5,9 @@ public enum RegexPattern {
     USERNAME("^[a-zA-Z0-9_]{4,16}$"),
     PASSWORD("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{4,}$"),
     NAME("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"),
-    AGE("^(?:[1-9][0-9]?|1[01][0-9]|120)$");
-
-
+    AGE("^(?:[1-9][0-9]?|1[01][0-9]|120)$"),
+    TITLE("^[\\p{L}0-9\\s.,'\"!?-]+$"),
+    CONTENT("^[\\p{L}0-9\\s.,'\"!?-]+(?:[\\p{L}0-9\\s.,'\"!?-]+)*$");
     private final String pattern;
 
     RegexPattern(String pattern) {

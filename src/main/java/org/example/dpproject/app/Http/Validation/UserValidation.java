@@ -11,7 +11,7 @@ public class UserValidation extends Validation {
     public static UserDto validate_delete_request(HttpServletRequest request, HttpServletResponse response) {
         UserDto userDto = new UserDto(request.getParameterMap());
         ParametersType id = ParametersType.required;
-        requestErrors(id, userDto.isIdPassed(), "ID", userDto.getId(), "[1-9]\\d*");
+        requestErrors(id, userDto.isIdPassed(), "ID", userDto.getId(), RegexPattern.ID.getPattern());
 
 
         if (isValidated(request, response))

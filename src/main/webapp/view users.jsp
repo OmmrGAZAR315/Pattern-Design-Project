@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.example.dpproject.app.Models.UserProfile" %>
+<%@ page import="org.example.dpproject.app.Models.User" %>
+<%@ page import="org.example.dpproject.app.Models.User" %>
 <jsp:include page="protectPage.jsp"/>
 
 <!DOCTYPE html>
@@ -25,7 +26,7 @@
 <%
     Object cacheObj = request.getSession().getAttribute("users");
     if (cacheObj instanceof Map<?, ?>) {
-        Map<Integer, UserProfile> userProfiles = (Map<Integer, UserProfile>) cacheObj;
+        Map<Integer, User> userProfiles = (Map<Integer, User>) cacheObj;
 %>
 <h2>User Profiles</h2>
 <table>
@@ -37,19 +38,19 @@
         <th>Age</th>
     </tr>
     <% if (!userProfiles.isEmpty()) {
-        for (Map.Entry<Integer, UserProfile> entry : userProfiles.entrySet()) {
-            UserProfile userProfile = entry.getValue();
+        for (Map.Entry<Integer, User> entry : userProfiles.entrySet()) {
+            User user = entry.getValue();
     %>
     <tr>
         <td><%= entry.getKey() %>
         </td>
-        <td><%= userProfile.getUsername() %>
+        <td><%= user.getUsername() %>
         </td>
-        <td><%= userProfile.getPassword() %>
+        <td><%= user.getPassword() %>
         </td>
-        <td><%= userProfile.getName() %>
+        <td><%= user.getName() %>
         </td>
-        <td><%= userProfile.getAge() %>
+        <td><%= user.getAge() %>
         </td>
     </tr>
     <% }

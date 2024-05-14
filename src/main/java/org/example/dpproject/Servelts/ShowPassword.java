@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Models.UserProfile;
+import org.example.dpproject.app.Models.User;
 import org.example.dpproject.app.Models.PasswordEncryption;
 
 import javax.crypto.SecretKey;
@@ -37,7 +37,7 @@ public class ShowPassword extends HttpServlet {
                     .build()
                     .first();
 
-            UserProfile userProfile = new UserProfile(user);
+            User userProfile = new User(user);
             System.out.println(userProfile);
             String password;
             try {
@@ -45,7 +45,7 @@ public class ShowPassword extends HttpServlet {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            request.setAttribute("shown_password", password);
+            request.getSession().setAttribute("shown_password", password);
             request.getRequestDispatcher("home.jsp").forward(request, response);
         }
     }

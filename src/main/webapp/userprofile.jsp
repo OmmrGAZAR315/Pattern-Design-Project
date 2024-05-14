@@ -2,7 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.example.dpproject.app.Models.UserProfile" %>
+<%@ page import="org.example.dpproject.app.Models.User" %>
+<%@ page import="org.example.dpproject.app.Models.User" %>
 <html>
 <head>
     <title>UserProfile</title>
@@ -11,9 +12,9 @@
 <%
     // Fetch user profile from session
     Object user = request.getSession().getAttribute("user");
-    UserProfile userProfile = null;
+    User user = null;
     if (user != null) {
-        userProfile = (UserProfile) user;
+        user = (User) user;
     }
 
 %>
@@ -21,8 +22,8 @@
 
 
 <h2>User Profile:</h2>
-<p>Username: <%= userProfile.getUsername() %></p>
-<p>Password: <%= userProfile.getPassword() %></p>
+<p>Username: <%= user.getUsername() %></p>
+<p>Password: <%= user.getPassword() %></p>
 
 
 

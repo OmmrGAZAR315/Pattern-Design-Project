@@ -1,11 +1,6 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
-<%@page import="org.example.dpproject.app.DAOs.postDao" %>
-
-<%@ page import="org.example.dpproject.app.Models.commentDao" %>
-<%@ page import="org.example.dpproject.app.Models.UserProfile" %>
-<%@ page import="org.example.dpproject.DB.QBResults" %>
-<%@ page import="org.example.dpproject.app.Helpers.HttpResponse" %>
+<%@ page import="org.example.dpproject.app.Models.User" %>
+<%@ page import="org.example.dpproject.app.Models.Post" %>
+<%@ page import="org.example.dpproject.app.Models.Comment" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="protectPage.jsp"/>
 <!DOCTYPE html>
@@ -31,75 +26,70 @@
 <body>
 
 <a href="userprofile">UserProfile</a>
-
-
+<a href="logout">Logout</a>
 <%
-    // Fetch user profile from session
-    Object user = request.getSession().getAttribute("user");
-    UserProfile userProfile = null;
-    if (user != null) {
-        userProfile = (UserProfile) user;
-    }
+    Object userOb = request.getSession().getAttribute("user");
+    Object postsOb = request.getSession().getAttribute("posts");
+    User user = null;
+    Post[] posts = null;
+    if (userOb != null)
+        user = (User) userOb;
 
-    // Fetch posts from the database
-    postDao postsDao = new postDao();
-    List<Map<String, Object>> posts = postsDao.fetchPosts();
-
-    commentDao commentsDao = new commentDao();
+    if (postsOb != null)
+        posts = (Post[]) postsOb;
 
 %>
 
-<h1>Welcome to the Home Page, <%= userProfile.getName() %>
+<h1>Welcome to the Home Page, <%= user.getName() %>
 </h1>
-<a href="addPost">Add Post</a>
-
+<a href="add_post.html">Add Post</a>
 
 <h2>Recent Posts:</h2>
 <div class="post-container">
         <%
-    for (Map<String, Object> post : posts) {
-    %>
-
+   if(posts == null)
+    {%>
+    <p>No posts yet.</p>
+        <%
+    }
+   else
+   {%>
+    <h4>Posts:</h4>
+        <%for (Post post : posts) {%>
     <div class="post-container">
         <div class="post">
-            <h3><%= post.get("title") %>
+            <h3><%= post.getTitle() %>
             </h3>
-            <p><%= post.get("content") %>
+            <p><%= post.getContent() %>
             </p>
-
-
             <%
-                String postId = String.valueOf(post.get("postId"));
-                QBResults postComments = commentsDao.FetchCommentsForPost(postId);
-            %>
-            <% if (postComments.getStatusCode() == HttpResponse.NOT_FOUND.getCode()) { %>
+                Comment[] postComments = post.comments();
+                if (postComments == null) {%>
             <p>No comments yet.</p>
-            <% } else { %>
+            <% } else {%>
             <h4>Comments:</h4>
             <ul>
-                <% for (Map<String, Object> comment : postComments.all()) { %>
-                <li><%= comment.get("text") %>
+                <% for (Comment comment : postComments) { %>
+                <li><%= comment.getText() %>
                 </li>
                 <% } %>
             </ul>
             <% } %>
 
-            <!-- Add a form to allow users to add comments -->
-            <form action="addcomment" method="post">
-                <input type="hidden" name="postid" value="<%= postId %>">
+            <form action="comments" method="post">
+                <input type="hidden" name="postId" value="<%= post.getId() %>">
+                <input type="hidden" name="userId" value="<%= user.getId() %>">
                 <label for="comment">Add Comment:</label><br>
-                <textarea id="comment" name="content" rows="2" cols="50"></textarea><br>
+                <textarea id="comment" name="text" rows="2" cols="50"></textarea><br>
                 <input type="submit" value="Submit">
             </form>
         </div>
     </div>
 
-        <% } %>
+        <% }
+   } %>
 
     <br/>
-
-
-    <a href="logout">Logout</a>
-
+    <script src="getAllPosts.js"></script>
 </body>
 </html>

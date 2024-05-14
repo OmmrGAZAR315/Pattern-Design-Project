@@ -3,7 +3,7 @@ package org.example.dpproject.app.DAOs;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Models.UserProfile;
+import org.example.dpproject.app.Models.User;
 
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public class UserDao {
         QueryBuilder query2 = new QueryBuilder();
         HttpSession session = request.getSession(false);
         if (session != null) {
-            UserProfile user = (UserProfile) session.getAttribute("user");
+            User user = (User) session.getAttribute("user");
             if (user != null) {
                 String username = user.getUsername();
 

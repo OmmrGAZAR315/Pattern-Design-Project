@@ -1,14 +1,14 @@
 package org.example.dpproject.app.Proxy;
 
 
-import org.example.dpproject.app.Models.UserProfile;
+import org.example.dpproject.app.Models.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserProfileServiceProxy implements UserProfileService, Cacheable {
     private UserProfileService userProfileService;
-    private static Map<Integer, UserProfile> userProfileCache;
+    private static Map<Integer, User> userProfileCache;
 
     public UserProfileServiceProxy() {
         this.userProfileService = new UserProfileServiceImpl();
@@ -16,21 +16,21 @@ public class UserProfileServiceProxy implements UserProfileService, Cacheable {
     }
 
     @Override
-    public UserProfile getUserProfile(int userId) {
+    public User getUserProfile(int userId) {
         if (userProfileCache.containsKey(userId)) {
             System.out.println("Retrieving user profile from cache for user ID: " + userId);
             return userProfileCache.get(userId);
         } else {
-            UserProfile userProfile = userProfileService.getUserProfile(userId);
-            if (userProfile == null)
+            User user = userProfileService.getUserProfile(userId);
+            if (user == null)
                 return null;
-            userProfileCache.put(userId, userProfile);
+            userProfileCache.put(userId, user);
             System.out.println("Fetching user profile from database for user ID: " + userId);
-            return userProfile;
+            return user;
         }
     }
 
-    public Map<Integer, UserProfile> getUserProfileCache() {
+    public Map<Integer, User> getUserProfileCache() {
         return userProfileCache;
     }
 }

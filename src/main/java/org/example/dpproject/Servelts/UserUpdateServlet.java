@@ -5,16 +5,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.DB.QBResults;
+import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Http.Validation.UserValidation;
-import org.example.dpproject.app.Http.Responses.UserResponse.UserResponse;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
-import java.util.Map;
 
 @WebServlet("/editUser")
-public class UserEditServlet extends HttpServlet {
+public class UserUpdateServlet extends HttpServlet {
     protected UserService service;
 
     @Override
@@ -31,8 +31,8 @@ public class UserEditServlet extends HttpServlet {
         }
         QBResults queryResult = this.service.updateUser(userDto);
 
-        new UserResponse()
-                .dispatch(request, response, queryResult, "edit");
+        new Responses()
+                .dispatch(request, response, queryResult, "edit", HttpResponse.OK.getCode());
 
 
     }

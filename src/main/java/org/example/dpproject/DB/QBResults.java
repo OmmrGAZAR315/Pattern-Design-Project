@@ -2,6 +2,8 @@ package org.example.dpproject.DB;
 
 import org.example.dpproject.app.Helpers.HttpResponse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,12 @@ public class QBResults {
 
     public QBResults(Map<String, List<Map<String, Object>>> results) {
         this.results = results;
+    }
+
+    public QBResults() {
+        this.results = new HashMap<>();
+        this.results.put("results", null);
+        this.results.put("messages", new ArrayList<>());
     }
 
     public Map<String, Object> first() {

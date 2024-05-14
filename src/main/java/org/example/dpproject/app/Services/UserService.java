@@ -5,7 +5,7 @@ import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Models.PasswordEncryption;
-import org.example.dpproject.app.Models.UserProfile;
+import org.example.dpproject.app.Models.User;
 import org.example.dpproject.app.Repositories.UserRepository;
 
 import javax.crypto.SecretKey;
@@ -28,8 +28,8 @@ public class UserService {
             return result.setCustom_message("id not found");
 
         if (dto.getPassword() != null) {
-            UserProfile userProfile = new UserProfile(result.first());
-            SecretKey key = PasswordEncryption.reconstructKey(userProfile.getKey());
+            User user = new User(result.first());
+            SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
             try {
                 dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
             } catch (Exception e) {
@@ -45,16 +45,16 @@ public class UserService {
         if (results.getStatusCode() != HttpResponse.OK.getCode())
             return results.setCustom_message("username not found");
 
-        UserProfile userProfile = new UserProfile(results.first());
-        SecretKey key = PasswordEncryption.reconstructKey(userProfile.getKey());
+        User user = new User(results.first());
+        SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
         try {
             dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
         } catch (Exception e) {
             return results.setCustom_message("error encrypting password");
         }
-        if (Objects.equals(dto.getPassword(), userProfile.getPassword()))
-            return results;
-        else results.setCustom_message("invalid username and password");
+//        System.out.println(dto.getPassword());
+        if (!Objects.equals(dto.getPassword(), user.getPassword()))
+            results.setCustom_message("invalid username and password");
 
         return results;
     }
@@ -62,11 +62,12 @@ public class UserService {
     public QBResults signUp(UserDto dto) {
         byte[] keyBytes;
         try {
+
             SecretKey key = PasswordEncryption.generateKey();
             dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
-            keyBytes = PasswordEncryption.generateKey().getEncoded();
+            keyBytes = key.getEncoded();
         } catch (Exception e) {
-            return null;
+            return new QBResults().setCustom_message("error encrypting password");
         }
 
         QBResults results = userRepository.signUp(dto, keyBytes);
