@@ -7,6 +7,7 @@ public class PostDto extends DTO {
     private final String id;
     private String title;
     private String content;
+    private String userId;
     protected int passedParameterCounter = 0;
 
     public PostDto(Map<String, String[]> parameters) {
@@ -28,6 +29,12 @@ public class PostDto extends DTO {
             this.content = parameters.get("content")[0];
             passedParameterCounter++;
         }
+        if (parameters.get("userId") == null)
+            this.userId = null;
+        else {
+            this.userId = parameters.get("userId")[0];
+            passedParameterCounter++;
+        }
     }
 
     public Map<String, String> toMap() {
@@ -36,6 +43,8 @@ public class PostDto extends DTO {
             map.put("title", title);
         if (content != null)
             map.put("content", content);
+        if (userId == null)
+            map.put("userId", userId);
         return map;
     }
 
@@ -51,6 +60,10 @@ public class PostDto extends DTO {
         return content != null;
     }
 
+    public boolean isUserIdPassed() {
+        return userId != null;
+    }
+
     public String getId() {
         return id;
     }
@@ -62,6 +75,11 @@ public class PostDto extends DTO {
     public String getContent() {
         return content;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
     public int getPassedParameterCounter() {
         return passedParameterCounter;
     }

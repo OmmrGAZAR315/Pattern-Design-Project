@@ -8,7 +8,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-public class User extends Relation {
+public class User extends Model {
     public static final String table = "users";
     private int id;
     private String username;

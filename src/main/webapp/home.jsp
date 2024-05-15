@@ -42,7 +42,7 @@
 
 <h1>Welcome to the Home Page, <%= user.getName() %>
 </h1>
-<a href="add_post.html">Add Post</a>
+<a href="add_post.jsp">Add Post</a>
 
 <h2>Recent Posts:</h2>
 <div class="post-container">
