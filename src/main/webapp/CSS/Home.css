@@ -2,23 +2,23 @@
 body{
     background-color: white;
     font-family: sans-serif;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 2fr 1fr;
-    grid-template-areas: "header heaer" "main aside";
+    /*display: grid;*/
+    /*grid-template-rows: auto 1fr;*/
+    /*grid-template-columns: 2fr 1fr;*/
+    /*grid-template-areas: "header heaer" "main aside";*/
 
 }
-main{
-    width: 66%;
-    grid-area: main
-}
-aside{
-    width: 33%;
-    background-color: #f8f8f8;
-    border-radius: 5px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    grid-area: aside;
-}
+/*main{*/
+/*    width: 66%;*/
+/*    grid-area: main*/
+/*}*/
+/*aside{*/
+/*    width: 33%;*/
+/*    background-color: #f8f8f8;*/
+/*    border-radius: 5px;*/
+/*    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);*/
+/*    grid-area: aside;*/
+/*}*/
 main > button:first-of-type{
     all: unset;
     /*background-color: var(--main-color);*/
@@ -124,6 +124,8 @@ main .add-post form textarea::placeholder{
 }
 .post form input[id="comment"] {
     border-radius: 7px;
+    border: 1px solid black;
+
 }
 .post{
 

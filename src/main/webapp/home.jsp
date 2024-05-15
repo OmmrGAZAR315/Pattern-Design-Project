@@ -24,8 +24,6 @@
     <header class="home-header">
         <ul><li><a href="userprofile">UserProfile</a></li></ul>
         <h1 class="home-h1">Forum</h1>
-<%--idea: make the userprofile of header is simply the name of the user--%>
-<%--idea: remove toggle add post and make it simply static in home--%>
     </header>
     <main>
 <%
@@ -99,16 +97,16 @@
 
     <a href="logout">Logout</a>
 </main>
-    <aside>
-        <ul>
-            <p>Top Users</p>
-            <li>Ahmed</li>
-            <li>Eslam</li>
-        </ul>
+<%--    <aside>--%>
+<%--        <ul>--%>
+<%--            <p>Top Users</p>--%>
+<%--            <li>Ahmed</li>--%>
+<%--            <li>Eslam</li>--%>
+<%--        </ul>--%>
 
 
 
-    </aside>
+<%--    </aside>--%>
             <script src="AddPostToggle.js" ></script>
 </body>
 </html>
