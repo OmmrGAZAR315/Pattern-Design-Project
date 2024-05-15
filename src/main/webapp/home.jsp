@@ -45,7 +45,6 @@
 %>
 <%--    <h1>Welcome to the Home Page, <%= userProfile.getName() %></h1>--%>
 <%--    <button id="showFormButton">Add Post</button>--%>
-
     <div id="postForm" class="add-post">
         <h1>Create post</h1>
         <form action="addPost" method="post">
@@ -100,6 +99,16 @@
 
     <a href="logout">Logout</a>
 </main>
+    <aside>
+        <ul>
+            <p>Top Users</p>
+            <li>Ahmed</li>
+            <li>Eslam</li>
+        </ul>
+
+
+
+    </aside>
             <script src="AddPostToggle.js" ></script>
 </body>
 </html>
