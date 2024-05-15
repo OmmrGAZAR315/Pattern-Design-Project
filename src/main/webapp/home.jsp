@@ -63,6 +63,7 @@
             </h3>
             <p><%= post.get("content") %>
             </p>
+            <hr>
 
 
             <%
@@ -85,7 +86,7 @@
             <form action="addcomment" method="post">
                 <input type="hidden" name="postid" value="<%= postId %>">
                 <input placeholder="Write a comment.." id="comment" name="content" rows="2" cols="50"></input>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Comment">
             </form>
         </div>
     </div>

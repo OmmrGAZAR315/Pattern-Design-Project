@@ -1,4 +1,6 @@
-
+:root {
+    --main-color: #5698C8;
+}
 body{
     background-color: white;
     font-family: sans-serif;
@@ -116,8 +118,12 @@ main .add-post form textarea::placeholder{
     border-radius: 5px;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
     padding: 5px;
-}
+    font-family: 'Open Sans', sans-serif;
 
+}
+.post h3{
+    font-size: 15px;
+}
 
 .post form {
     display: flex;
@@ -127,6 +133,11 @@ main .add-post form textarea::placeholder{
     border: 1px solid black;
 
 }
-.post{
-
+.post form input[value="Comment"]{
+    all: unset;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 7px;
+    padding: 5px;
+    background-color: #2485F7;
 }
