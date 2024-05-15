@@ -86,6 +86,7 @@ header{
     display: flex;
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    grid-area: header
 }
 header h1{
     all: unset;
