@@ -87,7 +87,7 @@
             <!-- Add a form to allow users to add comments -->
             <form action="addcomment" method="post">
                 <input type="hidden" name="postid" value="<%= postId %>">
-                <textarea placeholder="Write a comment.." id="comment" name="content" rows="2" cols="50"></textarea><br>
+                <input placeholder="Write a comment.." id="comment" name="content" rows="2" cols="50"></input>
                 <input type="submit" value="Submit">
             </form>
         </div>

@@ -101,4 +101,9 @@ main .add-post form textarea::placeholder{
     background-color: #f8f8f8;
     border-radius: 5px;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+}
+
+.post form {
+    display: flex;
 }
