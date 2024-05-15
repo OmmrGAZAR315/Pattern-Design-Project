@@ -9,7 +9,6 @@ import org.example.dpproject.app.Http.DTOs.PostDto;
 public class PostValidation extends Validation {
 
     public static PostDto validate_creatPost_request(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("id1 " + request.getParameter("userId"));
         PostDto postDto = new PostDto(request.getParameterMap());
         ParametersType title = ParametersType.required;
         ParametersType content = ParametersType.required;
@@ -17,7 +16,6 @@ public class PostValidation extends Validation {
         requestErrors(title, postDto.isTitlePassed(), "Title", postDto.getTitle(), RegexPattern.TITLE.getPattern());
         requestErrors(content, postDto.isContentPassed(), "Content", postDto.getContent(), RegexPattern.CONTENT.getPattern());
         requestErrors(userId, postDto.isUserIdPassed(), "User Id", postDto.getUserId(), RegexPattern.ID.getPattern());
-        System.out.println("id2 " + postDto.getUserId());
 
         if (isValidated(request, response))
             return postDto;

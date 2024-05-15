@@ -13,6 +13,7 @@ import org.example.dpproject.app.Proxy.PostsProxy;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -28,6 +29,7 @@ public class LoginServlet extends HttpServlet {
             return;
 
         QBResults queryResults = this.service.login(userDto);
+        System.out.println(Arrays.toString(PostsProxy.getCookies(request)));
         request.getSession().setAttribute("recentPosts", PostsProxy.getCookies(request));
         HelperClass.login(request, response, queryResults);
 
