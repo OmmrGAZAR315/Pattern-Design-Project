@@ -31,7 +31,6 @@ public class PostServlet extends HttpServlet {
                 @Override
                 public void anonymousFunctionInSuccessCase() {
                     Post[] posts = HelperClass.convertListMapToArray(Post.class, queryResults.all());
-                    new Post().Observe();
                     HttpSession session = request.getSession();
                     session.setAttribute("posts", posts);
                     PostsProxy.setCookies(resp);
@@ -55,7 +54,7 @@ public class PostServlet extends HttpServlet {
         Responses postResponse = new Responses() {
             @Override
             public void anonymousFunctionInSuccessCase() {
-                new Post().Observe();
+                new Post().notifySubscribers();
                 PostsProxy.setCookies(resp);
             }
         };
@@ -83,5 +82,7 @@ public class PostServlet extends HttpServlet {
 //
 //        resp.sendRedirect("home.jsp");
 //    }
-
+static {
+    new Post().Observe();
+}
 }

@@ -30,6 +30,7 @@ public class PostsProxy implements Cacheable {
             for (int i = 0; i < 5; i++)
                 recentPostsCache.set(i, recentPostsCache.get(i + 1));
             recentPostsCache.remove(5);
+            System.out.println("list " + Arrays.toString(recentPostsCache.toArray()));
         }
     }
 
@@ -42,11 +43,6 @@ public class PostsProxy implements Cacheable {
         String json = new PostsProxy().getCache().toString();
         String encodedJson = URLEncoder.encode(json, StandardCharsets.UTF_8);
         response.addCookie(new Cookie("recentPosts", encodedJson));
-//        Cookie cookie = new Cookie("recentPosts", json);
-//        try {
-//            response.addCookie(cookie);
-//        } catch (Exception ignored) {
-//        }
     }
 
     public static Post[] getCookies(HttpServletRequest request) {
