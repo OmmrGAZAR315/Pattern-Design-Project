@@ -9,6 +9,7 @@ import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Models.User;
+import org.example.dpproject.app.Proxy.PostsProxy;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class LoginServlet extends HttpServlet {
             return;
 
         QBResults queryResults = this.service.login(userDto);
+        request.getSession().setAttribute("recentPosts", PostsProxy.getCookies(request));
         HelperClass.login(request, response, queryResults);
 
     }

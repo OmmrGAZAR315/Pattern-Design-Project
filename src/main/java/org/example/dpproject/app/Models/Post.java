@@ -19,7 +19,6 @@ public class Post extends Model {
     }
 
     public Post(int id, String title, String content, int userId) {
-        System.out.println("Post creating...");
         this.id = id;
         this.title = title;
         this.content = content;
@@ -45,12 +44,7 @@ public class Post extends Model {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", userId=" + userId +
-                '}';
+        return "Post{id=" + id + ", title='" + title + "', content='" + content + "', userId=" + userId + "}";
     }
 
     public String getContent() {
