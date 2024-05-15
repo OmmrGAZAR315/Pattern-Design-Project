@@ -8,53 +8,57 @@ import java.util.Map;
 
 public interface Builder {
 
-    public Builder table(String tableName);
+    Builder table(String tableName);
 
-    public Builder select(String... columns);
+    Builder select(String... columns);
 
-    public Builder insert(String... columns);
+    Builder insert(String... columns);
 
-    public Builder update(String... columns);
+    Builder update(String... columns);
 
-    public Builder delete();
+    Builder delete();
 
-    public Builder call(String procedureName);
+    Builder call(String procedureName);
 
-    public Builder setParameter(Object parameter);
+    Builder setParameter(Object parameter);
 
-    public void setInsertParameter(Object parameter);
+    void setInsertParameter(Object parameter);
 
-    public void setUpdateParameter(Object parameter);
+    void setUpdateParameter(Object parameter);
 
-    public Builder setCallParameter(String parameter);
+    Builder setCallParameter(String parameter);
 
-    public Builder where(String column, Object value);
+    Builder where(String column, Object value);
 
-    public Builder whereId(Object value);
+    Builder whereId(Object value);
 
-    public Builder orWhere(String column, Object value);
+    Builder orWhere(String column, Object value);
 
-    public Builder where(String column, String operator, Object value, String logicalOperator);
+    Builder where(String column, String operator, Object value, String logicalOperator);
 
 
-    public Builder whereIn(String column, String[] values);
+    Builder whereIn(String column, String[] values);
 
-    public Builder whereNotIn(String column, String[] values);
+    Builder whereNotIn(String column, String[] values);
 
-    public Builder whereBetween(String column, String value1, String value2);
+    Builder whereBetween(String column, String value1, String value2);
 
-    public Builder whereNotBetween(String column, String value1, String value2);
+    Builder whereNotBetween(String column, String value1, String value2);
 
-    public Builder whereNull(String column);
+    Builder whereNull(String column);
 
-    public Builder whereNotNull(String column);
+    Builder whereNotNull(String column);
 
-    public Builder whereLike(String column, String value);
+    Builder whereLike(String column, String value);
 
-    public Builder whereNotLike(String column, String value);
+    Builder whereNotLike(String column, String value);
+
+    Builder orderBy(String column);
+    Builder orderBy(String column, String order);
+
+    Builder limitBy(int limit);
 
 //    public  void getMetaData(String tableName, String columnName, String value) throws SQLException;
 
-    public QBResults build();
-
+    QBResults build();
 }

@@ -11,5 +11,6 @@
 <a href="login.jsp">Login</a>
 <a href="signup.jsp">Register</a>
 <a href="user_ids.jsp">User IDs</a>
+<a href="logout">Logout</a>
 </body>
 </html>

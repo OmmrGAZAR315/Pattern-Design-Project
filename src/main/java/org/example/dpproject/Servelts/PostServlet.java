@@ -1,11 +1,10 @@
 package org.example.dpproject.Servelts;
 
+import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import org.example.dpproject.DB.QBResults;
+import org.example.dpproject.app.Helpers.CookieUtil;
 import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.PostDto;
@@ -13,6 +12,8 @@ import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Models.Post;
 import org.example.dpproject.app.Services.PostService;
 import org.example.dpproject.app.Http.Validation.PostValidation;
+
+import static org.example.dpproject.app.Helpers.CookieUtil.setObjectAsCookie;
 
 
 @WebServlet("/posts")
@@ -33,6 +34,7 @@ public class PostServlet extends HttpServlet {
                 @Override
                 public void anonymousFunctionInSuccessCase() {
                     Post[] posts = HelperClass.convertListMapToArray(Post.class, queryResults.all());
+                    new Post().Observe();
                     HttpSession session = request.getSession();
                     session.setAttribute("posts", posts);
                 }
@@ -55,10 +57,7 @@ public class PostServlet extends HttpServlet {
         Responses postResponse = new Responses() {
             @Override
             public void anonymousFunctionInSuccessCase() {
-                //Observer code by yours Truly medo
-//                PostObserver postwatcher = new PostWatcher(pstDao);
-//                pstDao.addObserver(postwatcher);
-//                pstDao.notifyObservers();
+                new Post().Observe();
             }
         };
         postResponse

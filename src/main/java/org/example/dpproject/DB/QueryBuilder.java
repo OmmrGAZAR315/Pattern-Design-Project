@@ -9,16 +9,16 @@ import java.sql.*;
 import java.util.*;
 
 public class QueryBuilder implements Builder {
-    Query query;
+    Query queryOb;
 
     public QueryBuilder() {
-        query = new Query();
+        queryOb = new Query();
     }
 
     public QueryBuilder table(String tableName) {
-        query.tableName = "`" + tableName + "`";
-        query.columns.clear();
-        query.parameters.clear();
+        queryOb.tableName = "`" + tableName + "`";
+        queryOb.columns.clear();
+        queryOb.parameters.clear();
         return this;
     }
 
@@ -26,98 +26,98 @@ public class QueryBuilder implements Builder {
         String columnsSplitByComma = "id, ";
         if (columns.length == 1) {
             if (columns[0].equals("*"))
-                query.selectAll = true;
+                queryOb.selectAll = true;
 
             columnsSplitByComma = columns[0];
         } else {
             columnsSplitByComma += String.join(", ", columns);
         }
-        query.query = "SELECT " + columnsSplitByComma + " FROM " + query.tableName;
-        query.queryType = QueryType.READ;
-        query.columns.addAll(Arrays.asList(columns));
+        queryOb.query = "SELECT " + columnsSplitByComma + " FROM " + queryOb.tableName;
+        queryOb.queryType = QueryType.READ;
+        queryOb.columns.addAll(Arrays.asList(columns));
         return this;
     }
 
     public QueryBuilder insert(String... columns) {
-        query.query = "INSERT INTO " + query.tableName;
-        query.query += "( ";
-        query.query += String.join(",", columns);
-        query.query += ") VALUES ( ";
+        queryOb.query = "INSERT INTO " + queryOb.tableName;
+        queryOb.query += "( ";
+        queryOb.query += String.join(",", columns);
+        queryOb.query += ") VALUES ( ";
 
-        query.parameters.add(columns.length);
-        query.queryType = QueryType.Create;
+        queryOb.parameters.add(columns.length);
+        queryOb.queryType = QueryType.Create;
         return this;
     }
 
     public QueryBuilder update(String... columns) {
-        query.query = "UPDATE " + query.tableName;
-        query.query += " SET ";
+        queryOb.query = "UPDATE " + queryOb.tableName;
+        queryOb.query += " SET ";
 
-        query.columns.addAll(Arrays.asList(columns));
-        query.queryType = QueryType.Update;
+        queryOb.columns.addAll(Arrays.asList(columns));
+        queryOb.queryType = QueryType.Update;
         return this;
     }
 
     public QueryBuilder delete() {
-        query.query = "DELETE FROM " + query.tableName;
-        query.queryType = QueryType.CUD;
+        queryOb.query = "DELETE FROM " + queryOb.tableName;
+        queryOb.queryType = QueryType.CUD;
         return this;
     }
 
     public QueryBuilder call(String procedureName) {
-        query.query = "{CALL " + procedureName;
+        queryOb.query = "{CALL " + procedureName;
         return this;
     }
 
     public QueryBuilder setParameter(Object parameter) {
-        if (query.queryType == QueryType.Create)
+        if (queryOb.queryType == QueryType.Create)
             setInsertParameter(parameter);
 
-        else if (query.queryType == QueryType.Update)
+        else if (queryOb.queryType == QueryType.Update)
             setUpdateParameter(parameter);
 
         return this;
     }
 
     public void setInsertParameter(Object parameter) {
-        if (query.isParameterSet)
-            query.query += ", " + "?" + " ";
+        if (queryOb.isParameterSet)
+            queryOb.query += ", " + "?" + " ";
         else {
-            query.query += "?";
-            query.isParameterSet = true;
+            queryOb.query += "?";
+            queryOb.isParameterSet = true;
         }
 
-        query.parameters.add(parameter);
-        int numberOfColumns = (int) query.parameters.get(0);
+        queryOb.parameters.add(parameter);
+        int numberOfColumns = (int) queryOb.parameters.get(0);
         // if the number of columns is equal to the number of parameters
-        if (query.parameters.size() - 1 == numberOfColumns) {
-            query.query += ")";
-            query.parameters.remove(0);
+        if (queryOb.parameters.size() - 1 == numberOfColumns) {
+            queryOb.query += ")";
+            queryOb.parameters.remove(0);
         }
     }
 
     public void setUpdateParameter(Object parameter) {
-        query.query += query.columns.get(0) + " = ?";
-        query.columns.remove(0);
-        query.parameters.add(parameter);
+        queryOb.query += queryOb.columns.get(0) + " = ?";
+        queryOb.columns.remove(0);
+        queryOb.parameters.add(parameter);
 
-        if (!query.columns.isEmpty())
-            query.query += ", ";
+        if (!queryOb.columns.isEmpty())
+            queryOb.query += ", ";
 
     }
 
     public QueryBuilder setCallParameter(String parameter) {
         if (Objects.equals(parameter, "0"))
-            query.query += ")";
+            queryOb.query += ")";
 
         else {
-            if (!query.isCallParameterSet) {
-                query.query += "(" + parameter + " ";
-                query.isCallParameterSet = true;
+            if (!queryOb.isCallParameterSet) {
+                queryOb.query += "(" + parameter + " ";
+                queryOb.isCallParameterSet = true;
             } else
-                query.query += ", " + parameter + " ";
+                queryOb.query += ", " + parameter + " ";
 
-            query.parameters.add(parameter);
+            queryOb.parameters.add(parameter);
 
         }
         return this;
@@ -136,127 +136,144 @@ public class QueryBuilder implements Builder {
     }
 
     public QueryBuilder where(String column, String operator, Object value, String logicalOperator) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " " + logicalOperator + " ";
+            queryOb.query += " " + logicalOperator + " ";
 
-        query.query += column + operator + " ? ";
-        query.parameters.add(value);
+        queryOb.query += column + operator + " ? ";
+        queryOb.parameters.add(value);
         return this;
     }
 
     public QueryBuilder whereIn(String column, String[] values) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
+            queryOb.query += " AND ";
 
-        query.query += column + " IN (" + String.join(", ", values) + ")";
+        queryOb.query += column + " IN (" + String.join(", ", values) + ")";
         return this;
 
     }
 
     public QueryBuilder whereNotIn(String column, String[] values) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
+            queryOb.query += " AND ";
 
-        query.query += column + " NOT IN (" + String.join(", ", values) + ")";
+        queryOb.query += column + " NOT IN (" + String.join(", ", values) + ")";
         return this;
 
     }
 
     public QueryBuilder whereBetween(String column, String value1, String value2) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
-        query.query += column + " BETWEEN " + value1 + " AND " + value2;
+            queryOb.query += " AND ";
+        queryOb.query += column + " BETWEEN " + value1 + " AND " + value2;
         return this;
 
     }
 
     public QueryBuilder whereNotBetween(String column, String value1, String value2) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
-        query.query += column + " NOT BETWEEN " + value1 + " AND " + value2;
+            queryOb.query += " AND ";
+        queryOb.query += column + " NOT BETWEEN " + value1 + " AND " + value2;
         return this;
 
     }
 
     public QueryBuilder whereNull(String column) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
-        query.query += column + " IS NULL";
+            queryOb.query += " AND ";
+        queryOb.query += column + " IS NULL";
         return this;
 
     }
 
     public QueryBuilder whereNotNull(String column) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
-        query.query += column + " IS NOT NULL";
+            queryOb.query += " AND ";
+        queryOb.query += column + " IS NOT NULL";
         return this;
     }
 
     public QueryBuilder whereLike(String column, String value) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
+            queryOb.query += " AND ";
 
-        query.query += column + " LIKE " + value;
+        queryOb.query += column + " LIKE " + value;
         return this;
     }
 
     public QueryBuilder whereNotLike(String column, String value) {
-        if (!query.isWhereSet) {
-            query.query += " WHERE ";
-            query.isWhereSet = true;
+        if (!queryOb.isWhereSet) {
+            queryOb.query += " WHERE ";
+            queryOb.isWhereSet = true;
         } else
-            query.query += " AND ";
+            queryOb.query += " AND ";
 
-        query.query += column + " NOT LIKE " + value;
+        queryOb.query += column + " NOT LIKE " + value;
         return this;
     }
 
+    @Override
+    public Builder orderBy(String column) {
+        return orderBy(column, "ASC");
+
+    }
+
+    @Override
+    public Builder orderBy(String column, String order) {
+        queryOb.query += " ORDER BY " + column + " " + order;
+        return this;
+    }
+
+    @Override
+    public Builder limitBy(int limit) {
+        queryOb.query += " LIMIT " + limit;
+        return this;
+    }
 
     public QBResults build() {
-        System.out.println(query.query);
+        System.out.println(queryOb.query);
         ResultSet resultSet = null;
-        try (PreparedStatement preparedStatement = DB.getConnection().prepareStatement(query.query, Statement.RETURN_GENERATED_KEYS)) {
-            if (!query.parameters.isEmpty()) {
-                for (int i = 0; i < query.parameters.size(); i++) {
-                    preparedStatement.setObject(i + 1, query.parameters.get(i));
+        try (PreparedStatement preparedStatement = DB.getConnection().prepareStatement(queryOb.query, Statement.RETURN_GENERATED_KEYS)) {
+            if (!queryOb.parameters.isEmpty()) {
+                for (int i = 0; i < queryOb.parameters.size(); i++) {
+                    preparedStatement.setObject(i + 1, queryOb.parameters.get(i));
                 }
             }
             HttpResponse response;
-            query.parameters.clear();
-            switch (query.queryType) {
+            queryOb.parameters.clear();
+            switch (queryOb.queryType) {
                 case READ:
                     try {
                         resultSet = preparedStatement.executeQuery();
                         response = HttpResponse.OK;
                     } catch (Exception e) {
                         response = HttpResponse.BAD_REQUEST;
-                        query.importedData.put("messages", addMessage(response));
-                        return new QBResults(query.importedData);
+                        queryOb.importedData.put("messages", addMessage(response));
+                        return new QBResults(queryOb.importedData);
                     }
                     List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
                     if (!resultSet.isBeforeFirst())
@@ -264,17 +281,17 @@ public class QueryBuilder implements Builder {
                     else {
                         while (resultSet.next()) {
                             Map<String, Object> row = new HashMap<>();
-                            if (query.selectAll)
+                            if (queryOb.selectAll)
                                 for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
                                     row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
                             else
-                                for (String column : query.columns)
+                                for (String column : queryOb.columns)
                                     row.put(column, resultSet.getObject(column));
                             fetchedAllRows.add(row);
                         }
-                        query.importedData.put("results", fetchedAllRows);
+                        queryOb.importedData.put("results", fetchedAllRows);
                     }
-                    query.importedData.put("messages", addMessage(response));
+                    queryOb.importedData.put("messages", addMessage(response));
 
                     break;
                 case CUD:
@@ -283,7 +300,7 @@ public class QueryBuilder implements Builder {
                     if (preparedStatement.executeUpdate() == 0)
                         response = HttpResponse.BAD_REQUEST;
                     else {
-                        switch (query.queryType) {
+                        switch (queryOb.queryType) {
                             case Update:
                                 response = HttpResponse.OK;
                                 break;
@@ -295,10 +312,10 @@ public class QueryBuilder implements Builder {
                                 break;
                         }
                     }
-                    query.importedData.put("messages", addMessage(response));
+                    queryOb.importedData.put("messages", addMessage(response));
                     resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next())
-                        query.importedData.put("results",
+                        queryOb.importedData.put("results",
                                 Collections.singletonList(
                                         Map.of("id", resultSet.getInt(1)
                                         )
@@ -306,7 +323,7 @@ public class QueryBuilder implements Builder {
                         );
                     break;
             }
-            return new QBResults(query.importedData);
+            return new QBResults(queryOb.importedData);
         } catch (SQLException e) {
             Map<String, Object> messageMap = new HashMap<>();
             messageMap.put("message", "Error executing query: \n" + e.getMessage());
@@ -315,18 +332,18 @@ public class QueryBuilder implements Builder {
             List<Map<String, Object>> messagesList = new ArrayList<>();
             messagesList.add(messageMap);
 
-            query.importedData.put("messages", messagesList);
+            queryOb.importedData.put("messages", messagesList);
 
         }
         try {
             if (resultSet != null)
                 resultSet.close();
         } catch (SQLException ignored) {
-            query.importedData.put("messages", addMessage(HttpResponse.INTERNAL_SERVER_ERROR));
-            return new QBResults(query.importedData);
+            queryOb.importedData.put("messages", addMessage(HttpResponse.INTERNAL_SERVER_ERROR));
+            return new QBResults(queryOb.importedData);
         }
 
-        return new QBResults(query.importedData);
+        return new QBResults(queryOb.importedData);
     }
 
     private List<Map<String, Object>> addMessage(HttpResponse response) {

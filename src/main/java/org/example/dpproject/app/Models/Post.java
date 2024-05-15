@@ -1,34 +1,41 @@
 package org.example.dpproject.app.Models;
 
-import org.example.dpproject.DB.Relation;
 
-import java.util.Date;
+import org.example.dpproject.app.Observer.Observer;
+import org.example.dpproject.app.Observer.PostObserver;
+
 import java.util.Map;
 
-public class Post extends Relation {
+public class Post extends Model {
     public static final String table = "posts";
+    private static final Observer postObserver = new PostObserver();
     private int id;
     private String title;
     private String content;
-    private Date createdDate;
-    private String userId;
-    private int groupid;
+    private int userId;
 
 
-    public Post(String title, String content, String userID) {
+    public Post() {
+    }
 
+    public Post(int id, String title, String content, int userId) {
+        System.out.println("Post creating...");
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.userId = userID;
-        this.groupid = groupid;
-
+        this.userId = userId;
     }
 
     public Post(Map<String, Object> post) {
         this.id = (int) post.get("id");
-        this.userId = (String) post.get("user_id");
         this.title = (String) post.get("title");
         this.content = (String) post.get("content");
+        this.userId = (int) post.get("user_id");
+    }
+
+    public void Observe() {
+        subscribe(postObserver);
+        notifySubscribers();
     }
 
 
@@ -36,15 +43,21 @@ public class Post extends Relation {
         return id;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 
     public String getContent() {
         return content;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -52,15 +65,9 @@ public class Post extends Relation {
         return title;
     }
 
+    //Relation One - Many with Comment
     public Comment[] comments() {
         return this.hasMany(Comment.class, "post_id", id);
     }
 
-    public int getGroupid() {
-        return groupid;
-    }
-
-    public void setGroupid(int groupid) {
-        this.groupid = groupid;
-    }
 }

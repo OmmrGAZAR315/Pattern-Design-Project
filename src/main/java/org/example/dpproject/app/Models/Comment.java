@@ -2,7 +2,7 @@ package org.example.dpproject.app.Models;
 
 import java.util.Map;
 
-public class Comment {
+public class Comment extends Model {
     public static final String table = "comments";
     private int id;
     private String text;
@@ -10,7 +10,6 @@ public class Comment {
     private int postId;
 
     public Comment(Map<String, Object> userData) {
-        System.out.println("userData: " + userData);
         if (userData.get("id") == null)
             this.id = 0;
         else
