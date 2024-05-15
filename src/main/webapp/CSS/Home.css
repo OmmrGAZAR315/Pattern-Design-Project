@@ -122,7 +122,15 @@ main .add-post form textarea::placeholder{
 
 }
 .post h3{
+    font-size: 20px;
+}
+.post h3 + p{
+    font-size: 17px;
+}
+.post h4{
+    font-weight: 400;
     font-size: 15px;
+
 }
 
 .post form {
