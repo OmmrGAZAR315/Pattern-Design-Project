@@ -8,16 +8,12 @@ import jakarta.servlet.http.HttpSession;
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
-import org.example.dpproject.app.Http.DTOs.CommentDto;
+import org.example.dpproject.app.DTOs.CommentDto;
 import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Models.Comment;
 import org.example.dpproject.app.Proxy.CommentsProxy;
 import org.example.dpproject.app.Services.CommentService;
 import org.example.dpproject.app.Http.Validation.CommentValidation;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 @WebServlet("/comments")
 public class CommentsServlet extends HttpServlet {

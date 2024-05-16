@@ -2,7 +2,7 @@ package org.example.dpproject.app.Services;
 
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HttpResponse;
-import org.example.dpproject.app.Http.DTOs.CommentDto;
+import org.example.dpproject.app.DTOs.CommentDto;
 import org.example.dpproject.app.Models.Comment;
 import org.example.dpproject.app.Models.Post;
 import org.example.dpproject.app.Proxy.Cacheable;

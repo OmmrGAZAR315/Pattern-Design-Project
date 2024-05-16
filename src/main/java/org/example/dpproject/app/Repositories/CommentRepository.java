@@ -2,7 +2,7 @@ package org.example.dpproject.app.Repositories;
 
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Http.DTOs.CommentDto;
+import org.example.dpproject.app.DTOs.CommentDto;
 
 public class CommentRepository {
     private final String table = "comments";

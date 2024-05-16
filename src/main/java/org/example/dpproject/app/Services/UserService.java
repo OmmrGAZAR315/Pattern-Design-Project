@@ -2,9 +2,8 @@ package org.example.dpproject.app.Services;
 
 
 import org.example.dpproject.DB.QBResults;
-import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
-import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.DTOs.UserDto;
 import org.example.dpproject.app.Models.PasswordEncryption;
 import org.example.dpproject.app.Models.User;
 import org.example.dpproject.app.Repositories.UserRepository;

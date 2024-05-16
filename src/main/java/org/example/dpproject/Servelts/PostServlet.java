@@ -6,7 +6,7 @@ import org.example.dpproject.DB.DB;
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
-import org.example.dpproject.app.Http.DTOs.PostDto;
+import org.example.dpproject.app.DTOs.PostDto;
 import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Models.Post;
 import org.example.dpproject.app.Proxy.CommentsProxy;
@@ -27,7 +27,7 @@ public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse resp) {
         //optionally do get for a specific post using id
         QBResults queryResults = service.getAllPosts();
-        if (queryResults == null && queryResults.getStatusCode() == HttpResponse.INTERNAL_SERVER_ERROR.getCode())
+        if (queryResults == null || queryResults.getStatusCode() == HttpResponse.INTERNAL_SERVER_ERROR.getCode())
             DB.loadDB();
 
         Responses postResponse = new Responses();
@@ -46,7 +46,6 @@ public class PostServlet extends HttpServlet {
 
         postResponse
                 .forwardInSuccess("home.jsp")
-                .forwardInError("error.jsp")
                 .dispatch(request, resp, queryResults, "get all posts", HttpResponse.OK.getCode());
     }
 

@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HttpResponse;
-import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.DTOs.UserDto;
 import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Services.UserService;

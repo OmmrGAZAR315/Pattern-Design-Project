@@ -2,11 +2,10 @@ package org.example.dpproject.app.Repositories;
 
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.DTOs.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class UserRepository {

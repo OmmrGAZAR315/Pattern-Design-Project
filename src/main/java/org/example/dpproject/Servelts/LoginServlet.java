@@ -8,7 +8,7 @@ import org.example.dpproject.DB.DB;
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
-import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
 import org.example.dpproject.app.Models.Comment;
 import org.example.dpproject.app.Models.Post;
@@ -47,6 +47,7 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("No recent comments in cookies.");
             response.sendRedirect("home.jsp");
         } else {
+            request.getSession().setAttribute("db",false);
             System.out.println("No recent posts in cookies.");
             response.sendRedirect("home.jsp");
         }

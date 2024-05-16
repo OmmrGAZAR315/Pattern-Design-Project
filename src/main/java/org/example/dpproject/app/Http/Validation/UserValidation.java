@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dpproject.app.Helpers.ParametersType;
 import org.example.dpproject.app.Helpers.RegexPattern;
-import org.example.dpproject.app.Http.DTOs.UserDto;
+import org.example.dpproject.app.DTOs.UserDto;
 
 public class UserValidation extends Validation {
 

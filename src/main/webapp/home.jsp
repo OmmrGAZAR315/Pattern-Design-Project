@@ -62,6 +62,10 @@ if(request.getSession().getAttribute("recentPosts") != null){%>
         <%  } %>
 
     <br/>
+        <%if(request.getSession().getAttribute("db")!=null && (boolean)request.getSession().getAttribute("db")){%>
     <script src="getAllPosts.js"></script>
+        <%}
+%>
+
 </body>
 </html>

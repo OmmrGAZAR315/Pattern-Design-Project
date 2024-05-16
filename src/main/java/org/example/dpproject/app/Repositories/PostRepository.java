@@ -2,8 +2,7 @@ package org.example.dpproject.app.Repositories;
 
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.DB.QueryBuilder;
-import org.example.dpproject.app.Http.DTOs.PostDto;
-import org.example.dpproject.app.Models.Post;
+import org.example.dpproject.app.DTOs.PostDto;
 
 import java.util.Date;
 

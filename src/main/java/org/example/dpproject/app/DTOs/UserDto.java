@@ -1,4 +1,4 @@
-package org.example.dpproject.app.Http.DTOs;
+package org.example.dpproject.app.DTOs;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,5 +1,8 @@
 <h4>Posts:</h4>
-<%for (Post post : posts) {%>
+<%
+    for (int i = posts.length - 1; i >= 0; i--) {
+        Post post = posts[i];
+%>
 <div class="post-container">
     <div class="post">
         <h3><%= post.getTitle() %>
