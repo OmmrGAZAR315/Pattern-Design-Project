@@ -255,86 +255,87 @@ public class QueryBuilder implements Builder {
     }
 
     public QBResults build() {
-        System.out.println(queryOb.query);
+//        System.out.println(queryOb.query);
         ResultSet resultSet = null;
-        try (PreparedStatement preparedStatement = DB.getConnection().prepareStatement(queryOb.query, Statement.RETURN_GENERATED_KEYS)) {
-            if (!queryOb.parameters.isEmpty()) {
-                for (int i = 0; i < queryOb.parameters.size(); i++) {
-                    preparedStatement.setObject(i + 1, queryOb.parameters.get(i));
+        if (DB.getConnection() != null)
+            try (PreparedStatement preparedStatement = DB.getConnection().prepareStatement(queryOb.query, Statement.RETURN_GENERATED_KEYS)) {
+                if (!queryOb.parameters.isEmpty()) {
+                    for (int i = 0; i < queryOb.parameters.size(); i++) {
+                        preparedStatement.setObject(i + 1, queryOb.parameters.get(i));
+                    }
                 }
-            }
-            HttpResponse response;
-            queryOb.parameters.clear();
-            switch (queryOb.queryType) {
-                case READ:
-                    try {
-                        resultSet = preparedStatement.executeQuery();
-                        response = HttpResponse.OK;
-                    } catch (Exception e) {
-                        response = HttpResponse.BAD_REQUEST;
+                HttpResponse response;
+                queryOb.parameters.clear();
+                switch (queryOb.queryType) {
+                    case READ:
+                        try {
+                            resultSet = preparedStatement.executeQuery();
+                            response = HttpResponse.OK;
+                        } catch (Exception e) {
+                            response = HttpResponse.BAD_REQUEST;
+                            queryOb.importedData.put("messages", addMessage(response));
+                            return new QBResults(queryOb.importedData);
+                        }
+                        List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
+                        if (!resultSet.isBeforeFirst())
+                            response = HttpResponse.NOT_FOUND;
+                        else {
+                            while (resultSet.next()) {
+                                Map<String, Object> row = new HashMap<>();
+                                if (queryOb.selectAll)
+                                    for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+                                        row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
+                                else
+                                    for (String column : queryOb.columns)
+                                        row.put(column, resultSet.getObject(column));
+                                fetchedAllRows.add(row);
+                            }
+                            queryOb.importedData.put("results", fetchedAllRows);
+                        }
                         queryOb.importedData.put("messages", addMessage(response));
-                        return new QBResults(queryOb.importedData);
-                    }
-                    List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
-                    if (!resultSet.isBeforeFirst())
-                        response = HttpResponse.NOT_FOUND;
-                    else {
-                        while (resultSet.next()) {
-                            Map<String, Object> row = new HashMap<>();
-                            if (queryOb.selectAll)
-                                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
-                                    row.put(resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
-                            else
-                                for (String column : queryOb.columns)
-                                    row.put(column, resultSet.getObject(column));
-                            fetchedAllRows.add(row);
-                        }
-                        queryOb.importedData.put("results", fetchedAllRows);
-                    }
-                    queryOb.importedData.put("messages", addMessage(response));
 
-                    break;
-                case CUD:
-                case Update:
-                case Create:
-                    if (preparedStatement.executeUpdate() == 0)
-                        response = HttpResponse.BAD_REQUEST;
-                    else {
-                        switch (queryOb.queryType) {
-                            case Update:
-                                response = HttpResponse.OK;
-                                break;
-                            case Create:
-                                response = HttpResponse.CREATED;
-                                break;
-                            default:
-                                response = HttpResponse.NO_CONTENT;
-                                break;
+                        break;
+                    case CUD:
+                    case Update:
+                    case Create:
+                        if (preparedStatement.executeUpdate() == 0)
+                            response = HttpResponse.BAD_REQUEST;
+                        else {
+                            switch (queryOb.queryType) {
+                                case Update:
+                                    response = HttpResponse.OK;
+                                    break;
+                                case Create:
+                                    response = HttpResponse.CREATED;
+                                    break;
+                                default:
+                                    response = HttpResponse.NO_CONTENT;
+                                    break;
+                            }
                         }
-                    }
-                    queryOb.importedData.put("messages", addMessage(response));
-                    resultSet = preparedStatement.getGeneratedKeys();
-                    if (resultSet.next())
-                        queryOb.importedData.put("results",
-                                Collections.singletonList(
-                                        Map.of("id", resultSet.getInt(1)
-                                        )
-                                )
-                        );
-                    break;
+                        queryOb.importedData.put("messages", addMessage(response));
+                        resultSet = preparedStatement.getGeneratedKeys();
+                        if (resultSet.next())
+                            queryOb.importedData.put("results",
+                                    Collections.singletonList(
+                                            Map.of("id", resultSet.getInt(1)
+                                            )
+                                    )
+                            );
+                        break;
+                }
+                return new QBResults(queryOb.importedData);
+            } catch (SQLException e) {
+                Map<String, Object> messageMap = new HashMap<>();
+                messageMap.put("message", "Error executing query: \n" + e.getMessage());
+                messageMap.put("status_code", HttpResponse.INTERNAL_SERVER_ERROR.getCode());
+
+                List<Map<String, Object>> messagesList = new ArrayList<>();
+                messagesList.add(messageMap);
+
+                queryOb.importedData.put("messages", messagesList);
+
             }
-            return new QBResults(queryOb.importedData);
-        } catch (SQLException e) {
-            Map<String, Object> messageMap = new HashMap<>();
-            messageMap.put("message", "Error executing query: \n" + e.getMessage());
-            messageMap.put("status_code", HttpResponse.INTERNAL_SERVER_ERROR.getCode());
-
-            List<Map<String, Object>> messagesList = new ArrayList<>();
-            messagesList.add(messageMap);
-
-            queryOb.importedData.put("messages", messagesList);
-
-        }
         try {
             if (resultSet != null)
                 resultSet.close();

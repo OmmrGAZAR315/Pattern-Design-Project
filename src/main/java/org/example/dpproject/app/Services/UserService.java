@@ -2,6 +2,7 @@ package org.example.dpproject.app.Services;
 
 
 import org.example.dpproject.DB.QBResults;
+import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Models.PasswordEncryption;
@@ -42,21 +43,24 @@ public class UserService {
     public QBResults login(UserDto dto) {
         QBResults results = this.userRepository
                 .getUserBy("username", dto.getUsername());
-        if (results.getStatusCode() != HttpResponse.OK.getCode())
-            return results.setCustom_message("username not found");
+        if (results != null) {
+            if (results.getStatusCode() == HttpResponse.INTERNAL_SERVER_ERROR.getCode())
+                return results.setCustom_message("No operations allowed after connection closed.");
+            if (results.getStatusCode() != HttpResponse.OK.getCode())
+                return results.setCustom_message("username not found");
 
-        User user = new User(results.first());
-        SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
-        try {
-            dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
-        } catch (Exception e) {
-            return results.setCustom_message("error encrypting password");
-        }
+            User user = new User(results.first());
+            SecretKey key = PasswordEncryption.reconstructKey(user.getKey());
+            try {
+                dto.setPassword(PasswordEncryption.encrypt(dto.getPassword(), key));
+            } catch (Exception e) {
+                return results.setCustom_message("error encrypting password");
+            }
 //        System.out.println(dto.getPassword());
-        if (!Objects.equals(dto.getPassword(), user.getPassword()))
-            results.setCustom_message("invalid username and password");
-
-        return results;
+            if (!Objects.equals(dto.getPassword(), user.getPassword()))
+                results.setCustom_message("invalid username and password");
+        }
+        return new QBResults();
     }
 
     public QBResults signUp(UserDto dto) {

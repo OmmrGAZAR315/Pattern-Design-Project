@@ -40,54 +40,26 @@
 
 %>
 
-<h1>Welcome to the Home Page, <%= user.getName() %>
+<h1>Welcome to the Home Page,
+    <% if (user != null) { %>
+    <%= user.getName() %>
+    <% } %>
 </h1>
 <a href="add_post.jsp">Add Post</a>
 
 <h2>Recent Posts:</h2>
 <div class="post-container">
         <%
-   if(posts == null)
-    {%>
+   if(posts == null){
+if(request.getSession().getAttribute("recentPosts") != null){%>
+    <%@ include file="getPostsUsingCookies.jsp" %>
+        <%} else {%>
     <p>No posts yet.</p>
-        <%
-    }
-   else
-   {%>
-    <h4>Posts:</h4>
-        <%for (Post post : posts) {%>
-    <div class="post-container">
-        <div class="post">
-            <h3><%= post.getTitle() %>
-            </h3>
-            <p><%= post.getContent() %>
-            </p>
-            <%
-                Comment[] postComments = post.comments();
-                if (postComments == null) {%>
-            <p>No comments yet.</p>
-            <% } else {%>
-            <h4>Comments:</h4>
-            <ul>
-                <% for (Comment comment : postComments) { %>
-                <li><%= comment.getText() %>
-                </li>
-                <% } %>
-            </ul>
-            <% } %>
+        <%}
+    }  else {%>
+    <%@ include file="getPostsUsingDB.jsp" %>
 
-            <form action="comments" method="post">
-                <input type="hidden" name="postId" value="<%= post.getId() %>">
-                <input type="hidden" name="userId" value="<%= user.getId() %>">
-                <label for="comment">Add Comment:</label><br>
-                <textarea id="comment" name="text" rows="2" cols="50"></textarea><br>
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-    </div>
-
-        <% }
-   } %>
+        <%  } %>
 
     <br/>
     <script src="getAllPosts.js"></script>

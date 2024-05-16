@@ -74,13 +74,17 @@ public abstract class Model implements Relation, Observable {
             postString = postString.trim();
 
             // Extract values for id, title, content, and userId
-            int id = Integer.parseInt(postString.split(", title=")[0].split("id=")[1]);
-            String title = postString.split(", content=")[0].split(", title='")[1];
-            String content = postString.split(", userId=")[0].split(", content='")[1];
-            int userId = Integer.parseInt(postString.split(", userId=")[1].split("\\}")[0]); // Adjusted splitting logic
+            try {
+                int id = Integer.parseInt(postString.split(", title=")[0].split("id=")[1]);
+                String title = postString.split(", content=")[0].split(", title='")[1];
+                String content = postString.split(", userId=")[0].split(", content='")[1];
+                int userId = Integer.parseInt(postString.split(", userId=")[1].split("\\}")[0]); // Adjusted splitting logic
 
-            // Create a Post object and add it to the list
-            postList.add(new Post(id, title, content, userId));
+                // Create a Post object and add it to the list
+                postList.add(new Post(id, title, content, userId));
+            } catch (Exception e) {
+                System.out.println("Error reading cookie: " + postString);
+            }
         }
 
         // Convert the list to an array and return

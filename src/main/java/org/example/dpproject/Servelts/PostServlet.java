@@ -2,6 +2,7 @@ package org.example.dpproject.Servelts;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import org.example.dpproject.DB.DB;
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
@@ -25,6 +26,9 @@ public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse resp) {
         //optionally do get for a specific post using id
         QBResults queryResults = service.getAllPosts();
+        if (queryResults == null && queryResults.getStatusCode() == HttpResponse.INTERNAL_SERVER_ERROR.getCode())
+            DB.loadDB();
+
         Responses postResponse = new Responses();
         if (queryResults.getStatusCode() == HttpResponse.OK.getCode()) {
             postResponse = new Responses() {
@@ -63,7 +67,8 @@ public class PostServlet extends HttpServlet {
                 .dispatch(request, resp, queryResults, "create post", HttpResponse.CREATED.getCode());
 
     }
-//    @Override
+
+    //    @Override
 //    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 //        postDao postsDao = new postDao();
 //        List<Map<String, Object>> posts = postsDao.fetchPosts();
@@ -82,7 +87,7 @@ public class PostServlet extends HttpServlet {
 //
 //        resp.sendRedirect("home.jsp");
 //    }
-static {
-    new Post().Observe();
-}
+    static {
+        new Post().Observe();
+    }
 }

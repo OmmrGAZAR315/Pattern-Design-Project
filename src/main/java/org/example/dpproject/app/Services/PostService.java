@@ -34,11 +34,8 @@ public class PostService implements Cacheable {
 
     public List<Object> getRecentPosts(int limit) {
         QBResults qbResults = this.postRepository.getRecentPosts(limit);
-        if (qbResults.getStatusCode() != HttpResponse.OK.getCode()) {
-            System.out.println("getRecentPosts msg: " + qbResults.getMessage());
-            System.out.println("getRecentPosts status code:" + qbResults.getStatusCode());
+        if (qbResults.getStatusCode() != HttpResponse.OK.getCode())
             return null;
-        }
         List<Map<String, Object>> listPosts = qbResults.all();
         List<Object> posts = new ArrayList<>();
         for (int i = 4; i >= 0; i--)

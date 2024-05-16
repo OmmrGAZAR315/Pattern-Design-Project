@@ -18,6 +18,9 @@ public class QBResults {
         this.results = new HashMap<>();
         this.results.put("results", null);
         this.results.put("messages", new ArrayList<>());
+        results.get("messages").add(new HashMap<>());
+        results.get("messages").get(0).put("status_code", HttpResponse.INTERNAL_SERVER_ERROR.getCode());
+        results.get("messages").get(0).put("message", "No operations allowed after connection closed.");
     }
 
     public Map<String, Object> first() {
@@ -44,25 +47,45 @@ public class QBResults {
     }
 
     public int getStatusCode() {
-        return (int) results.get("messages").get(0).get("status_code");
+        if (results.get("messages") != null)
+            return (int) results.get("messages").get(0).get("status_code");
+        else return 0;
     }
 
     public Object getMessage() {
-        return results.get("messages").get(0).get("message");
+        if (results.get("messages") != null)
+            return results.get("messages").get(0).get("message");
+        else return null;
     }
 
     public QBResults setMessage(HttpResponse httpResponse) {
-        results.get("messages").get(0).put("status_code", httpResponse.getCode());
-        results.get("messages").get(0).put("message", httpResponse.getMessage());
-        return this;
+        if (results.get("messages") != null) {
+            results.get("messages").get(0).put("status_code", httpResponse.getCode());
+            results.get("messages").get(0).put("message", httpResponse.getMessage());
+            return this;
+        }
+        return null;
     }
 
     public QBResults setCustom_message(String customErrorMessage) {
-        results.get("messages").get(0).put("custom_error_message", customErrorMessage);
-        return this;
+        if (results.get("messages") != null) {
+            results.get("messages").get(0).put("custom_error_message", customErrorMessage);
+            return this;
+        }
+        return null;
     }
 
     public Object getCustom_message() {
-        return results.get("messages").get(0).get("custom_error_message");
+        if (results.get("messages") != null)
+            return results.get("messages").get(0).get("custom_error_message");
+        else return null;
+    }
+
+    public QBResults setStatus_code(int customErrorMessage) {
+        if (results.get("messages") != null) {
+            results.get("messages").get(0).put("status_code", customErrorMessage);
+            return this;
+        }
+        return null;
     }
 }
