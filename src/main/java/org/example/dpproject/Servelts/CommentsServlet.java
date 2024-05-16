@@ -11,6 +11,7 @@ import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.CommentDto;
 import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Models.Comment;
+import org.example.dpproject.app.Proxy.CommentsProxy;
 import org.example.dpproject.app.Services.CommentService;
 import org.example.dpproject.app.Http.Validation.CommentValidation;
 
@@ -28,7 +29,7 @@ public class CommentsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse resp) {
         //optionally do get for a specific post using id
         QBResults queryResults = service.getAllComments();
         Responses commentResponse = new Responses();
@@ -39,12 +40,13 @@ public class CommentsServlet extends HttpServlet {
                     Comment[] comments = HelperClass.convertListMapToArray(Comment.class, queryResults.all());
                     HttpSession session = request.getSession();
                     session.setAttribute("post_comments", comments);
+                    CommentsProxy.setCookies(resp);
                 }
             };
         commentResponse
                 .forwardInSuccess("home.jsp")
                 .forwardInError("error.jsp")
-                .dispatch(request, response, queryResults, "get all comments", HttpResponse.OK.getCode());
+                .dispatch(request, resp, queryResults, "get all comments", HttpResponse.OK.getCode());
 
     }
 
@@ -57,6 +59,8 @@ public class CommentsServlet extends HttpServlet {
         System.out.println("msg " + queryResults.getMessage());
         System.out.println("c " + queryResults.getCustom_message());
         System.out.println("code " + queryResults.getStatusCode());
+        CommentsProxy.setCookies(resp);
+
         new Responses()
                 .forwardInSuccess("home.jsp")
                 .dispatch(req, resp, queryResults, "creating a comment", HttpResponse.CREATED.getCode());

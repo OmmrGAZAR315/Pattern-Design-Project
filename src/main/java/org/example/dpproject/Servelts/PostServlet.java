@@ -9,6 +9,7 @@ import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.PostDto;
 import org.example.dpproject.app.Http.Responses.Responses;
 import org.example.dpproject.app.Models.Post;
+import org.example.dpproject.app.Proxy.CommentsProxy;
 import org.example.dpproject.app.Proxy.PostsProxy;
 import org.example.dpproject.app.Services.PostService;
 import org.example.dpproject.app.Http.Validation.PostValidation;
@@ -38,6 +39,7 @@ public class PostServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("posts", posts);
                     PostsProxy.setCookies(resp);
+                    CommentsProxy.setCookies(resp);
                 }
             };
         }

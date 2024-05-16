@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class PostsProxy implements Cacheable {
     private PostService postService;
@@ -25,6 +26,8 @@ public class PostsProxy implements Cacheable {
     public void setRecentPosts() {
         if (recentPostsCache.isEmpty())
             recentPostsCache = postService.getRecentPosts(5);
+        if (recentPostsCache == null)
+            return;
         else {
             recentPostsCache.add(postService.getLastPost());
             for (int i = 0; i < 5; i++)
@@ -39,10 +42,15 @@ public class PostsProxy implements Cacheable {
         return recentPostsCache;
     }
 
+    @Override
+    public Map<Integer, Object> getMapCache() {
+        return null;
+    }
+
     public static void setCookies(HttpServletResponse response) {
-        String json = new PostsProxy().getCache().toString();
-        String encodedJson = URLEncoder.encode(json, StandardCharsets.UTF_8);
-        response.addCookie(new Cookie("recentPosts", encodedJson));
+        String postsJson = new PostsProxy().getCache().toString();
+        String postsEncodedJson = URLEncoder.encode(postsJson, StandardCharsets.UTF_8);
+        response.addCookie(new Cookie("recentPosts", postsEncodedJson));
     }
 
     public static Post[] getCookies(HttpServletRequest request) {

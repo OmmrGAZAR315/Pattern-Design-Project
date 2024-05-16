@@ -55,7 +55,12 @@ public class PostService implements Cacheable {
 
     @Override
     public List<Object> getCache() {
-        return List.of();
+        return null;
+    }
+
+    @Override
+    public Map<Integer, Object> getMapCache() {
+        return null;
     }
 }
 

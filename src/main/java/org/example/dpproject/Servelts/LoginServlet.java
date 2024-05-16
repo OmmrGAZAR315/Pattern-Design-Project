@@ -10,12 +10,13 @@ import org.example.dpproject.app.Helpers.HelperClass;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.UserDto;
 import org.example.dpproject.app.Http.Validation.UserValidation;
+import org.example.dpproject.app.Models.Comment;
 import org.example.dpproject.app.Models.Post;
+import org.example.dpproject.app.Proxy.CommentsProxy;
 import org.example.dpproject.app.Proxy.PostsProxy;
 import org.example.dpproject.app.Services.UserService;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -31,6 +32,7 @@ public class LoginServlet extends HttpServlet {
             return;
 
         Post[] postsInCookies = PostsProxy.getCookies(request);
+        Comment[] commentsInCookies = CommentsProxy.getCookies(request);
 
 
         QBResults queryResults = this.service.login(userDto);
@@ -39,6 +41,10 @@ public class LoginServlet extends HttpServlet {
         else if (postsInCookies != null) {
             DB.loadDB();
             request.getSession().setAttribute("recentPosts", PostsProxy.getCookies(request));
+            if (commentsInCookies != null)
+                request.getSession().setAttribute("recentComments", CommentsProxy.getCookies(request));
+            else
+                System.out.println("No recent comments in cookies.");
             response.sendRedirect("home.jsp");
         } else {
             System.out.println("No recent posts in cookies.");

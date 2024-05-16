@@ -3,9 +3,16 @@ package org.example.dpproject.app.Services;
 import org.example.dpproject.DB.QBResults;
 import org.example.dpproject.app.Helpers.HttpResponse;
 import org.example.dpproject.app.Http.DTOs.CommentDto;
+import org.example.dpproject.app.Models.Comment;
+import org.example.dpproject.app.Models.Post;
+import org.example.dpproject.app.Proxy.Cacheable;
 import org.example.dpproject.app.Repositories.CommentRepository;
 
-public class CommentService {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class CommentService implements Cacheable {
     private final CommentRepository commentRepository;
 
     public CommentService() {
@@ -24,5 +31,35 @@ public class CommentService {
         if (results.getStatusCode() != HttpResponse.CREATED.getCode())
             return results.setCustom_message("comment not created");
         return results;
+    }
+
+    public Map<Integer, Object> getRecentPostsComments(int i) {
+        List<Object> posts = new PostService().getRecentPosts(i);
+        Map<Integer, Object> comments = new HashMap<>();
+        for (Object post : posts) {
+            Comment[] commentsList = ((Post) post).comments();
+            if (commentsList != null)
+                comments.put(((Post) post).getId(), commentsList);
+            else
+                return null;
+        }
+        return comments;
+    }
+
+    public Comment[] getLastPostComments() {
+        Object post = new PostService().getLastPost();
+        if (post == null)
+            return null;
+        return ((Post) post).comments();
+    }
+
+    @Override
+    public List<Object> getCache() {
+        return null;
+    }
+
+    @Override
+    public Map<Integer, Object> getMapCache() {
+        return null;
     }
 }

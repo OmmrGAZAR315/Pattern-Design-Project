@@ -59,8 +59,9 @@ public class UserService {
 //        System.out.println(dto.getPassword());
             if (!Objects.equals(dto.getPassword(), user.getPassword()))
                 results.setCustom_message("invalid username and password");
-        }
-        return new QBResults();
+        } else
+            return new QBResults();
+        return results;
     }
 
     public QBResults signUp(UserDto dto) {
