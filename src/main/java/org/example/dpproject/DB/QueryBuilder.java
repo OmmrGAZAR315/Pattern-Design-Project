@@ -340,8 +340,8 @@ public class QueryBuilder implements Builder {
             if (resultSet != null)
                 resultSet.close();
         } catch (SQLException ignored) {
+        } finally {
             queryOb.importedData.put("messages", addMessage(HttpResponse.INTERNAL_SERVER_ERROR));
-            return new QBResults(queryOb.importedData);
         }
 
         return new QBResults(queryOb.importedData);

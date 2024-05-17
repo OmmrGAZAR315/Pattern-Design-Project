@@ -24,10 +24,9 @@
         <% } %>
 
         <form action="comments" method="post">
-            <%if (user != null) {%>
+            <%%>
             <input type="hidden" name="postId" value="<%= post.getId() %>">
             <%
-                }
                 if (user != null) {
             %>
             <input type="hidden" name="userId" value="<%= user.getId() %>">

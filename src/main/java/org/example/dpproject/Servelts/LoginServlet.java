@@ -38,17 +38,19 @@ public class LoginServlet extends HttpServlet {
         QBResults queryResults = this.service.login(userDto);
         if (queryResults != null && queryResults.getStatusCode() != HttpResponse.INTERNAL_SERVER_ERROR.getCode())
             HelperClass.login(request, response, queryResults);
-        else if (postsInCookies != null) {
-            DB.loadDB();
-            request.getSession().setAttribute("recentPosts", PostsProxy.getCookies(request));
+        else if (postsInCookies != null || commentsInCookies != null) {
+            if (postsInCookies != null) {
+                DB.loadDB();
+                request.getSession().setAttribute("recentPosts", PostsProxy.getCookies(request));
+            }
             if (commentsInCookies != null)
                 request.getSession().setAttribute("recentComments", CommentsProxy.getCookies(request));
             else
                 System.out.println("No recent comments in cookies.");
             response.sendRedirect("home.jsp");
         } else {
-            request.getSession().setAttribute("db",false);
-            System.out.println("No recent posts in cookies.");
+            request.getSession().setAttribute("db", false);
+            System.out.println("No recent cookies.");
             response.sendRedirect("home.jsp");
         }
 

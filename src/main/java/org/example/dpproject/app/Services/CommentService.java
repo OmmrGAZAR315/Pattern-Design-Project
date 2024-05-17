@@ -36,13 +36,16 @@ public class CommentService implements Cacheable {
     public Map<Integer, Object> getRecentPostsComments(int i) {
         List<Object> posts = new PostService().getRecentPosts(i);
         Map<Integer, Object> comments = new HashMap<>();
-        for (Object post : posts) {
-            Comment[] commentsList = ((Post) post).comments();
-            if (commentsList != null)
-                comments.put(((Post) post).getId(), commentsList);
-            else
-                return null;
-        }
+        if (posts != null) {
+            for (Object post : posts) {
+                Comment[] commentsList = ((Post) post).comments();
+                if (commentsList != null)
+                    comments.put(((Post) post).getId(), commentsList);
+                else
+                    return null;
+            }
+        } else
+            return null;
         return comments;
     }
 

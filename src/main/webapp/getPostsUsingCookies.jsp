@@ -10,8 +10,7 @@
         <p><%= post.getContent() %>
         </p>
         <%
-            //            Comment[] postComments = post.comments();
-            Comment[] postComments = null;
+            Comment[] postComments = post.comments();
             if (postComments == null) {%>
         <p>No comments yet.</p>
         <% } else {%>
@@ -25,10 +24,9 @@
         <% } %>
 
         <form action="comments" method="post">
-            <%if (user != null) {%>
+            <%%>
             <input type="hidden" name="postId" value="<%= post.getId() %>">
             <%
-                }
                 if (user != null) {
             %>
             <input type="hidden" name="userId" value="<%= user.getId() %>">

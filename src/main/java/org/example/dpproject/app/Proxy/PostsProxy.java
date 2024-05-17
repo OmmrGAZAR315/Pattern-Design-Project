@@ -24,7 +24,7 @@ public class PostsProxy implements Cacheable {
     }
 
     public void setRecentPosts() {
-        if (recentPostsCache.isEmpty())
+        if (recentPostsCache != null && recentPostsCache.isEmpty())
             recentPostsCache = postService.getRecentPosts(5);
         if (recentPostsCache == null)
             return;

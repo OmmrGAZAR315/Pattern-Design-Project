@@ -21,7 +21,7 @@ public class CommentsProxy implements Cacheable {
     }
 
     public void setRecentPostsComments() {
-        if (recentPostsCommentsCache.isEmpty())
+        if (recentPostsCommentsCache != null && recentPostsCommentsCache.isEmpty())
             recentPostsCommentsCache = commentService.getRecentPostsComments(5);
         if (recentPostsCommentsCache == null) {
             System.out.println("No comments found. proxy");
@@ -49,7 +49,7 @@ public class CommentsProxy implements Cacheable {
     }
 
     public static void setCookies(HttpServletResponse response) {
-        if (recentPostsCommentsCache==null || recentPostsCommentsCache.isEmpty())
+        if (recentPostsCommentsCache == null || recentPostsCommentsCache.isEmpty())
             return;
         String commentsJson = new CommentsProxy().getMapCache().toString();
         System.out.println("commentsJson " + commentsJson);

@@ -1,11 +1,16 @@
 package org.example.dpproject.app.Models;
 
+import org.example.dpproject.app.Observer.Observer;
+import org.example.dpproject.app.Observer.PostObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Comment extends Model {
     public static final String table = "comments";
+    private static final Observer commentObserver = new PostObserver();
+
     private int id;
     private String text;
     private int userId;
@@ -112,4 +117,10 @@ public class Comment extends Model {
         // Convert the list to an array and return
         return commentList.toArray(new Comment[0]);
     }
+
+    public void Observe() {
+        subscribe(commentObserver);
+        notifySubscribers();
+    }
+
 }

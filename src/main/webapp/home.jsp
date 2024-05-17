@@ -2,7 +2,7 @@
 <%@ page import="org.example.dpproject.app.Models.Post" %>
 <%@ page import="org.example.dpproject.app.Models.Comment" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<jsp:include page="protectPage.jsp"/>
+<%--<jsp:include page="protectPage.jsp"/>--%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,10 +62,7 @@ if(request.getSession().getAttribute("recentPosts") != null){%>
         <%  } %>
 
     <br/>
-        <%if(request.getSession().getAttribute("db")!=null && (boolean)request.getSession().getAttribute("db")){%>
     <script src="getAllPosts.js"></script>
-        <%}
-%>
 
 </body>
 </html>

@@ -16,22 +16,20 @@ public abstract class DB {
     private static Connection connection;
 
 
-    protected static void getDriverManager(String className, String url, String username, String password) throws Exception {
+    protected static void getDriverManager(String className, String url, String username, String password)  {
         int retryAttempts = 3;
         int currentAttempt = 0;
         while (currentAttempt < retryAttempts) {
             try {
                 Class.forName(className);
                 connection = DriverManager.getConnection("jdbc:" + url, username, password);
+                System.out.println("connected");
                 break;
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 System.err.println("Failed to connect to the database (attempt " + (currentAttempt + 1) + ")");
-                e.printStackTrace();
-                // Increment the attempt counter
                 currentAttempt++;
-                // Wait before retrying (optional)
                 try {
-                    Thread.sleep(1000); // Wait for 1 second before retrying
+                    Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
