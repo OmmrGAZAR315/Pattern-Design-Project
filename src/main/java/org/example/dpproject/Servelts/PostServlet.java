@@ -42,11 +42,8 @@ public class PostServlet extends HttpServlet {
                     Post[] posts = HelperClass.convertListMapToArray(Post.class, finalQueryResults.all());
                     HttpSession session = request.getSession();
                     session.setAttribute("posts", posts);
-                    System.out.println("dsvvvsddsvdsvsdv");
                     PostsProxy.setCookies(resp);
-                    System.out.println("dsvvvsddsvdsvsdv");
                     CommentsProxy.setCookies(resp);
-                    System.out.println("dsvvvsddsvdsvsdv");
                 }
             };
         }

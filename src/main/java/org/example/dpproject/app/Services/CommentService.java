@@ -41,8 +41,6 @@ public class CommentService implements Cacheable {
                 Comment[] commentsList = ((Post) post).comments();
                 if (commentsList != null)
                     comments.put(((Post) post).getId(), commentsList);
-                else
-                    return null;
             }
         } else
             return null;
