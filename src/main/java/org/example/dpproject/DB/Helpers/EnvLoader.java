@@ -1,4 +1,4 @@
-package org.example.dpproject.app.Helpers;
+package org.example.dpproject.DB.Helpers;
 
 import java.io.FileInputStream;
 import java.io.IOException;

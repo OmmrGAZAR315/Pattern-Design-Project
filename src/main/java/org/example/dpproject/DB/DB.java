@@ -1,13 +1,12 @@
 package org.example.dpproject.DB;
 
-import org.example.dpproject.app.Helpers.EnvLoader;
-import org.example.dpproject.app.Helpers.AbsolutePath;
+import org.example.dpproject.DB.Helpers.AbsolutePath;
+import org.example.dpproject.DB.Helpers.EnvLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import static org.example.dpproject.DB.DatabaseConfig.*;
 
