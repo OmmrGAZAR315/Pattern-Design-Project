@@ -1,6 +1,8 @@
 package org.example.dpproject.DB;
 
 
+import org.example.dpproject.DB.Helpers.DBResponses;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +20,7 @@ public class QBResults {
         this.results.put("results", null);
         this.results.put("messages", new ArrayList<>());
         results.get("messages").add(new HashMap<>());
-        results.get("messages").get(0).put("status_code", 500);
+        results.get("messages").get(0).put("status_code", DBResponses.INTERNAL_SERVER_ERROR.getCode());
         results.get("messages").get(0).put("message", "No operations allowed after connection closed.");
     }
 
@@ -57,6 +59,14 @@ public class QBResults {
         else return null;
     }
 
+    public QBResults setMessage(DBResponses httpResponse) {
+        if (results.get("messages") != null) {
+            results.get("messages").get(0).put("status_code", httpResponse.getCode());
+            results.get("messages").get(0).put("message", httpResponse.getMessage());
+            return this;
+        }
+        return null;
+    }
 
     public QBResults setCustom_message(String customErrorMessage) {
         if (results.get("messages") != null) {

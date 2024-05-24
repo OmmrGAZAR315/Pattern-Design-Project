@@ -3,7 +3,7 @@ package org.example.dpproject.DB;
 
 import org.example.dpproject.DB.Builder.Builder;
 import org.example.dpproject.DB.Builder.Query;
-import org.example.dpproject.app.Helpers.HttpResponse;
+import org.example.dpproject.DB.Helpers.DBResponses;
 
 import java.sql.*;
 import java.util.*;
@@ -264,21 +264,21 @@ public class QueryBuilder implements Builder {
                         preparedStatement.setObject(i + 1, queryOb.parameters.get(i));
                     }
                 }
-                HttpResponse response;
+                DBResponses response;
                 queryOb.parameters.clear();
                 switch (queryOb.queryType) {
                     case READ:
                         try {
                             resultSet = preparedStatement.executeQuery();
-                            response = HttpResponse.OK;
+                            response = DBResponses.OK;
                         } catch (Exception e) {
-                            response = HttpResponse.BAD_REQUEST;
+                            response = DBResponses.BAD_REQUEST;
                             queryOb.importedData.put("messages", addMessage(response));
                             return new QBResults(queryOb.importedData);
                         }
                         List<Map<String, Object>> fetchedAllRows = new ArrayList<>();
                         if (!resultSet.isBeforeFirst())
-                            response = HttpResponse.NOT_FOUND;
+                            response = DBResponses.NOT_FOUND;
                         else {
                             while (resultSet.next()) {
                                 Map<String, Object> row = new HashMap<>();
@@ -299,17 +299,17 @@ public class QueryBuilder implements Builder {
                     case Update:
                     case Create:
                         if (preparedStatement.executeUpdate() == 0)
-                            response = HttpResponse.BAD_REQUEST;
+                            response = DBResponses.BAD_REQUEST;
                         else {
                             switch (queryOb.queryType) {
                                 case Update:
-                                    response = HttpResponse.OK;
+                                    response = DBResponses.OK;
                                     break;
                                 case Create:
-                                    response = HttpResponse.CREATED;
+                                    response = DBResponses.CREATED;
                                     break;
                                 default:
-                                    response = HttpResponse.NO_CONTENT;
+                                    response = DBResponses.NO_CONTENT;
                                     break;
                             }
                         }
@@ -328,7 +328,7 @@ public class QueryBuilder implements Builder {
             } catch (SQLException e) {
                 Map<String, Object> messageMap = new HashMap<>();
                 messageMap.put("message", "Error executing query: \n" + e.getMessage());
-                messageMap.put("status_code", HttpResponse.INTERNAL_SERVER_ERROR.getCode());
+                messageMap.put("status_code", DBResponses.INTERNAL_SERVER_ERROR.getCode());
 
                 List<Map<String, Object>> messagesList = new ArrayList<>();
                 messagesList.add(messageMap);
@@ -341,13 +341,13 @@ public class QueryBuilder implements Builder {
                 resultSet.close();
         } catch (SQLException ignored) {
         } finally {
-            queryOb.importedData.put("messages", addMessage(HttpResponse.INTERNAL_SERVER_ERROR));
+            queryOb.importedData.put("messages", addMessage(DBResponses.INTERNAL_SERVER_ERROR));
         }
 
         return new QBResults(queryOb.importedData);
     }
 
-    private List<Map<String, Object>> addMessage(HttpResponse response) {
+    private List<Map<String, Object>> addMessage(DBResponses response) {
         Map<String, Object> messageMap = new HashMap<>();
         messageMap.put("message", response.getMessage());
         messageMap.put("status_code", response.getCode());
