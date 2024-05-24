@@ -15,7 +15,7 @@ public abstract class DB {
     private static Connection connection;
 
 
-    protected static void getDriverManager(String className, String url, String username, String password)  {
+    protected static void getDriverManager(String className, String url, String username, String password) {
         int retryAttempts = 3;
         int currentAttempt = 0;
         while (currentAttempt < retryAttempts) {
@@ -49,7 +49,10 @@ public abstract class DB {
             String absolutePath = AbsolutePath.getPath(DB.class);
             // Get the last part of the path, which is the name of the project
             absolutePath = absolutePath.substring(absolutePath.lastIndexOf("/") + 1);
-            Class<?> clazz = Class.forName("org.example." + absolutePath.toLowerCase() + ".DB.DB_Platforms." + DB_PLATFORM_CLASS.getValue());
+            Class<?> clazz = Class.forName(
+                    DB_PACKAGE_PATH.getValue()
+                            + DB_PLATFORM_CLASS.getValue()
+            );
 
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             Object instance = constructor.newInstance();
