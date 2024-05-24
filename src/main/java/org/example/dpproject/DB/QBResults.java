@@ -58,14 +58,6 @@ public class QBResults {
         else return null;
     }
 
-    public QBResults setMessage(HttpResponse httpResponse) {
-        if (results.get("messages") != null) {
-            results.get("messages").get(0).put("status_code", httpResponse.getCode());
-            results.get("messages").get(0).put("message", httpResponse.getMessage());
-            return this;
-        }
-        return null;
-    }
 
     public QBResults setCustom_message(String customErrorMessage) {
         if (results.get("messages") != null) {
